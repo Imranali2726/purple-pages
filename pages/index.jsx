@@ -1,6 +1,7 @@
 import Slider from "../components/base/Slider";
 import SliderSlide from "../components/base/SliderSlide";
 import SearchFilter from "../components/filter/SearchFilter";
+import { slider1, slider2, slider3, slider4 } from "../fakeData/homepage";
 
 export default function Home() {
   return (
@@ -26,11 +27,9 @@ export default function Home() {
           </h2>
           <div className="mt-4 md:mt-8">
             <Slider>
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
+              {slider1.map((item) => (
+                <SliderSlide text={item.text} img={item.img} key={item.text} />
+              ))}
             </Slider>
           </div>
         </div>
@@ -42,11 +41,9 @@ export default function Home() {
           </h2>
           <div className="mt-4 md:mt-8">
             <Slider>
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
+              {slider2.map((item) => (
+                <SliderSlide text={item.text} img={item.img} key={item.text} />
+              ))}
             </Slider>
           </div>
         </div>
@@ -81,11 +78,9 @@ export default function Home() {
           </h2>
           <div className="mt-4 md:mt-8">
             <Slider>
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
+              {slider3.map((item) => (
+                <SliderSlide text={item.text} img={item.img} key={item.text} />
+              ))}
             </Slider>
           </div>
         </div>
@@ -97,11 +92,9 @@ export default function Home() {
           </h2>
           <div className="mt-4 md:mt-8">
             <Slider>
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
-              <SliderSlide />
+              {slider4.map((item) => (
+                <SliderSlide text={item.text} img={item.img} key={item.text} />
+              ))}
             </Slider>
           </div>
         </div>

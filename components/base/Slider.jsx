@@ -5,7 +5,6 @@ export default function Slider({ children }) {
     <Splide
       options={{
         type: "loop",
-        rewind: true,
         perPage: 4,
         gap: "2rem",
         pagination: false,

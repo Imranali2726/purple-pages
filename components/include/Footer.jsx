@@ -66,7 +66,7 @@ export default function Footer() {
               </div>
             ))}
           </div>
-          <div className="mt-[90px] xl:mt-[125px]">
+          <div className="mt-12 md:mt-[64px] lg:mt-[90px] xl:mt-[125px]">
             <p className="text-white text-sm border-t py-3">
               Copyright by{" "}
               <Link href="#">
