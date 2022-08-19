@@ -1,26 +1,26 @@
-html,
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700;800&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 body {
-  padding: 0;
-  margin: 0;
-  font-family: -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen,
-    Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, sans-serif;
+  font-family: "Montserrat", "sans-serif";
 }
 
-a {
-  color: inherit;
-  text-decoration: none;
+.bg-image {
+  background-image: url("/images/home-bg.png");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
-* {
-  box-sizing: border-box;
+.last-border-none:last-child {
+  border: 0px;
 }
 
-@media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-  body {
-    color: white;
-    background: black;
-  }
+.pp-container {
+  @apply px-8 max-w-[1536px] mx-auto;
+}
+
+.pp-link-wrapper:first-of-type {
+  @apply md:col-span-2 lg:col-span-1;
 }
