@@ -24,3 +24,18 @@ body {
 .pp-link-wrapper:first-of-type {
   @apply md:col-span-2 lg:col-span-1;
 }
+
+.filter-search {
+  position: relative;
+}
+.filter-search select {
+  position: relative;
+}
+
+.filter-search select::-ms-expand {
+  display: none;
+}
+
+.filter-search select option:not(first-child) {
+  color: black;
+}

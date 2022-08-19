@@ -1,3 +1,4 @@
+import Head from "next/head";
 import Slider from "../components/base/Slider";
 import SliderSlide from "../components/base/SliderSlide";
 import SearchFilter from "../components/filter/SearchFilter";
@@ -6,6 +7,9 @@ import { slider1, slider2, slider3, slider4 } from "../fakeData/homepage";
 export default function Home() {
   return (
     <>
+      <Head>
+        <title>Purple Pages | Home</title>
+      </Head>
       <section className="bg-image flex items-center justify-center h-screen max-h-[800px] lg:max-h-[100%] pt-[65px] lg:pt-0">
         <div className=" md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1100px] max-w-[300px] mx-auto  items-center justify-between">
           <h1 className="text-white text-center text-4xl md:text-5xl lg:text-6xl font-extrabold">

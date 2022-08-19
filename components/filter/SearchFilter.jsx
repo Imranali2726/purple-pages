@@ -1,4 +1,12 @@
+import { useState } from "react";
+
 export default function SearchFilter() {
+  const [edit, setEdit] = useState({
+    select1: false,
+    select2: false,
+    select3: false,
+    select4: false,
+  });
   const filter = [
     {
       label: "Identity",
@@ -6,9 +14,11 @@ export default function SearchFilter() {
       component: (
         <select
           className="w-full text-sm relative bg-white"
+          style={{ color: edit.select1 ? "black" : "#9e9e9e" }}
           defaultValue={0}
           id="select1"
           name="select1"
+          onChange={() => setEdit({ ...edit, select1: true })}
         >
           <option value="0" disabled hidden>
             Who I am?
@@ -26,8 +36,10 @@ export default function SearchFilter() {
         <select
           className="w-full text-sm relative bg-white"
           defaultValue={0}
+          style={{ color: edit.select2 ? "black" : "#9e9e9e" }}
           id="select2"
           name="select2"
+          onChange={() => setEdit({ ...edit, select2: true })}
         >
           <option value="0" disabled hidden>
             Where are you located?
@@ -46,7 +58,9 @@ export default function SearchFilter() {
           className="w-full text-sm relative bg-white"
           defaultValue={0}
           id="select3"
+          style={{ color: edit.select3 ? "black" : "#9e9e9e" }}
           name="select3"
+          onChange={() => setEdit({ ...edit, select3: true })}
         >
           <option value="0" disabled hidden>
             What are you looking for?
@@ -64,8 +78,10 @@ export default function SearchFilter() {
         <select
           className="w-full text-sm relative bg-white"
           defaultValue={0}
+          style={{ color: edit.select4 ? "black" : "#9e9e9e" }}
           id="select4"
           name="select4"
+          onChange={() => setEdit({ ...edit, select4: true })}
         >
           <option value="0" disabled hidden>
             Type of service ?
@@ -92,7 +108,7 @@ export default function SearchFilter() {
                 {" "}
                 {item.label}
               </span>
-              {item.component}
+              <div className="filter-search">{item.component}</div>
             </label>
           </div>
         ))}
