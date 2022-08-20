@@ -48,7 +48,7 @@ export default function Navbar() {
           </div>
           <div>
             <div
-              className={`fixed inset-x-0 top-[65px] bottom-0 lg:static flex flex-col lg:flex-row items-center gap-4 transition-[height_200ms_ease-in-out] overflow-hidden  ${
+              className={`fixed inset-x-0 top-[65px] bottom-0 lg:static flex flex-col lg:flex-row items-center gap-4 transition-[height_200ms_ease-in-out] overflow-hidden lg:overflow-visible  ${
                 isActive
                   ? "h-screen pt-4 lg:pt-0 lg:h-auto bg-purple-500 lg:bg-transparent"
                   : "h-0 lg:h-auto"
@@ -78,7 +78,7 @@ export default function Navbar() {
                 <button
                   type="button"
                   className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
-                  rounded-lg"
+                  rounded-lg pp-shadow"
                 >
                   Sign In/Register
                 </button>
