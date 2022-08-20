@@ -8,7 +8,7 @@ export default function Navbar() {
   const navRef = useRef();
   const links = [
     { label: "Home", link: "/" },
-    { label: "Listing", link: "#" },
+    { label: "Listing", link: "/listing" },
     { label: "About", link: "#" },
     { label: "FAQ's", link: "#" },
     { label: "Policies", link: "#" },
@@ -60,7 +60,13 @@ export default function Navbar() {
                   {links.map((item) => (
                     <li className="p-2 lg:p-3" key={item.label}>
                       <Link href={item.link}>
-                        <a className="font-semibold  xl:font-bold xl:text-lg text-white">
+                        <a
+                          role="button"
+                          tabIndex={0}
+                          className="font-semibold  xl:font-bold xl:text-lg text-white"
+                          onClick={() => setIsActive(false)}
+                          onKeyDown={() => setIsActive(false)}
+                        >
                           {item.label}
                         </a>
                       </Link>

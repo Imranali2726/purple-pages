@@ -3,6 +3,10 @@
 @tailwind components;
 @tailwind utilities;
 
+html {
+  scroll-behavior: smooth;
+}
+
 body {
   font-family: "Montserrat", "sans-serif";
 }
@@ -38,4 +42,29 @@ body {
 
 .filter-search select option:not(first-child) {
   color: black;
+}
+
+.pp-shadow {
+  box-shadow: 0px 0px 12px #00000029;
+}
+
+.internal-header-bg {
+  background-image: url("/images/listing-banner.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: left center;
+}
+
+.internal-header-overlay {
+  background: linear-gradient(180deg, #ffffff00 0%, rgba(0, 0, 0, 0.3) 100%) 0%
+    0% no-repeat padding-box;
+}
+
+.filter-checkbox:checked + .filter-label {
+  background-color: #642ca9;
+  color: white;
+}
+
+.rc-rate-star {
+  margin-right: 0px !important;
 }

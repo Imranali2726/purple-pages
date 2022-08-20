@@ -35,6 +35,6 @@
         "prettier/prettier": ["error", { "endOfLine": "auto" }],
         "jsx-a11y/anchor-is-valid": "off",
         "@next/next/no-img-element": "off",
-        "react/prop-types" : "warn"
+        "react/prop-types" : "off"
     }
 }

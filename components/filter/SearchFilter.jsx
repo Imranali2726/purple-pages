@@ -95,7 +95,7 @@ export default function SearchFilter() {
   ];
   return (
     <form>
-      <div className="p-[17px] grid sm:grid-cols-1 md:grid-cols-5 rounded-[12px] bg-white items-center">
+      <div className="p-[17px] grid sm:grid-cols-1 md:grid-cols-5 rounded-[12px] bg-white items-center pp-shadow">
         {filter?.map((item, idx) => (
           <div
             className={`md:first:pl-0 px-4 mb-2 md:mb-0  ${
