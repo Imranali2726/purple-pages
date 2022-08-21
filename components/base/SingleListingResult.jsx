@@ -24,7 +24,7 @@ export default function SingleListingResult() {
           alt=""
           className="w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] object-cover object-center"
         />
-        <div className="border flex-1 pt-7 flex flex-col justify-between">
+        <div className="border flex-1 pt-6 flex flex-col justify-between">
           <div className="grid grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-4 px-6">
             <div>
               <h3 className="font-bold text-lg">GEMS Founder School</h3>
@@ -97,7 +97,7 @@ export default function SingleListingResult() {
               </div>
             </div>
           </div>
-          <div className="mt-4 grid grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-4 px-6 py-4 border-t">
+          <div className="mt-4 xl:mt-2 2xl:mt-0 grid grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-4 px-6 py-4 border-t">
             <div className="flex items-center gap-5">
               <div className="flex">
                 <Rate value={5} />

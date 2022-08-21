@@ -65,7 +65,9 @@ export default function Navbar() {
                           tabIndex={0}
                           className="font-semibold  xl:font-bold xl:text-lg text-white"
                           onClick={() => setIsActive(false)}
-                          onKeyDown={() => setIsActive(false)}
+                          onKeyDown={(e) => {
+                            if (e.key === "Escape") setIsActive(false);
+                          }}
                         >
                           {item.label}
                         </a>

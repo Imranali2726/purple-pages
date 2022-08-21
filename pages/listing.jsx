@@ -23,7 +23,7 @@ export default function Listing() {
       </section>
       <section className="relative h-[150px] md:h-[45px]">
         <div className="absolute top-[-230px] md:-top-[45px] inset-x-0">
-          <div className="px-8 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1100px]  mx-auto ">
+          <div className="px-8 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1100px] 2xl:max-w-[1320px] mx-auto ">
             <SearchFilter />
           </div>
         </div>
