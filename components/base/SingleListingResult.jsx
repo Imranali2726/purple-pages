@@ -3,7 +3,6 @@ import { IconContext } from "react-icons";
 import { MdOutlineLocationOn, MdOutlineElevator } from "react-icons/md";
 import { FaRestroom, FaWheelchair } from "react-icons/fa";
 import Rate from "rc-rate";
-import "rc-rate/assets/index.css";
 
 export default function SingleListingResult() {
   const locationIcon = useMemo(

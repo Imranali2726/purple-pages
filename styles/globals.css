@@ -68,3 +68,25 @@ body {
 .rc-rate-star {
   margin-right: 0px !important;
 }
+
+.custom-arrows {
+  height: 100% !important;
+  border-radius: 0 !important;
+  width: 90px !important;
+  filter: invert(1) !important;
+  opacity: 0.5 !important;
+}
+
+.custom-prev-arrow {
+  left: 0 !important;
+}
+
+.custom-next-arrow {
+  right: 0 !important;
+}
+
+@media (max-width: 767px) {
+  .custom-arrows {
+    width: 45px !important;
+  }
+}
