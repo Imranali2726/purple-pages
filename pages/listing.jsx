@@ -9,7 +9,7 @@ export default function Listing() {
   const mapIcon = useMemo(() => ({ className: "fill-primary" }), []);
   return (
     <>
-      <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] 2xl:max-h-[690px] pt-[65px] lg:pt-[94px]">
+      <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] 2xl:max-h-[690px] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="internal-header-overlay h-full">
           <div className="pp-container pt-10 md:pt-[100px] xl:pt-[120px] 2xl:pt-[163px]">
             <h1 className="text-[36px] md:text-[48px] lg:text-[56px] xl:text-[72px] 2xl:text-[84px] font-bold text-white ">

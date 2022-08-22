@@ -59,7 +59,7 @@ export default function Slug() {
   return (
     <>
       <Head>title</Head>
-      <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px]">
+      <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex items-center h-full pp-container">
           <div className="grid grid-cols-[60px_1fr] md:grid-cols-[89px_1fr] gap-4 lg:gap-9 -mx-4 md:mx-0">
             <div>

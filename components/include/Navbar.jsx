@@ -37,14 +37,22 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed inset-x-0 top-0 z-[100] ${
+      className={`relative inset-x-0 top-0 z-[100] ${
         isActive ? "bg-purple-500 lg:bg-transparent" : "bg-transparent"
       }`}
     >
       <div className="px-8">
         <div className="border-b-2 py-2 flex items-center justify-between max-w-[1644px] mx-auto">
           <div>
-            <img src="/images/logo.png" alt="" className="w-[80px] lg:w-auto" />
+            <Link href="/">
+              <a>
+                <img
+                  src="/images/logo.png"
+                  alt=""
+                  className="w-[80px] lg:w-auto"
+                />
+              </a>
+            </Link>
           </div>
           <div>
             <div
