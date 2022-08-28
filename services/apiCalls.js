@@ -14,3 +14,17 @@ export async function getType(id) {
   const res = await calls("get", `categories/${id}/subscategories`);
   return res;
 }
+
+// export async function getSearchResults(params) {
+//   const res = await calls("get", "search", null, null, params);
+//   return res;
+// }
+
+export async function getEducations(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
+export async function getFilters(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}

@@ -1,12 +1,22 @@
-import { useMemo } from "react";
+// import { useEffect } from "react";
 import { IconContext } from "react-icons";
 import { HiLocationMarker } from "react-icons/hi";
 import SingleListingResult from "../components/base/SingleListingResult";
 import ListingSideFilter from "../components/filter/ListingSideFilter";
 import SearchFilter from "../components/filter/SearchFilter";
+// import { getSearchResults } from "../services/apiCalls";
 
+const mapIcon = { className: "fill-primary" };
 export default function Listing() {
-  const mapIcon = useMemo(() => ({ className: "fill-primary" }), []);
+  // const [searchResults, setSearchResults] = useState([]);
+  // async function getSearch() {
+  //   const params = window.location.href.split("?")[1];
+  //   const res = await getSearchResults(params);
+  //   console.log(res.data);
+  // }
+  // useEffect(() => {
+  //   getSearch();
+  // }, []);
   return (
     <>
       <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] 2xl:max-h-[690px] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
@@ -31,7 +41,7 @@ export default function Listing() {
       <section className="mt-4 md:mt-[75px] pp-container">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[340px_1fr] gap-8 xl:gap-16">
           <ListingSideFilter />
-          <div>
+          <div className="md:mt-8 lg:mt-0">
             <div className="flex justify-between items-center md:-mt-8">
               <div className="flex flex-col md:flex-row md:items-center md:gap-2 text-[#737373]">
                 <span>

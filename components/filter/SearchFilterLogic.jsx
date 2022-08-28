@@ -1,23 +1,25 @@
-import { useLayoutEffect, useState } from "react";
+import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { getLocation, getService, getType } from "../../services/apiCalls";
+import { setSearchData } from "../../reducers/search";
+import { setIsEdited } from "../../reducers/isEdit";
 
 export default function SearchFilterLogic() {
   const [location, setLocation] = useState([]);
   const [services, setServices] = useState([]);
   const [types, setTypes] = useState([]);
-  const [edit, setEdit] = useState({
-    select1: false,
-    select2: false,
-    select3: false,
-    select4: false,
-  });
-
   const [loading, setLoading] = useState({
     identity: false,
     location: false,
     services: false,
     type: false,
   });
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const searchParams = useSelector((state) => state.search.value);
+  const edit = useSelector((state) => state.isEdit.value);
 
   async function getLocations() {
     setLoading({ ...loading, location: true });
@@ -55,28 +57,40 @@ export default function SearchFilterLogic() {
     }
   }
   function handleServicesChange(e) {
-    setEdit({ ...edit, select3: true });
-    getTypes(e.target.value);
+    const { name, value } = e.target;
+    dispatch(setIsEdited(name));
+    getTypes(value);
+    dispatch(setSearchData({ name, value }));
   }
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     getLocations();
     getServices();
+    if (searchParams?.services) {
+      getTypes(searchParams?.services);
+    }
   }, []);
+
+  function handleChange(e) {
+    const { name, value } = e.target;
+    dispatch(setIsEdited(name));
+    dispatch(setSearchData({ name, value }));
+  }
 
   const filter = [
     {
       label: "Identity",
-      name: "select1",
+      name: "identity",
       component: (
         <select
+          required
           className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
-          style={{ color: edit.select1 ? "black" : "#9e9e9e" }}
-          defaultValue={0}
-          id="select1"
-          name="select1"
+          style={{ color: edit?.identity ? "black" : "#9e9e9e" }}
+          value={searchParams?.identity || 0}
+          id="identity"
+          name="identity"
           disabled={loading?.identity}
-          onChange={() => setEdit({ ...edit, select1: true })}
+          onChange={handleChange}
         >
           <option value="0" disabled hidden>
             Who I am?
@@ -89,22 +103,23 @@ export default function SearchFilterLogic() {
     },
     {
       label: "Location",
-      name: "select2",
+      name: "location",
       component: (
         <select
+          required
           className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
-          defaultValue={0}
-          style={{ color: edit.select2 ? "black" : "#9e9e9e" }}
-          id="select2"
-          name="select2"
+          value={searchParams?.location || 0}
+          style={{ color: edit?.location ? "black" : "#9e9e9e" }}
+          id="location"
+          name="location"
           disabled={loading?.location}
-          onChange={() => setEdit({ ...edit, select2: true })}
+          onChange={handleChange}
         >
           <option value="0" disabled hidden>
             Where are you located?
           </option>
           {location?.map((loc) => (
-            <option value={loc.value} key={loc.id}>
+            <option value={loc.slug} key={loc.id}>
               {loc.name}
             </option>
           ))}
@@ -113,14 +128,15 @@ export default function SearchFilterLogic() {
     },
     {
       label: "Services",
-      name: "select3",
+      name: "services",
       component: (
         <select
+          required
           className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
-          defaultValue={0}
-          id="select3"
-          style={{ color: edit.select3 ? "black" : "#9e9e9e" }}
-          name="select3"
+          value={searchParams?.services || 0}
+          id="services"
+          style={{ color: edit?.services ? "black" : "#9e9e9e" }}
+          name="services"
           disabled={loading?.services}
           onChange={handleServicesChange}
         >
@@ -137,23 +153,24 @@ export default function SearchFilterLogic() {
     },
     {
       label: "Type",
-      name: "select4",
+      name: "type",
       component: (
         <select
+          required
           className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
-          defaultValue={0}
-          style={{ color: edit.select4 ? "black" : "#9e9e9e" }}
-          id="select4"
+          value={searchParams?.type || 0}
+          style={{ color: edit?.type ? "black" : "#9e9e9e" }}
+          id="type"
           disabled={loading?.type}
-          name="select4"
-          onChange={() => setEdit({ ...edit, select4: true })}
+          name="type"
+          onChange={handleChange}
         >
           <option value="0" disabled hidden>
             Type of service ?
           </option>
           {types.length > 0 ? (
             types?.map((type) => (
-              <option value={type.value} key={type.id}>
+              <option value={type.slug} key={type.id}>
                 {type.name}
               </option>
             ))
@@ -166,14 +183,21 @@ export default function SearchFilterLogic() {
       ),
     },
   ];
+
+  function handleSearch(e) {
+    e.preventDefault();
+    router.push(
+      `/state/${searchParams.location}/educations/categories/${searchParams.type}`,
+    );
+  }
   return {
     location,
     services,
     types,
     edit,
-    setEdit,
     filter,
     handleServicesChange,
     loading,
+    handleSearch,
   };
 }

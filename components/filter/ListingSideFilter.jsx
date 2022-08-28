@@ -1,15 +1,20 @@
 import SingleSideFilter from "../base/SingleSideFilter";
-import sideFilters from "../../fakeData/sideFilters";
 
-export default function ListingSideFilter() {
+export default function ListingSideFilter({ loading, error, filters }) {
+  if (loading) return <div>Loading...</div>;
+
+  if (error) {
+    return (
+      <div>
+        <p className="text-sm text-red-500">{error}</p>
+      </div>
+    );
+  }
+
   return (
     <div>
-      {sideFilters.map((item) => (
-        <SingleSideFilter
-          name={item.name}
-          filters={item.filters}
-          key={item.name}
-        />
+      {filters?.map((item) => (
+        <SingleSideFilter singleFilterData={item} key={item.key} />
       ))}
     </div>
   );

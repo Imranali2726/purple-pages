@@ -2,7 +2,9 @@ import "../styles/globals.css";
 import LoadingBar from "react-top-loading-bar";
 import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
+import { Provider } from "react-redux";
 import Layout from "./layout";
+import store from "../services/store";
 
 function MyApp({ Component, pageProps }) {
   const [progress, setProgress] = useState(0);
@@ -16,10 +18,12 @@ function MyApp({ Component, pageProps }) {
     };
   });
   return (
-    <Layout>
-      <LoadingBar progress={progress} color="#2CB579" />
-      <Component {...pageProps} />
-    </Layout>
+    <Provider store={store}>
+      <Layout>
+        <LoadingBar progress={progress} color="#2CB579" />
+        <Component {...pageProps} />
+      </Layout>
+    </Provider>
   );
 }
 

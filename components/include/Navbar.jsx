@@ -5,10 +5,11 @@ import { useMemo, useState, useRef, useEffect } from "react";
 
 export default function Navbar() {
   const [isActive, setIsActive] = useState(false);
+  const headerRef = useRef();
   const navRef = useRef();
   const links = [
     { label: "Home", link: "/" },
-    { label: "Listing", link: "/listing" },
+    // { label: "Listing", link: "/listing" },
     { label: "About", link: "#" },
     { label: "FAQ's", link: "#" },
     { label: "Policies", link: "#" },
@@ -24,7 +25,13 @@ export default function Navbar() {
   );
 
   function getScroll() {
-    console.log(window.screenY);
+    if (window.scrollY > 90) {
+      headerRef.current.classList.add("bg-purple-500");
+      headerRef.current.classList.remove("bg-transparent");
+    } else {
+      headerRef.current.classList.remove("bg-purple-500");
+      headerRef.current.classList.add("bg-transparent");
+    }
   }
 
   useEffect(() => {
@@ -40,6 +47,7 @@ export default function Navbar() {
       className={`relative inset-x-0 top-0 z-[100] ${
         isActive ? "bg-purple-500 lg:bg-transparent" : "bg-transparent"
       }`}
+      ref={headerRef}
     >
       <div className="px-8">
         <div className="border-b-2 py-2 flex items-center justify-between max-w-[1644px] mx-auto">

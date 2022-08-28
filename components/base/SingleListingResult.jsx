@@ -1,20 +1,15 @@
-import { useMemo } from "react";
 import { IconContext } from "react-icons";
 import { MdOutlineLocationOn, MdOutlineElevator } from "react-icons/md";
 import { FaRestroom, FaWheelchair } from "react-icons/fa";
 import Rate from "rc-rate";
+import Link from "next/link";
 
-export default function SingleListingResult() {
-  const locationIcon = useMemo(
-    () => ({
-      className: "fill-primary text-primary pt-1 w-6 h-6",
-    }),
-    [],
-  );
-  const purpleIcon = useMemo(
-    () => ({ className: "fill-primary text-primary w-5 h-5" }),
-    [],
-  );
+const locationIcon = {
+  className: "fill-primary text-primary pt-1 w-6 h-6",
+};
+const purpleIcon = { className: "fill-primary text-primary w-5 h-5" };
+
+export default function SingleListingResult({ singleListData }) {
   return (
     <div className="mb-6 md:mb-10">
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-1 xl:grid-cols-[240px_1fr] 2xl:grid-cols-[290px_1fr]  ">
@@ -26,7 +21,7 @@ export default function SingleListingResult() {
         <div className="border flex-1 pt-6 flex flex-col justify-between">
           <div className="grid grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-4 px-6">
             <div>
-              <h3 className="font-bold text-lg">GEMS Founder School</h3>
+              <h3 className="font-bold text-lg">{singleListData?.name}</h3>
               <div className="mt-4 flex items-start">
                 <div>
                   <IconContext.Provider value={locationIcon}>
@@ -34,23 +29,13 @@ export default function SingleListingResult() {
                   </IconContext.Provider>
                 </div>
                 <p className="text-sm ml-2 max-w-[381px] text-[#737373]">
-                  Suite 104, 1 Meadlake Place, Thorpe Lea Road, Egham, Surrey,
-                  TW20 8HE, UK
+                  {singleListData?.address}
                 </p>
               </div>
-              <div className="mt-4 text-[#737373]">
-                <p className="text-sm leading-4">
-                  1. Outstanding School rated by MoE
-                </p>
-                <p className="text-sm leading-4">
-                  {" "}
-                  2. Excellent Sporting Facilities
-                </p>
-                <p className="text-sm leading-4">
-                  {" "}
-                  3. Outstanding School rated by MoE
-                </p>
-              </div>
+              <div
+                className="mt-4 text-[#737373] text-sm leading-4"
+                dangerouslySetInnerHTML={{ __html: singleListData?.content }}
+              />
             </div>
             <div>
               <img
@@ -104,12 +89,12 @@ export default function SingleListingResult() {
               <p className="text-[#737373] text-sm">Louise Dawson</p>
             </div>
             <div>
-              <button
-                type="button"
-                className="bg-primary py-2 w-full rounded-md text-white font-bold text-sm max-w-[174px]"
-              >
-                Check Details
-              </button>
+              <Link href={`/listing/${singleListData?.slug}`}>
+                <a className="bg-primary py-2 w-full rounded-md text-white font-bold text-sm max-w-[174px] inline-block text-center hover:bg-[#2CB579] transition-colors">
+                  {" "}
+                  Check Details{" "}
+                </a>
+              </Link>
             </div>
           </div>
         </div>

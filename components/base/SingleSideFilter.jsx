@@ -1,9 +1,12 @@
 import { useState, useRef, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import PropTypes from "prop-types";
 import { IconContext } from "react-icons";
 import { FaAngleDown } from "react-icons/fa";
+// import { useRouter } from "next/router";
+import { setFilterData } from "../../reducers/filterSearch";
 
-export default function SingleSideFilter({ name, filters }) {
+export default function SingleSideFilter({ singleFilterData }) {
   const [isActive, setIsActive] = useState(false);
   const ref = useRef();
   const arrowIcon = useMemo(
@@ -21,7 +24,7 @@ export default function SingleSideFilter({ name, filters }) {
         className="font-bold text-lg border w-full p-4 text-left flex items-center justify-between"
         onClick={() => setIsActive(!isActive)}
       >
-        <span>{name}</span>
+        <span className="capitalize">{singleFilterData?.name}</span>
         <span>
           <IconContext.Provider value={arrowIcon}>
             {" "}
@@ -37,8 +40,12 @@ export default function SingleSideFilter({ name, filters }) {
         style={{ height: isActive ? ref.current.scrollHeight : "0px" }}
       >
         <div className="flex flex-wrap gap-x-1 gap-y-3 p-4">
-          {filters?.map((item) => (
-            <BaseSideFilter name={item} key={item} />
+          {singleFilterData?.filters?.map((item) => (
+            <BaseSideFilter
+              name={singleFilterData?.name}
+              item={item}
+              key={item.id}
+            />
           ))}
         </div>
       </div>
@@ -46,20 +53,29 @@ export default function SingleSideFilter({ name, filters }) {
   );
 }
 
-export function BaseSideFilter({ name }) {
+export function BaseSideFilter({ name, item }) {
+  const dispatch = useDispatch();
+  function handleFilterChange(e) {
+    const { name, id, checked } = e.target;
+    if (checked) {
+      // console.log(name, id);
+      dispatch(setFilterData({ name, id }));
+    } else console.log(name, 0);
+  }
   return (
     <>
       <input
         type="checkbox"
         name={name}
-        id={name}
+        id={item?.id}
         className="hidden filter-checkbox"
+        onChange={handleFilterChange}
       />
       <label
-        htmlFor={name}
-        className="py-3 px-4 text-sm lg:text-base bg-white rounded-lg font-medium cursor-pointer filter-label"
+        htmlFor={item?.id}
+        className="py-3 px-4 text-sm lg:text-base bg-white rounded-lg font-medium cursor-pointer filter-label "
       >
-        {name}
+        {item?.name}
       </label>
     </>
   );
