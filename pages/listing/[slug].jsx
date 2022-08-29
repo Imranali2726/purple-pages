@@ -18,11 +18,12 @@ import SingleFeature from "../../components/features/SingleFeature";
 import { slider4 } from "../../fakeData/homepage";
 import SliderSlide from "../../components/base/SliderSlide";
 import ReviewSlide from "../../components/base/ReviewSlide";
+import { detailPageData } from "../../services/apiCalls";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
 const locationIcon = { className: "fill-white w-6 h-6" };
 
-export default function Slug() {
+export default function Slug({ data }) {
   const [mounted, setMounted] = useState(false);
   const links = [
     { label: "Overview", link: "#overview" },
@@ -55,6 +56,7 @@ export default function Slug() {
 
   useEffect(() => {
     setMounted(true);
+    console.log(data);
   }, []);
   return (
     <>
@@ -67,7 +69,7 @@ export default function Slug() {
             </div>
             <div>
               <h1 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
-                GEMS Founders
+                {data?.name}
               </h1>
               <div className="flex items-start mt-1 md:mt-4">
                 <div>
@@ -360,4 +362,13 @@ export default function Slug() {
       </section>
     </>
   );
+}
+
+export async function getServerSideProps(context) {
+  const res = await detailPageData(`educations/${context.query.slug}`);
+  return {
+    props: {
+      data: res.data.data,
+    },
+  };
 }
