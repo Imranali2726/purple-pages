@@ -65,7 +65,11 @@ export default function Listing() {
   const handleSubmit = (e) => {
     e.preventDefault();
     router.push(
-      `/state/${searchParams.location}/educations/categories/${searchParams.type}`,
+      {
+        pathname: `/state/${searchParams.location}/educations/categories/${searchParams.type}`,
+      },
+      undefined,
+      { scroll: false },
     );
     getListing();
     getServiceFilters();

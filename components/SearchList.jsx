@@ -15,9 +15,13 @@ export default function SearchList({ data, error, loading }) {
 
   return (
     <div className="mt-4">
-      {data?.map((item) => (
-        <SingleListingResult singleListData={item} key={item.id} />
-      ))}
+      {data.length > 0 ? (
+        data?.map((item) => (
+          <SingleListingResult singleListData={item} key={item.id} />
+        ))
+      ) : (
+        <p className="text-sm text-red-500"> No data found. </p>
+      )}
     </div>
   );
 }

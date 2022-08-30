@@ -32,3 +32,7 @@ export async function detailPageData(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }
+export async function getAccessibilityFeature(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}

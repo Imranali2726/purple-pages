@@ -29,7 +29,8 @@ export default function SingleListingResult({ singleListData }) {
                   </IconContext.Provider>
                 </div>
                 <p className="text-sm ml-2 max-w-[381px] text-[#737373]">
-                  {singleListData?.address}
+                  {singleListData?.address ??
+                    "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
                 </p>
               </div>
               <div

@@ -9,7 +9,7 @@ import Head from "next/head";
 import { SplideSlide } from "@splidejs/react-splide";
 import Slider from "../../components/base/Slider";
 import AccessibilityFeaturerContainer from "../../components/features/AccessibilityFeaturerContainer";
-import features, {
+import {
   schoolService,
   inclusion,
   therapy,
@@ -18,7 +18,10 @@ import SingleFeature from "../../components/features/SingleFeature";
 import { slider4 } from "../../fakeData/homepage";
 import SliderSlide from "../../components/base/SliderSlide";
 import ReviewSlide from "../../components/base/ReviewSlide";
-import { detailPageData } from "../../services/apiCalls";
+import {
+  detailPageData,
+  getAccessibilityFeature,
+} from "../../services/apiCalls";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
 const locationIcon = { className: "fill-white w-6 h-6" };
@@ -35,6 +38,7 @@ export default function Slug({ data }) {
     { label: "Inclusion Accreditation", link: "#inclusion-accreditation" },
     { label: "Therapy", link: "#therapy" },
   ];
+  const [accessbilityFeatures, setAccessibilityFeatures] = useState([]);
   const images = [
     {
       id: 0,
@@ -53,11 +57,17 @@ export default function Slug({ data }) {
       link: "https://picsum.photos/456/281",
     },
   ];
+  async function getAccessibilityFeatures() {
+    const res = await getAccessibilityFeature("accessibility-features");
+    setAccessibilityFeatures(res.data.data);
+  }
 
   useEffect(() => {
     setMounted(true);
     console.log(data);
+    getAccessibilityFeatures();
   }, []);
+
   return (
     <>
       <Head>title</Head>
@@ -79,7 +89,8 @@ export default function Slug({ data }) {
                   </IconContext.Provider>
                 </div>
                 <p className="text-sm lg:text-base xl:text-lg text-white">
-                  Al Barsha - Al Barsha South - Dubai - United Arab Emirates
+                  {data?.address ??
+                    "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
                 </p>
               </div>
             </div>
@@ -111,16 +122,23 @@ export default function Slug({ data }) {
           Overview
         </h2>
         <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
-          Lorem Ipsum is simply dummy text of the printing and typesetting
-          industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-          ever since the 1500s, when an unknown printer took a gall Lorem Ipsum
-          is simply dummy text of the printing and typesetting industry. Lorem
-          Ipsum has been the industry&apos;s standard dummy text ever since the
-          1500s, when an unknown printer took a gall. Lorem Ipsum is simply
-          dummy text of the printing and typesetting industry. Lorem Ipsum has
-          been the industry&apos;s standard dummy text ever since the 1500s,
-          when an unknown printer took a gall Lorem Ipsum is simply dummy text
-          of the printing and typesetting industry.
+          {data?.content ? (
+            <p
+              className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9"
+              dangerouslySetInnerHTML={{ __html: data?.content }}
+            />
+          ) : (
+            `Lorem Ipsum is simply dummy text of the printing and typesetting
+            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
+            ever since the 1500s, when an unknown printer took a gall Lorem Ipsum
+            is simply dummy text of the printing and typesetting industry. Lorem
+            Ipsum has been the industry&apos;s standard dummy text ever since the
+            1500s, when an unknown printer took a gall. Lorem Ipsum is simply
+            dummy text of the printing and typesetting industry. Lorem Ipsum has
+            been the industry&apos;s standard dummy text ever since the 1500s,
+            when an unknown printer took a gall Lorem Ipsum is simply dummy text
+            of the printing and typesetting industry.`
+          )}
         </p>
       </section>
 
@@ -137,7 +155,7 @@ export default function Slug({ data }) {
                     <BsFillTelephoneFill />
                   </IconContext.Provider>
                   <p className="text-[#737373] text-sm md:text-base lg:text-lg xl:text-xl font-medium">
-                    +971 4 519 5222
+                    {data?.contact_no ?? "+971 4 519 5222"}
                   </p>
                 </li>
                 <li className="flex items-center gap-6 mb-6">
@@ -145,7 +163,7 @@ export default function Slug({ data }) {
                     <FaEnvelope />
                   </IconContext.Provider>
                   <p className="text-[#737373] text-sm md:text-base lg:text-lg xl:text-xl font-medium">
-                    gfs@gemsedu.com
+                    {data?.email ?? "gfs@gemsedu.com"}
                   </p>
                 </li>
                 <li className="flex items-center gap-6 mb-6">
@@ -153,7 +171,7 @@ export default function Slug({ data }) {
                     <MdOutlineWeb />
                   </IconContext.Provider>
                   <p className="text-[#737373] text-sm md:text-base lg:text-lg xl:text-xl font-medium">
-                    www.gemsfounderschool-dubai.com
+                    {data?.web_address ?? "www.gemsfounderschool-dubai.com"}
                   </p>
                 </li>
                 <li className="flex items-center gap-6 mb-6">
@@ -251,11 +269,11 @@ export default function Slug({ data }) {
           </h3>
           <div className="mt-10">
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-6 gap-y-6 xl:gap-y-10">
-              {features.map((item) => (
+              {accessbilityFeatures?.map((item) => (
                 <AccessibilityFeaturerContainer
-                  name={item.name}
-                  features={item.features}
-                  key={item.name}
+                  name={`${item.id}. ${item?.name}`}
+                  features={item?.accessibility_features}
+                  key={item.id}
                 />
               ))}
             </div>

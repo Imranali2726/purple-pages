@@ -14,10 +14,10 @@ export default function AccessibilityFeaturerContainer({ name, features }) {
         </p>
       </div>
       <ul className="mt-4 lg:mt-8">
-        {features.map((item) => (
+        {features?.map((item) => (
           <div
-            className="flex items-start gap-2 mb-4 lg:mb-6 xl:mb-8"
-            key={item.label}
+            className="flex items-center gap-2 mb-4 lg:mb-6 xl:mb-8"
+            key={item.id}
           >
             <SingleFeature data={item} />
             <div className="relative group">
@@ -25,7 +25,7 @@ export default function AccessibilityFeaturerContainer({ name, features }) {
                 <RiInformationFill />
               </IconContext.Provider>
               <div className="hidden group-hover:block absolute bg-[#F1ECF7] p-3 w-52 lg:w-64 -right-4 z-20 rounded-lg">
-                <p className="text-sm lg:text-base">{item.tooltip}</p>
+                <p className="text-sm lg:text-base">{item.sub_title}</p>
                 <div className="text-end">
                   <Link href="#">
                     <a className="text-primary font-semibold mt-5 inline-block">
