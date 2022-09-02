@@ -16,6 +16,7 @@
     "next": "12.2.5",
     "postcss": "^8.4.16",
     "prop-types": "^15.8.1",
+    "query-string": "^7.1.1",
     "rc-rate": "^2.9.2",
     "react": "18.2.0",
     "react-dom": "18.2.0",

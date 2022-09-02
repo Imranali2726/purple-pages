@@ -122,8 +122,8 @@ export default function Slug({ data }) {
           Overview
         </h2>
         <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
-          {data?.content ? (
-            <p
+          {data?.content && mounted ? (
+            <div
               className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9"
               dangerouslySetInnerHTML={{ __html: data?.content }}
             />
@@ -243,7 +243,11 @@ export default function Slug({ data }) {
           <h3 className="font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
             Inclusion Highs
           </h3>
-          <ul className="mt-7">
+          <div
+            className="mt-7 text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic"
+            dangerouslySetInnerHTML={{ __html: data?.inclusion_heighs }}
+          />
+          {/* <ul className="mt-7">
             <li className="text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic">
               Outstanding School rated by MoE
             </li>
@@ -253,7 +257,7 @@ export default function Slug({ data }) {
             <li className="text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic">
               Outstanding School rated by MoE
             </li>
-          </ul>
+          </ul> */}
           <div className="absolute rounded-full bg-[#E2D8EF] z-[-1] aspect-square w-[80px] top-10 right-[20%]" />
           <div className="absolute rounded-full bg-[#E2D8EF] z-[-1] aspect-square w-[180px] -bottom-10 -left-10" />
           <div className="absolute rounded-full bg-[#E2D8EF] z-[-1] aspect-square w-[180px] -bottom-10 -right-10" />
@@ -272,7 +276,7 @@ export default function Slug({ data }) {
               {accessbilityFeatures?.map((item) => (
                 <AccessibilityFeaturerContainer
                   name={`${item.id}. ${item?.name}`}
-                  features={item?.accessibility_features}
+                  features={item?.sub_accessibility_features}
                   key={item.id}
                 />
               ))}

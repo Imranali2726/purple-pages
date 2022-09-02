@@ -1,10 +1,9 @@
 import { useState, useRef, useMemo } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import PropTypes from "prop-types";
 import { IconContext } from "react-icons";
 import { FaAngleDown } from "react-icons/fa";
-// import { useRouter } from "next/router";
-import { setFilterData } from "../../reducers/filterSearch";
+import { setFilterData, removeFilterData } from "../../reducers/filterSearch";
 
 export default function SingleSideFilter({ singleFilterData }) {
   const [isActive, setIsActive] = useState(false);
@@ -55,24 +54,32 @@ export default function SingleSideFilter({ singleFilterData }) {
 
 export function BaseSideFilter({ name, item }) {
   const dispatch = useDispatch();
-  function handleFilterChange(e) {
-    const { name, id, checked } = e.target;
+  const filterSearch = useSelector((state) => state.filterSearch.value);
+
+  const handleFilterChange = (e) => {
+    const { name, value, checked } = e.target;
     if (checked) {
-      // console.log(name, id);
-      dispatch(setFilterData({ name, id }));
-    } else console.log(name, 0);
-  }
+      dispatch(setFilterData({ name, value }));
+    } else {
+      dispatch(removeFilterData({ name, value }));
+    }
+  };
+
   return (
     <>
       <input
         type="checkbox"
-        name={name}
-        id={item?.id}
+        name={name.toLowerCase()}
+        id={item?.name}
+        value={item.id}
+        defaultChecked={filterSearch[name.toLowerCase()]?.includes(
+          item?.id?.toString(),
+        )}
         className="hidden filter-checkbox"
         onChange={handleFilterChange}
       />
       <label
-        htmlFor={item?.id}
+        htmlFor={item?.name}
         className="py-3 px-4 text-sm lg:text-base bg-white rounded-lg font-medium cursor-pointer filter-label "
       >
         {item?.name}

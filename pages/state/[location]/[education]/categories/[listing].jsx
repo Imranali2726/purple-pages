@@ -1,89 +1,18 @@
-import { useEffect, useState } from "react";
 import { IconContext } from "react-icons";
 import { HiLocationMarker } from "react-icons/hi";
-import { useRouter } from "next/router";
-import { useSelector } from "react-redux";
 import ListingSideFilter from "../../../../../components/filter/ListingSideFilter";
 import SearchFilter from "../../../../../components/filter/SearchFilter";
 import SearchList from "../../../../../components/SearchList";
-import { getEducations, getFilters } from "../../../../../services/apiCalls";
+import ListingLogic from "./ListingLogic";
 
 const mapIcon = { className: "fill-primary" };
 export default function Listing() {
-  const [listing, setListing] = useState([]);
-  const [filters, setFilters] = useState([]);
-  const [error, setError] = useState({
-    data: "",
-    filters: "",
-  });
-  const [loading, setLoading] = useState({
-    data: true,
-    filters: true,
-  });
-  const router = useRouter();
-  const searchParams = useSelector((state) => state.search.value);
-
-  async function getEducationListing() {
-    setLoading((p) => ({ ...p, data: true }));
-    try {
-      const res = await getEducations(
-        window.location.pathname.slice(1) + window.location.search,
-      );
-      setListing(res.data.data);
-      setLoading((p) => ({ ...p, data: false }));
-    } catch (error) {
-      setError({ ...error, data: error.message });
-      setLoading((p) => ({ ...p, data: false }));
-    }
-  }
-
-  async function getServiceFilters() {
-    setLoading((p) => ({ ...p, filters: false }));
-    try {
-      const res = await getFilters("educations-filters");
-      setFilters(res.data.data);
-      setLoading((p) => ({ ...p, filters: false }));
-    } catch (error) {
-      setError({ ...error, filters: error.message });
-      setLoading((p) => ({ ...p, filters: false }));
-    }
-  }
-  async function getListing() {
-    setLoading((p) => ({ ...p, data: true }));
-    try {
-      const res = await getEducations(
-        `state/${searchParams.location}/educations/categories/${searchParams.type}`,
-      );
-      setListing(res.data.data);
-      setLoading((p) => ({ ...p, data: false }));
-    } catch (error) {
-      setError({ ...error, data: error.message });
-      setLoading((p) => ({ ...p, data: false }));
-    }
-  }
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    router.push(
-      {
-        pathname: `/state/${searchParams.location}/educations/categories/${searchParams.type}`,
-      },
-      undefined,
-      { scroll: false },
-    );
-    getListing();
-    getServiceFilters();
-  };
-
-  useEffect(() => {
-    getEducationListing();
-    getServiceFilters();
-  }, []);
+  const { handleSubmit, listing, error, loading, filters } = ListingLogic();
   return (
     <>
       <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] 2xl:max-h-[690px] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="internal-header-overlay h-full">
-          <div className="pp-container pt-10 md:pt-[100px] xl:pt-[120px] 2xl:pt-[163px]">
+          <div className="pp-container pt-10 lg:pt-[100px] xl:pt-[120px] 2xl:pt-[163px]">
             <h1 className="text-[36px] md:text-[48px] lg:text-[56px] xl:text-[72px] 2xl:text-[84px] font-bold text-white ">
               Find the Right Institute
             </h1>
@@ -93,14 +22,14 @@ export default function Listing() {
           </div>
         </div>
       </section>
-      <section className="relative h-[150px] md:h-[45px]">
-        <div className="absolute top-[-230px] md:-top-[45px] inset-x-0">
-          <div className="px-8 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1100px] 2xl:max-w-[1320px] mx-auto ">
+      <section className="relative h-[150px] lg:h-[45px]">
+        <div className="absolute top-[-230px] lg:-top-[45px] inset-x-0">
+          <div className="px-8 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1200px] 2xl:max-w-[1320px] mx-auto ">
             <SearchFilter handleSubmit={handleSubmit} listPage />
           </div>
         </div>
       </section>
-      <section className="mt-4 md:mt-[75px] pp-container">
+      <section className="mt-4 lg:mt-[75px] pp-container">
         <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[340px_1fr] gap-8 xl:gap-16">
           <ListingSideFilter
             loading={loading.filters}

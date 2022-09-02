@@ -1,6 +1,7 @@
+import React from "react";
 import SingleSideFilter from "../base/SingleSideFilter";
 
-export default function ListingSideFilter({ loading, error, filters }) {
+function ListingSideFilter({ loading, error, filters }) {
   if (loading) return <div>Loading...</div>;
 
   if (error) {
@@ -19,3 +20,5 @@ export default function ListingSideFilter({ loading, error, filters }) {
     </div>
   );
 }
+
+export default React.memo(ListingSideFilter);

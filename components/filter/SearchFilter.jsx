@@ -1,14 +1,14 @@
 import SearchFilterLogic from "./SearchFilterLogic";
 
 export default function SearchFilter({ handleSubmit, listPage = false }) {
-  const { filter, handleSearch } = SearchFilterLogic();
+  const { filter, handleSearch, disabled } = SearchFilterLogic();
   return (
     <form onSubmit={listPage ? handleSubmit : handleSearch}>
-      <div className="p-[17px] grid sm:grid-cols-1 md:grid-cols-5 rounded-[12px] bg-white items-center pp-shadow">
+      <div className="p-[17px] grid sm:grid-cols-1 lg:grid-cols-5 rounded-[12px] bg-white items-center pp-shadow">
         {filter?.map((item, idx) => (
           <div
-            className={`md:first:pl-0 px-4 mb-2 md:mb-0  ${
-              idx === filter.length - 1 ? "" : "md:border-r"
+            className={`lg:first:pl-0 px-4 mb-2 lg:mb-0  ${
+              idx === filter.length - 1 ? "" : "lg:border-r"
             } `}
             key={item.name}
           >
@@ -22,11 +22,14 @@ export default function SearchFilter({ handleSubmit, listPage = false }) {
           </div>
         ))}
 
-        <div className="mt-4 md:pl-4 md:mt-0">
+        <div className="mt-4 md:pl-4 lg:mt-0">
           <button
+            disabled={disabled}
             type="submit"
-            className="
-           bg-primary rounded-lg py-4 px-6 w-full text-white transition hover:bg-[#2CB579]"
+            className={`
+           bg-primary rounded-lg py-4 px-6 w-full text-white transition  ${
+             disabled ? "opacity-60" : "hover:bg-[#2CB579]"
+           }`}
           >
             Search
           </button>

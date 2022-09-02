@@ -1,3 +1,4 @@
+import { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { MdOutlineLocationOn, MdOutlineElevator } from "react-icons/md";
 import { FaRestroom, FaWheelchair } from "react-icons/fa";
@@ -10,11 +11,17 @@ const locationIcon = {
 const purpleIcon = { className: "fill-primary text-primary w-5 h-5" };
 
 export default function SingleListingResult({ singleListData }) {
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
   return (
     <div className="mb-6 md:mb-10">
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-1 xl:grid-cols-[240px_1fr] 2xl:grid-cols-[290px_1fr]  ">
         <img
-          src="https://picsum.photos/seed/picsum/295/278"
+          src={
+            singleListData?.image ?? "https://picsum.photos/seed/picsum/295/278"
+          }
           alt=""
           className="w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] object-cover object-center"
         />
@@ -33,10 +40,14 @@ export default function SingleListingResult({ singleListData }) {
                     "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
                 </p>
               </div>
-              <div
-                className="mt-4 text-[#737373] text-sm leading-4"
-                dangerouslySetInnerHTML={{ __html: singleListData?.content }}
-              />
+              {mounted && (
+                <div
+                  className="mt-4 text-[#737373] text-sm leading-4"
+                  dangerouslySetInnerHTML={{
+                    __html: singleListData?.inclusion_heighs,
+                  }}
+                />
+              )}
             </div>
             <div>
               <img

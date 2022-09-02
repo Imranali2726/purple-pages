@@ -15,6 +15,7 @@ export default function SearchFilterLogic() {
     services: false,
     type: false,
   });
+  const [disabled, setDisabled] = useState(true);
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -71,8 +72,37 @@ export default function SearchFilterLogic() {
     }
   }, []);
 
+  useEffect(() => {
+    if (router.query.location) {
+      dispatch(
+        setSearchData({ name: "location", value: router.query.location }),
+      );
+      dispatch(setIsEdited("location"));
+    }
+    if (router.query.services) {
+      dispatch(
+        setSearchData({ name: "services", value: router.query.services }),
+      );
+    }
+    if (router.query.listing) {
+      dispatch(setSearchData({ name: "type", value: router.query.listing }));
+      dispatch(setIsEdited("type"));
+    }
+  }, [router]);
+
+  useEffect(() => {
+    if (
+      searchParams?.location &&
+      searchParams?.services &&
+      searchParams?.type
+    ) {
+      setDisabled(false);
+    }
+  }, [searchParams]);
+
   function handleChange(e) {
     const { name, value } = e.target;
+
     dispatch(setIsEdited(name));
     dispatch(setSearchData({ name, value }));
   }
@@ -199,5 +229,6 @@ export default function SearchFilterLogic() {
     handleServicesChange,
     loading,
     handleSearch,
+    disabled,
   };
 }
