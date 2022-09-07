@@ -39,24 +39,24 @@ export default function Slug({ data }) {
     { label: "Therapy", link: "#therapy" },
   ];
   const [accessbilityFeatures, setAccessibilityFeatures] = useState([]);
-  const images = [
-    {
-      id: 0,
-      link: "https://picsum.photos/456/281",
-    },
-    {
-      id: 1,
-      link: "https://picsum.photos/456/281",
-    },
-    {
-      id: 2,
-      link: "https://picsum.photos/456/281",
-    },
-    {
-      id: 3,
-      link: "https://picsum.photos/456/281",
-    },
-  ];
+  // const images = [
+  //   {
+  //     id: 0,
+  //     link: "https://picsum.photos/456/281",
+  //   },
+  //   {
+  //     id: 1,
+  //     link: "https://picsum.photos/456/281",
+  //   },
+  //   {
+  //     id: 2,
+  //     link: "https://picsum.photos/456/281",
+  //   },
+  //   {
+  //     id: 3,
+  //     link: "https://picsum.photos/456/281",
+  //   },
+  // ];
   async function getAccessibilityFeatures() {
     const res = await getAccessibilityFeature("accessibility-features");
     setAccessibilityFeatures(res.data.data);
@@ -64,8 +64,7 @@ export default function Slug({ data }) {
 
   useEffect(() => {
     setMounted(true);
-    console.log(data);
-    getAccessibilityFeatures();
+    if (accessbilityFeatures.length <= 0) getAccessibilityFeatures();
   }, []);
 
   return (
@@ -121,25 +120,26 @@ export default function Slug({ data }) {
         <h2 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
           Overview
         </h2>
-        <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
-          {data?.content && mounted ? (
-            <div
-              className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9"
-              dangerouslySetInnerHTML={{ __html: data?.content }}
-            />
-          ) : (
+
+        {data?.content && mounted ? (
+          <div
+            className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9"
+            dangerouslySetInnerHTML={{ __html: data?.content }}
+          />
+        ) : (
+          <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
             `Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy text
-            ever since the 1500s, when an unknown printer took a gall Lorem Ipsum
-            is simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry&apos;s standard dummy text ever since the
-            1500s, when an unknown printer took a gall. Lorem Ipsum is simply
-            dummy text of the printing and typesetting industry. Lorem Ipsum has
-            been the industry&apos;s standard dummy text ever since the 1500s,
-            when an unknown printer took a gall Lorem Ipsum is simply dummy text
-            of the printing and typesetting industry.`
-          )}
-        </p>
+            industry. Lorem Ipsum has been the industry&apos;s standard dummy
+            text ever since the 1500s, when an unknown printer took a gall Lorem
+            Ipsum is simply dummy text of the printing and typesetting industry.
+            Lorem Ipsum has been the industry&apos;s standard dummy text ever
+            since the 1500s, when an unknown printer took a gall. Lorem Ipsum is
+            simply dummy text of the printing and typesetting industry. Lorem
+            Ipsum has been the industry&apos;s standard dummy text ever since
+            the 1500s, when an unknown printer took a gall Lorem Ipsum is simply
+            dummy text of the printing and typesetting industry.`
+          </p>
+        )}
       </section>
 
       <section className="bg-[#F6F6F6]" id="school-information">
@@ -226,10 +226,12 @@ export default function Slug({ data }) {
               },
             }}
           >
-            {images.map((item) => (
+            {data?.images.map((item) => (
               <SplideSlide key={item.id}>
+                {console.log(item)}
                 <img
-                  src={item.link}
+                  src={item.original_url}
+                  // src={item.responsive_images.preview.base64svg}
                   alt=""
                   className="w-full h-auto max-h-[280px] object-cover object-center"
                 />

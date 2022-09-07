@@ -46,10 +46,10 @@ export default function SearchFilterLogic() {
     }
   }
 
-  async function getTypes(id) {
+  async function getTypes(slug) {
     setLoading({ ...loading, type: true });
     try {
-      const res = await getType(id);
+      const res = await getType(slug);
       setTypes(res.data.data);
       setLoading({ ...loading, type: false });
     } catch (error) {
@@ -174,7 +174,7 @@ export default function SearchFilterLogic() {
             What are you looking for?
           </option>
           {services?.map((service) => (
-            <option value={service.value} key={service.id}>
+            <option value={service.slug} key={service.id}>
               {service.name}
             </option>
           ))}
