@@ -51,9 +51,9 @@ export default function SingleListingResult({ singleListData }) {
             </div>
             <div>
               <img
-                src="/images/filter-logo.png"
+                src={singleListData?.logo}
                 alt=""
-                className="w-auto max-w-[100%]"
+                className="w-auto max-w-[150px] h-auto w-auto max-h-[40px]"
               />
               <div className="mt-4">
                 <ul className="pl-8">

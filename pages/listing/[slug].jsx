@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useEffect, useState } from "react";
-// import { useRouter } from "next/router";
+import { useRouter } from "next/router";
 import { IconContext } from "react-icons";
 import { MdLocationPin, MdOutlineWeb } from "react-icons/md";
 import { BsFillTelephoneFill, BsFacebook, BsTwitter } from "react-icons/bs";
@@ -26,8 +26,11 @@ import {
 const addressIcons = { className: "fill-primary h-6 w-6" };
 const locationIcon = { className: "fill-white w-6 h-6" };
 
-export default function Slug({ data }) {
+export default function Slug() {
   const [mounted, setMounted] = useState(false);
+  const [data, setData] = useState(null);
+  const router = useRouter();
+
   const links = [
     { label: "Overview", link: "#overview" },
     { label: "School Information", link: "#school-information" },
@@ -39,42 +42,48 @@ export default function Slug({ data }) {
     { label: "Therapy", link: "#therapy" },
   ];
   const [accessbilityFeatures, setAccessibilityFeatures] = useState([]);
-  // const images = [
-  //   {
-  //     id: 0,
-  //     link: "https://picsum.photos/456/281",
-  //   },
-  //   {
-  //     id: 1,
-  //     link: "https://picsum.photos/456/281",
-  //   },
-  //   {
-  //     id: 2,
-  //     link: "https://picsum.photos/456/281",
-  //   },
-  //   {
-  //     id: 3,
-  //     link: "https://picsum.photos/456/281",
-  //   },
-  // ];
+  const images = [
+    {
+      id: 0,
+      link: "https://picsum.photos/456/281",
+    },
+    {
+      id: 1,
+      link: "https://picsum.photos/456/281",
+    },
+    {
+      id: 2,
+      link: "https://picsum.photos/456/281",
+    },
+    {
+      id: 3,
+      link: "https://picsum.photos/456/281",
+    },
+  ];
   async function getAccessibilityFeatures() {
     const res = await getAccessibilityFeature("accessibility-features");
     setAccessibilityFeatures(res.data.data);
   }
 
+  async function getSlugData() {
+    const res = await detailPageData(`educations/${router.query.slug}`);
+    setData(res.data.data);
+  }
+
   useEffect(() => {
     setMounted(true);
     if (accessbilityFeatures.length <= 0) getAccessibilityFeatures();
-  }, []);
+    if (!data && router.query.slug) getSlugData();
+  }, [router.query.slug]);
 
   return (
     <>
       <Head>title</Head>
       <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex items-center h-full pp-container">
-          <div className="grid grid-cols-[60px_1fr] md:grid-cols-[89px_1fr] gap-4 lg:gap-9 -mx-4 md:mx-0">
+          <div className="grid grid-cols-[60px_1fr] md:grid-cols-[100px_1fr] gap-4 lg:gap-9 -mx-4 md:mx-0">
             <div>
-              <img src="/images/filter-logo-whitebg.jpg" alt="" />
+              <img src={data?.logo} alt="" />
             </div>
             <div>
               <h1 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
@@ -226,17 +235,27 @@ export default function Slug({ data }) {
               },
             }}
           >
-            {data?.images.map((item) => (
-              <SplideSlide key={item.id}>
-                {console.log(item)}
-                <img
-                  src={item.original_url}
-                  // src={item.responsive_images.preview.base64svg}
-                  alt=""
-                  className="w-full h-auto max-h-[280px] object-cover object-center"
-                />
-              </SplideSlide>
-            ))}
+            {data?.images.length
+              ? data?.images.map((item) => (
+                  <SplideSlide key={item.id}>
+                    <img
+                      src={item.original_url}
+                      // src={item.responsive_images.preview.base64svg}
+                      alt=""
+                      className="w-full h-auto max-h-[280px] object-cover object-center"
+                    />
+                  </SplideSlide>
+                ))
+              : images.map((item) => (
+                  <SplideSlide key={item.id}>
+                    <img
+                      src={item.original_url}
+                      // src={item.responsive_images.preview.base64svg}
+                      alt=""
+                      className="w-full h-auto max-h-[280px] object-cover object-center"
+                    />
+                  </SplideSlide>
+                ))}
           </Slider>
         </div>
       </section>
@@ -388,11 +407,16 @@ export default function Slug({ data }) {
   );
 }
 
-export async function getServerSideProps(context) {
-  const res = await detailPageData(`educations/${context.query.slug}`);
-  return {
-    props: {
-      data: res.data.data,
-    },
-  };
-}
+// export async function getServerSideProps(context) {
+//   const res = await detailPageData(`educations/${context.query.slug}`);
+//   if (res.status === 200) {
+//     return {
+//       props: {
+//         data: res.data.data,
+//       },
+//     };
+//   }
+//   return {
+//     props: {},
+//   };
+// }
