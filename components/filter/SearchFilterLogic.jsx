@@ -48,6 +48,7 @@ export default function SearchFilterLogic() {
 
   async function getTypes(slug) {
     setLoading({ ...loading, type: true });
+    dispatch(setSearchData({ name: "type", value: undefined }));
     try {
       const res = await getType(slug);
       setTypes(res.data.data);
@@ -79,10 +80,12 @@ export default function SearchFilterLogic() {
       );
       dispatch(setIsEdited("location"));
     }
-    if (router.query.services) {
+    if (router.query.service) {
       dispatch(
-        setSearchData({ name: "services", value: router.query.services }),
+        setSearchData({ name: "services", value: router.query.service }),
       );
+      dispatch(setIsEdited("services"));
+      getTypes(router.query.service);
     }
     if (router.query.listing) {
       dispatch(setSearchData({ name: "type", value: router.query.listing }));
@@ -97,7 +100,7 @@ export default function SearchFilterLogic() {
       searchParams?.type
     ) {
       setDisabled(false);
-    }
+    } else setDisabled(true);
   }, [searchParams]);
 
   function handleChange(e) {
@@ -217,7 +220,7 @@ export default function SearchFilterLogic() {
   function handleSearch(e) {
     e.preventDefault();
     router.push(
-      `/state/${searchParams.location}/educations/categories/${searchParams.type}`,
+      `/state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`,
     );
   }
   return {

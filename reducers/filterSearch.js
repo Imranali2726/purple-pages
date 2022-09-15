@@ -25,7 +25,14 @@ const filterSearch = createSlice({
       state.value[name] = state.value[name]?.filter((item) => item !== value);
     },
     loadOnPageReload: (state, { payload }) => {
-      state.value = payload;
+      const a = payload && Object.keys(payload);
+      const b = payload;
+      a.forEach((item) => {
+        if (typeof b[item] !== "object") {
+          b[item] = [b[item]];
+        }
+      });
+      state.value = b;
     },
   },
 });

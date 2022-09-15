@@ -41,7 +41,7 @@ export default function SingleSideFilter({ singleFilterData }) {
         <div className="flex flex-wrap gap-x-1 gap-y-3 p-4">
           {singleFilterData?.filters?.map((item) => (
             <BaseSideFilter
-              name={singleFilterData?.name}
+              name={singleFilterData?.key}
               item={item}
               key={item.id}
             />

@@ -5,7 +5,9 @@ export default function TextInput({
   name,
   placeholder,
   onChange,
+  value,
   className,
+  border = false,
 }) {
   return (
     <div className={className}>
@@ -20,13 +22,14 @@ export default function TextInput({
           name={name}
           id={name}
           placeholder={placeholder}
-          className={`form-input ${
+          value={value}
+          className={`form-input ${border ? "border" : ""} ${
             error ? "border-red-600" : "border-[#B9B9B9]"
           }`}
           onChange={onChange}
         />
       </label>
-      {error && <p className="text-red-600 text-xs">{error}</p>}
+      {error && <p className="text-red-600 text-xs mt-2">{error}</p>}
     </div>
   );
 }

@@ -86,16 +86,33 @@ body {
 }
 .pp-form-container {
   max-width: 1350px;
-  margin: 0 auto;
-  @apply py-11 px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-[120px] bg-white rounded-2xl;
+  @apply mx-auto py-11 px-6 md:px-8 lg:px-16 xl:px-24 2xl:px-[120px] bg-white rounded-2xl;
 }
 
 .form-input {
-  @apply rounded-2xl border py-3 px-4 text-base lg:text-lg;
+  @apply rounded-2xl px-4 py-3 md:py-5 md:px-6 text-sm md:text-base lg:text-lg;
 }
 
 @media (max-width: 767px) {
   .custom-arrows {
     width: 45px !important;
   }
+}
+.job-content h2,
+.job-content h1,
+.job-content h3,
+.job-content h4,
+.job-content h5,
+.job-content h6,
+.job-content strong {
+  @apply text-xl md:text-xl lg:text-2xl xl:text-3xl font-bold mb-2;
+}
+.job-content p {
+  @apply text-sm md:text-base mb-4;
+}
+.job-content ul li {
+  @apply mb-2 text-sm md:text-base;
+}
+.job-content ul {
+  list-style: disc;
 }

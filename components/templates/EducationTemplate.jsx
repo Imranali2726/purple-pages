@@ -1,47 +1,24 @@
+import { SplideSlide } from "@splidejs/react-splide";
 import Link from "next/link";
-import { useEffect, useState } from "react";
-import { useRouter } from "next/router";
-import { IconContext } from "react-icons";
-import { MdLocationPin, MdOutlineWeb } from "react-icons/md";
 import { BsFillTelephoneFill, BsFacebook, BsTwitter } from "react-icons/bs";
 import { FaEnvelope } from "react-icons/fa";
-import Head from "next/head";
-import { SplideSlide } from "@splidejs/react-splide";
-import Slider from "../../components/base/Slider";
-import AccessibilityFeaturerContainer from "../../components/features/AccessibilityFeaturerContainer";
+import { MdOutlineWeb } from "react-icons/md";
+import { IconContext } from "react-icons";
+import Slider from "../base/Slider";
+import AccessibilityFeaturerContainer from "../features/AccessibilityFeaturerContainer";
 import {
   schoolService,
   inclusion,
   therapy,
 } from "../../fakeData/accessibilityFeatures";
-import SingleFeature from "../../components/features/SingleFeature";
+import SingleFeature from "../features/SingleFeature";
 import { slider4 } from "../../fakeData/homepage";
-import SliderSlide from "../../components/base/SliderSlide";
-import ReviewSlide from "../../components/base/ReviewSlide";
-import {
-  detailPageData,
-  getAccessibilityFeature,
-} from "../../services/apiCalls";
+import SliderSlide from "../base/SliderSlide";
+import ReviewSlide from "../base/ReviewSlide";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
-const locationIcon = { className: "fill-white w-6 h-6" };
 
-export default function Slug() {
-  const [mounted, setMounted] = useState(false);
-  const [data, setData] = useState(null);
-  const router = useRouter();
-
-  const links = [
-    { label: "Overview", link: "#overview" },
-    { label: "School Information", link: "#school-information" },
-    { label: "Gallery", link: "#gallery" },
-    { label: "Inclusion Highs", link: "#inclusion-highs" },
-    { label: "Accessibility Features", link: "#accessibility-features" },
-    { label: "Standard School Service", link: "#standard-school-service" },
-    { label: "Inclusion Accreditation", link: "#inclusion-accreditation" },
-    { label: "Therapy", link: "#therapy" },
-  ];
-  const [accessbilityFeatures, setAccessibilityFeatures] = useState([]);
+function EducationTemplate({ mounted, data, accessbilityFeatures }) {
   const images = [
     {
       id: 0,
@@ -60,51 +37,18 @@ export default function Slug() {
       link: "https://picsum.photos/456/281",
     },
   ];
-  async function getAccessibilityFeatures() {
-    const res = await getAccessibilityFeature("accessibility-features");
-    setAccessibilityFeatures(res.data.data);
-  }
-
-  async function getSlugData() {
-    const res = await detailPageData(`educations/${router.query.slug}`);
-    setData(res.data.data);
-  }
-
-  useEffect(() => {
-    setMounted(true);
-    if (accessbilityFeatures.length <= 0) getAccessibilityFeatures();
-    if (!data && router.query.slug) getSlugData();
-  }, [router.query.slug]);
-
+  const links = [
+    { label: "Overview", link: "#overview" },
+    { label: "School Information", link: "#school-information" },
+    { label: "Gallery", link: "#gallery" },
+    { label: "Inclusion Highs", link: "#inclusion-highs" },
+    { label: "Accessibility Features", link: "#accessibility-features" },
+    { label: "Standard School Service", link: "#standard-school-service" },
+    { label: "Inclusion Accreditation", link: "#inclusion-accreditation" },
+    { label: "Therapy", link: "#therapy" },
+  ];
   return (
     <>
-      <Head>title</Head>
-      <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
-        <div className="flex items-center h-full pp-container">
-          <div className="grid grid-cols-[60px_1fr] md:grid-cols-[100px_1fr] gap-4 lg:gap-9 -mx-4 md:mx-0">
-            <div>
-              <img src={data?.logo} alt="" />
-            </div>
-            <div>
-              <h1 className="text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
-                {data?.name}
-              </h1>
-              <div className="flex items-start mt-1 md:mt-4">
-                <div>
-                  {" "}
-                  <IconContext.Provider value={locationIcon}>
-                    <MdLocationPin />
-                  </IconContext.Provider>
-                </div>
-                <p className="text-sm lg:text-base xl:text-lg text-white">
-                  {data?.address ??
-                    "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
-                </p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
       <nav className="bg-[#F7F4FB]">
         <ul className="py-2 md:py-0 flex flex-col md:flex-row flex-wrap items-center pp-container gap-x-4 gap-y-0 md:gap-y-2 ">
           {links.map((item) => (
@@ -407,16 +351,4 @@ export default function Slug() {
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const res = await detailPageData(`educations/${context.query.slug}`);
-//   if (res.status === 200) {
-//     return {
-//       props: {
-//         data: res.data.data,
-//       },
-//     };
-//   }
-//   return {
-//     props: {},
-//   };
-// }
+export default EducationTemplate;
