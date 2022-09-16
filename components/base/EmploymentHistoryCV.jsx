@@ -1,7 +1,44 @@
+import { FiEdit } from "react-icons/fi";
+import { MdDelete } from "react-icons/md";
+import { IconContext } from "react-icons";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
 
-function EmploymentHistoryCV({ handleInput }) {
+const editIcon = { className: "w-6 h-6" };
+function EmploymentHistoryCV({
+  handleInput,
+  errors,
+  index,
+  isExtended,
+  item,
+  openForm,
+  handleDelete,
+}) {
+  if (!isExtended) {
+    return (
+      <div className="bg-[#F5F4F4] rounded-xl px-4 lg:px-12 py-8 mt-8 flex items-center justify-between">
+        <p className="font-bold text-lg">
+          {index + 1}. {item.job_title}
+        </p>
+        <div>
+          <button type="button" onClick={openForm}>
+            <IconContext.Provider value={editIcon}>
+              <FiEdit />
+            </IconContext.Provider>
+          </button>
+          <button
+            onClick={handleDelete}
+            type="button"
+            className="bg-white p-1 rounded-md ml-4"
+          >
+            <IconContext.Provider value={editIcon}>
+              <MdDelete />
+            </IconContext.Provider>
+          </button>
+        </div>
+      </div>
+    );
+  }
   return (
     <div className="bg-[#F5F4F4] rounded-xl px-4 lg:px-16 py-12 mt-8">
       <div className="flex flex-wrap gap-y-3 lg:gap-y-6 gap-x-8">
@@ -10,12 +47,16 @@ function EmploymentHistoryCV({ handleInput }) {
           className="w-full lg:w-[calc(50%_-_16px)]"
           name="job_title"
           type="text"
+          error={errors.job_title}
+          value={item.job_title}
           onChange={handleInput}
         />
         <SelectInput
           className="w-full lg:w-[calc(50%_-_16px)]"
           label="Company Name"
           name="company_name"
+          error={errors.company_name}
+          value={item.company_name}
           id="company_name"
           onChange={handleInput}
         >
@@ -28,6 +69,8 @@ function EmploymentHistoryCV({ handleInput }) {
           label="Sector"
           className="w-full lg:w-[calc(50%_-_16px)]"
           name="sector"
+          error={errors.sector}
+          value={item.sector}
           type="text"
           onChange={handleInput}
         />
@@ -35,6 +78,8 @@ function EmploymentHistoryCV({ handleInput }) {
           className="w-full lg:w-[calc(50%_-_16px)]"
           label="Country"
           name="job_country"
+          error={errors.job_country}
+          value={item.job_country}
           id="job_country"
           onChange={handleInput}
         >
@@ -51,12 +96,15 @@ function EmploymentHistoryCV({ handleInput }) {
             Start Date
             <input
               type="month"
-              name="job_start_month"
-              id="job_start_month"
+              name="start_month"
               className="form-input "
               onChange={handleInput}
+              value={item.start_month}
             />
           </label>
+          {errors && (
+            <p className="text-red-600 text-xs mt-2">{errors.start_month}</p>
+          )}
         </div>
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
@@ -67,14 +115,14 @@ function EmploymentHistoryCV({ handleInput }) {
               End Date
               <div>
                 <label
-                  htmlFor="present"
+                  htmlFor="employed"
                   className="text-xs font-normal flex items-center"
                 >
                   Currently Employed
                   <input
                     type="checkbox"
-                    name="present"
-                    id="present"
+                    name="employed"
+                    id="employed"
                     className="ml-1"
                   />
                 </label>
@@ -82,12 +130,15 @@ function EmploymentHistoryCV({ handleInput }) {
             </div>
             <input
               type="month"
-              name="job_end_month"
-              id="job_end_month"
+              name="end_month"
               className="form-input "
               onChange={handleInput}
+              value={item.end_month}
             />
           </label>
+          {errors && (
+            <p className="text-red-600 text-xs mt-2">{errors.end_month}</p>
+          )}
         </div>
       </div>
     </div>

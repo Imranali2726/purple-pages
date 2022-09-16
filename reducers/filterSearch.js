@@ -28,7 +28,7 @@ const filterSearch = createSlice({
       const a = payload && Object.keys(payload);
       const b = payload;
       a.forEach((item) => {
-        if (typeof b[item] !== "object") {
+        if (!Array.isArray(b[item])) {
           b[item] = [b[item]];
         }
       });

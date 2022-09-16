@@ -1,5 +1,6 @@
 import { SplideSlide } from "@splidejs/react-splide";
 import Link from "next/link";
+import ReactHtmlParser from "react-html-parser";
 import { BsFillTelephoneFill, BsFacebook, BsTwitter } from "react-icons/bs";
 import { FaEnvelope } from "react-icons/fa";
 import { MdOutlineWeb } from "react-icons/md";
@@ -75,10 +76,9 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
         </h2>
 
         {data?.content && mounted ? (
-          <div
-            className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9"
-            dangerouslySetInnerHTML={{ __html: data?.content }}
-          />
+          <div className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
+            {ReactHtmlParser(data?.content)}
+          </div>
         ) : (
           <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
             `Lorem Ipsum is simply dummy text of the printing and typesetting
@@ -208,10 +208,9 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
           <h3 className="font-bold text-lg md:text-xl lg:text-2xl xl:text-3xl">
             Inclusion Highs
           </h3>
-          <div
-            className="mt-7 text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic"
-            dangerouslySetInnerHTML={{ __html: data?.inclusion_heighs }}
-          />
+          <div className="mt-7 text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic">
+            {ReactHtmlParser(data?.inclusion_heighs)}
+          </div>
           {/* <ul className="mt-7">
             <li className="text-[#737373] text-base md:text-lg lg:text-xl xl:text-2xl font-semibold italic">
               Outstanding School rated by MoE

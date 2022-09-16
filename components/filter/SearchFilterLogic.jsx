@@ -29,7 +29,6 @@ export default function SearchFilterLogic() {
       setLocation(res.data.data);
       setLoading({ ...loading, location: false });
     } catch (error) {
-      //   console.log(error);
       setLoading({ ...loading, location: false });
     }
   }
@@ -41,20 +40,17 @@ export default function SearchFilterLogic() {
       setServices(res.data.data);
       setLoading({ ...loading, services: false });
     } catch (error) {
-      //   console.log(error);
       setLoading({ ...loading, services: false });
     }
   }
 
   async function getTypes(slug) {
     setLoading({ ...loading, type: true });
-    dispatch(setSearchData({ name: "type", value: undefined }));
     try {
       const res = await getType(slug);
       setTypes(res.data.data);
       setLoading({ ...loading, type: false });
     } catch (error) {
-      //   console.log(error);
       setLoading({ ...loading, type: false });
     }
   }
@@ -63,35 +59,37 @@ export default function SearchFilterLogic() {
     dispatch(setIsEdited(name));
     getTypes(value);
     dispatch(setSearchData({ name, value }));
+    if (name === "services")
+      dispatch(setSearchData({ name: "type", value: undefined }));
   }
 
   useEffect(() => {
-    getLocations();
-    getServices();
+    if (!location.length) getLocations();
+    if (!services.length) getServices();
     if (searchParams?.services) {
       getTypes(searchParams?.services);
     }
   }, []);
 
   useEffect(() => {
-    if (router.query.location) {
+    if (router.query.location && searchParams.location === undefined) {
       dispatch(
         setSearchData({ name: "location", value: router.query.location }),
       );
       dispatch(setIsEdited("location"));
     }
-    if (router.query.service) {
+    if (router.query.service && searchParams.services === undefined) {
       dispatch(
         setSearchData({ name: "services", value: router.query.service }),
       );
       dispatch(setIsEdited("services"));
       getTypes(router.query.service);
     }
-    if (router.query.listing) {
+    if (router.query.listing && searchParams.type === undefined) {
       dispatch(setSearchData({ name: "type", value: router.query.listing }));
       dispatch(setIsEdited("type"));
     }
-  }, [router]);
+  }, [router.query.location, router.query.service, router.query.listing]);
 
   useEffect(() => {
     if (

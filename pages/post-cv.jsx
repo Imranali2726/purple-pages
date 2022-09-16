@@ -17,19 +17,31 @@ let temp = {
   end_month: "",
   enrolled: false,
 };
+let tempEmp = {
+  id: 0,
+  job_title: "",
+  company_name: "",
+  sector: "",
+  job_country: "",
+  start_month: "",
+  end_month: "",
+  enrolled: false,
+};
 export default function PostCV() {
   const [imagePreview, setImagePreview] = useState("");
   const [formData, setFormData] = useState({});
   const [educationData, setEducationData] = useState([temp]);
+  const [employmentData, setEmploymentData] = useState([tempEmp]);
   const [errors, setErrors] = useState("");
+  const [empErrors, setEmpErrors] = useState("");
   const [activeForm, setActiveForm] = useState(educationData.length - 1);
+  const [empForm, setEmpForm] = useState(employmentData.length - 1);
   function handleImage(e) {
     const image = URL.createObjectURL(e.target.files[0]);
     setImagePreview(image);
   }
 
   const handleInput = (e) => {
-    console.log(formData);
     const { name, value } = e.target;
     setFormData((p) => ({ ...p, [name]: value }));
   };
@@ -46,14 +58,31 @@ export default function PostCV() {
     } else a[id] = { ...a[id], [name]: value };
     setEducationData(a);
   };
+  const handleEmploymentInput = (e, id) => {
+    const a = [...employmentData];
+    const { name, value } = e.target;
+    if (name === "employed") {
+      if (e.target.checked) {
+        a[id] = { ...a[id], [name]: true };
+      } else {
+        a[id] = { ...a[id], [name]: false };
+      }
+    } else a[id] = { ...a[id], [name]: value };
+    setEmploymentData(a);
+  };
 
   const handleDelete = (id) => {
     if (educationData.length > 1) {
       setEducationData((prev) => prev.filter((x, i) => i !== id));
     }
-    setActiveForm(educationData.length - 1);
+    if (!activeForm < 1) setActiveForm(activeForm - 1);
   };
-  console.log(activeForm);
+  const handleEmpDelete = (id) => {
+    if (employmentData.length > 1) {
+      setEmploymentData((prev) => prev.filter((x, i) => i !== id));
+    }
+    if (!empForm < 1) setEmpForm(empForm - 1);
+  };
   const validateEducation = (data) => {
     const schema = Joi.object({
       id: Joi.number().required(),
@@ -64,6 +93,21 @@ export default function PostCV() {
       enrolled: Joi.boolean(),
       others: Joi.string().allow(null, ""),
       end_month: Joi.date().allow("", null),
+    });
+
+    return schema.validate(data, { abortEarly: false });
+  };
+
+  const validateEmployment = (data) => {
+    const schema = Joi.object({
+      id: Joi.number().required(),
+      job_title: Joi.string().max(120).required(),
+      company_name: Joi.string().required(),
+      sector: Joi.string().required(),
+      job_country: Joi.string().required(),
+      start_month: Joi.date().required(),
+      end_month: Joi.date().allow("", null),
+      enrolled: Joi.boolean(),
     });
 
     return schema.validate(data, { abortEarly: false });
@@ -89,16 +133,45 @@ export default function PostCV() {
     }
   };
 
+  const handleAddEmployment = () => {
+    const res = validateEmployment(employmentData[employmentData.length - 1]);
+    if (res.error) {
+      const a = res?.error?.details?.map((item) => ({
+        name: item.context.key,
+        message: item.message,
+      }));
+      let r = {};
+      a.forEach((item) => {
+        r = { ...r, [item.name]: item.message };
+      });
+      setEmpErrors(r);
+    } else {
+      tempEmp = { ...tempEmp, id: tempEmp.id + 1 };
+      setEmploymentData((p) => [...p, tempEmp]);
+      setEmpForm(employmentData.length);
+      setEmpErrors({});
+    }
+  };
+
   const openForm = (id) => {
     setActiveForm(id);
+  };
+  const empOpenForm = (id) => {
+    setEmpForm(id);
   };
 
   return (
     <>
       <Head>
         <title>Post CV</title>
+        <style>
+          {`
+            body{
+              background-color:#f9f9f9;
+            }`}
+        </style>
       </Head>
-      <div className="bg-[#F9F9F9] -mb-12 md:mb-[-80px] lg:mb-[-143px]">
+      <div className="-mb-12 md:mb-[-80px] lg:mb-[-143px]">
         <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
           <div className="flex items-center h-full pp-container">
             <h1 className="text-3xl md:text-5xl 2xl:text-[56px] text-white font-bold">
@@ -147,6 +220,8 @@ export default function PostCV() {
                       className="w-full lg:w-[calc(50%_-_16px)]"
                       name="fname"
                       type="text"
+                      value={formData?.fname}
+                      // error={formData?.fname}
                       border
                       placeholder="Enter your first name..."
                       onChange={handleInput}
@@ -157,6 +232,8 @@ export default function PostCV() {
                       border
                       className="w-full lg:w-[calc(50%_-_16px)]"
                       name="lname"
+                      value={formData?.lname}
+                      // error={formData?.lname}
                       type="text"
                       placeholder="Enter your last name..."
                       onChange={handleInput}
@@ -166,6 +243,8 @@ export default function PostCV() {
                       className="w-full"
                       name="email"
                       type="email"
+                      value={formData?.email}
+                      // error={formData?.email}
                       border
                       placeholder="Enter your email name..."
                       onChange={handleInput}
@@ -179,6 +258,8 @@ export default function PostCV() {
                     name="headline"
                     border
                     type="text"
+                    value={formData?.headline}
+                    // error={formData?.headline}
                     placeholder="Enter your title/headline name..."
                     onChange={handleInput}
                   />
@@ -187,6 +268,8 @@ export default function PostCV() {
                     type="tel"
                     pattern="[0-9]"
                     border
+                    value={formData?.number}
+                    // error={formData?.number}
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     name="number"
                     placeholder="Enter your phone..."
@@ -197,6 +280,8 @@ export default function PostCV() {
                     border
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     name="address"
+                    value={formData?.address}
+                    // error={formData?.address}
                     type="text"
                     placeholder="Enter your address..."
                     onChange={handleInput}
@@ -207,6 +292,8 @@ export default function PostCV() {
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     name="city"
                     type="text"
+                    value={formData?.city}
+                    // error={formData?.city}
                     placeholder="Enter your city..."
                     onChange={handleInput}
                   />
@@ -215,6 +302,8 @@ export default function PostCV() {
                     border
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     name="country"
+                    value={formData?.country}
+                    // error={formData?.country}
                     type="text"
                     placeholder="Enter your country..."
                     onChange={handleInput}
@@ -223,6 +312,7 @@ export default function PostCV() {
                     label="About yourself"
                     border
                     className="w-full"
+                    value={formData?.about_yourself}
                     name="about_yourself"
                     placeholder="Tell us about yourself..."
                     onChange={handleInput}
@@ -260,10 +350,21 @@ export default function PostCV() {
               <h2 className="text-[#737373] font-bold text-xl md:text-2xl lg:text-[28px] xl:text-[34px]">
                 3. Employment History
               </h2>
-              <EmploymentHistoryCV handleInput={handleInput} />
+              {employmentData?.map((a, i) => (
+                <EmploymentHistoryCV
+                  handleInput={(e) => handleEmploymentInput(e, i)}
+                  errors={empErrors}
+                  item={a}
+                  isExtended={i === empForm}
+                  index={i}
+                  key={a.id}
+                  handleDelete={() => handleEmpDelete(i)}
+                  openForm={() => empOpenForm(i)}
+                />
+              ))}
               <button
                 type="button"
-                onClick={handleAddMore}
+                onClick={handleAddEmployment}
                 className="bg-[#F1ECF7] w-full text-center py-5 rounded-lg border-dashed mt-4 border-2"
               >
                 Add More Jobs

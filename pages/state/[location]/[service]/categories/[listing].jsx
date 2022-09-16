@@ -30,7 +30,7 @@ export default function Listing() {
 
   async function getEducationListing(p) {
     // const url = `jobs${p ? `?${p}` : ""}`;
-    const url = `${`state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`}${
+    const url = `${`state/${router.query.location}/${router.query.service}/categories/${router.query.listing}`}${
       p ? `?${p}` : ""
     }`;
     setLoading((p) => ({ ...p, data: true }));
@@ -68,7 +68,6 @@ export default function Listing() {
       { scroll: false },
     );
     getServiceFilters();
-    getEducationListing();
   };
 
   function sortHandler(e) {
@@ -104,13 +103,12 @@ export default function Listing() {
   useEffect(() => {
     const p = new URLSearchParams(filterSearch);
     if (
-      searchParams.location !== undefined &&
-      searchParams.service !== undefined &&
-      searchParams.type !== undefined
+      router.query.location !== undefined &&
+      router.query.service !== undefined &&
+      router.query.listing !== undefined
     ) {
       getEducationListing(p);
     }
-    console.log(searchParams);
     if (filters?.length < 1 && router.query.service) {
       getServiceFilters();
     }
@@ -118,7 +116,7 @@ export default function Listing() {
     return () => {
       setListing([]);
     };
-  }, [router.query, searchParams, filterSearch]);
+  }, [router.query, filterSearch]);
 
   useEffect(() => {
     if (router.query.location && router.query.listing) {
