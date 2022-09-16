@@ -30,7 +30,9 @@ export default function Listing() {
 
   async function getEducationListing(p) {
     // const url = `jobs${p ? `?${p}` : ""}`;
-    const url = `${window.location.pathname.slice(1)}${p ? `?${p}` : ""}`;
+    const url = `${`state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`}${
+      p ? `?${p}` : ""
+    }`;
     setLoading((p) => ({ ...p, data: true }));
     try {
       const res = await getEducations(url);
@@ -102,16 +104,21 @@ export default function Listing() {
   useEffect(() => {
     const p = new URLSearchParams(filterSearch);
     if (
-      router.query.location !== undefined &&
-      router.query.service !== undefined &&
-      router.query.listing !== undefined
+      searchParams.location !== undefined &&
+      searchParams.service !== undefined &&
+      searchParams.type !== undefined
     ) {
       getEducationListing(p);
     }
+    console.log(searchParams);
     if (filters?.length < 1 && router.query.service) {
       getServiceFilters();
     }
-  }, [router.query, filterSearch]);
+
+    return () => {
+      setListing([]);
+    };
+  }, [router.query, searchParams, filterSearch]);
 
   useEffect(() => {
     if (router.query.location && router.query.listing) {
