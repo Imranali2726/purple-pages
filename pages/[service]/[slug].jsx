@@ -23,22 +23,10 @@ export default function Slug({ data }) {
     setAccessibilityFeatures(res.data.data);
   }
 
-  // async function getSlugData() {
-  //   try {
-  //     const res = await detailPageData(
-  //       `${router.query.service}/${router.query.slug}`,
-  //     );
-  //     setData(res.data.data);
-  //   } catch (error) {
-  //     router.push("/404");
-  //   }
-  // }
-
   useEffect(() => {
     setMounted(true);
     if (accessbilityFeatures.length <= 0) getAccessibilityFeatures();
     if (!data) router.push("/404");
-    // if (!data && router.query.slug) getSlugData();
   }, [router.query.slug]);
 
   return (

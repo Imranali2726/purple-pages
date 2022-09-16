@@ -1,5 +1,6 @@
 import { SplideSlide } from "@splidejs/react-splide";
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import ReactHtmlParser from "react-html-parser";
 import { BsFillTelephoneFill, BsFacebook, BsTwitter } from "react-icons/bs";
 import { FaEnvelope } from "react-icons/fa";
@@ -7,11 +8,12 @@ import { MdOutlineWeb } from "react-icons/md";
 import { IconContext } from "react-icons";
 import Slider from "../base/Slider";
 import AccessibilityFeaturerContainer from "../features/AccessibilityFeaturerContainer";
-import {
-  schoolService,
-  inclusion,
-  therapy,
-} from "../../fakeData/accessibilityFeatures";
+// import {
+//   schoolService,
+//   inclusion,
+//   therapy,
+// } from "../../fakeData/accessibilityFeatures";
+import { getServiceFeatures } from "../../services/apiCalls";
 import SingleFeature from "../features/SingleFeature";
 import { slider4 } from "../../fakeData/homepage";
 import SliderSlide from "../base/SliderSlide";
@@ -20,6 +22,7 @@ import ReviewSlide from "../base/ReviewSlide";
 const addressIcons = { className: "fill-primary h-6 w-6" };
 
 function EducationTemplate({ mounted, data, accessbilityFeatures }) {
+  const [servicesFeatures, setServicesFeatures] = useState([]);
   const images = [
     {
       id: 0,
@@ -48,6 +51,15 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
     { label: "Inclusion Accreditation", link: "#inclusion-accreditation" },
     { label: "Therapy", link: "#therapy" },
   ];
+  async function getServices() {
+    const res = await getServiceFeatures("services");
+    setServicesFeatures(res.data.data);
+  }
+
+  useEffect(() => {
+    if (servicesFeatures.length <= 0) getServices();
+  }, []);
+
   return (
     <>
       <nav className="bg-[#F7F4FB]">
@@ -248,45 +260,24 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
           </div>
         </div>
       </section>
-      <section
-        className="bg-[#F6F6F6] py-10 xl:py-20"
-        id="standard-school-service"
-      >
-        <div className="pp-container">
-          <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
-            Standard School Service
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-y-6 xl:gap-y-10 gap-x-8 mt-6 lg:mt-14">
-            {schoolService.map((item) => (
-              <SingleFeature data={item} key={item.label} />
-            ))}
-          </ul>
-        </div>
-      </section>
-      <section className=" py-10 xl:py-20" id="inclusion-accredition">
-        <div className="pp-container">
-          <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
-            Inclusion Accreditation
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-y-6 xl:gap-y-10 gap-x-8 mt-6 lg:mt-14">
-            {inclusion.map((item) => (
-              <SingleFeature data={item} key={item.label} />
-            ))}
-          </ul>
-        </div>
-      </section>
-      <section className="bg-[#F6F6F6] py-10 xl:py-20" id="therapy">
-        <div className="pp-container">
-          <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
-            Therapy
-          </h3>
-          <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-y-6 xl:gap-y-10 gap-x-8 mt-6 lg:mt-14">
-            {therapy.map((item) => (
-              <SingleFeature data={item} key={item.label} />
-            ))}
-          </ul>
-        </div>
-      </section>
+      {servicesFeatures?.map((service) => (
+        <section
+          className=" py-10"
+          id="inclusion-accredition"
+          key={service.key}
+        >
+          <div className="pp-container">
+            <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
+              {service.name}
+            </h3>
+            <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-y-6 xl:gap-y-10 gap-x-8 mt-6 lg:mt-14">
+              {service?.sub_services.map((item) => (
+                <SingleFeature data={item} key={item.id} />
+              ))}
+            </ul>
+          </div>
+        </section>
+      ))}
       <section className="pp-container my-10">
         <h3 className="font-bold text-lg md:text-xl lg:text-2xl">Review</h3>
         <div className="mt-10">
