@@ -47,8 +47,8 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
     { label: "Gallery", link: "#gallery" },
     { label: "Inclusion Highs", link: "#inclusion-highs" },
     { label: "Accessibility Features", link: "#accessibility-features" },
-    { label: "Standard School Service", link: "#standard-school-service" },
-    { label: "Inclusion Accreditation", link: "#inclusion-accreditation" },
+    { label: "Standard School Service", link: "#standard_school_service" },
+    { label: "Inclusion Accreditation", link: "#inclusion_accreditation" },
     { label: "Therapy", link: "#therapy" },
   ];
   async function getServices() {
@@ -254,6 +254,9 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                   name={`${item.id}. ${item?.name}`}
                   features={item?.sub_accessibility_features}
                   key={item.id}
+                  subAccessibilityFeatures={
+                    data?.sub_education_accessibilty_features
+                  }
                 />
               ))}
             </div>
@@ -261,18 +264,18 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
         </div>
       </section>
       {servicesFeatures?.map((service) => (
-        <section
-          className=" py-10"
-          id="inclusion-accredition"
-          key={service.key}
-        >
+        <section className=" py-10" key={service.key} id={service.key}>
           <div className="pp-container">
             <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
               {service.name}
             </h3>
             <ul className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-y-4 md:gap-y-6 xl:gap-y-10 gap-x-8 mt-6 lg:mt-14">
               {service?.sub_services.map((item) => (
-                <SingleFeature data={item} key={item.id} />
+                <SingleFeature
+                  data={item}
+                  key={item.id}
+                  subAccessibilityFeatures={service?.sub_accessibility_features}
+                />
               ))}
             </ul>
           </div>

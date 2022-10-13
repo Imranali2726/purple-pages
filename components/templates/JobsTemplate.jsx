@@ -2,9 +2,10 @@ import Link from "next/link";
 import { FaEnvelope } from "react-icons/fa";
 import { MdOutlineWeb } from "react-icons/md";
 import { IconContext } from "react-icons";
-import { BsInstagram } from "react-icons/bs";
+import { BsLinkedin } from "react-icons/bs";
 import ReactHtmlParser from "react-html-parser";
 import { startCase } from "lodash";
+import { getDate } from "../../services/utils";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
 function JobsTemplate({ mounted, data }) {
@@ -40,13 +41,15 @@ function JobsTemplate({ mounted, data }) {
           <div className="flex flex-col md:flex-row items-center justify-between gap-4">
             <div className="text-left w-full flex items-center md:w-auto justify-between md:justify-start md:gap-6">
               <h2 className="font-bold md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl capitalize">
-                {data?.name}
+                {parseInt(data?.is_name_anonymous, 10) === 1
+                  ? "Anonymous"
+                  : data?.name}
               </h2>
               <p className="text-xs md:text-sm lg:text-base xl:text-lg">
                 <span className="font-semibold text-sm md:text-base lg:text-lg xl:text-xl">
                   Posted:
                 </span>{" "}
-                4 days ago
+                {data?.created_at}
               </p>
             </div>
             <div className="flex items-center text-left w-full md:w-auto justify-between md:justify-start md:gap-6">
@@ -57,7 +60,9 @@ function JobsTemplate({ mounted, data }) {
                 className="bg-[#2CB579] text-white py-3 px-4 rounded-md text-xs md:text-base lg:text-lg xl:text-xl font-bold"
                 type="button"
               >
-                June 23, 2022
+                {parseInt(data?.is_apply_date_anonymous, 10) === 1
+                  ? " ????"
+                  : getDate(data?.apply_date, "mmm dd,yyyy")}
               </button>
             </div>
           </div>
@@ -68,31 +73,35 @@ function JobsTemplate({ mounted, data }) {
                 Sector: &nbsp;
               </h5>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                Professional Training
+                {data?.sectors?.map((item, i) =>
+                  i === data.sectors.length - 1 ? item.name : `${item.name}, `,
+                )}
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
               <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                 Gender: &nbsp;
               </h5>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                Female
+              <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                {data?.gender ?? "N/A"}
               </p>
             </div>
-            <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
+            <div className="flex items-center gap-2 w-full md:w-1/2 lg:w-4/12">
               <IconContext.Provider value={addressIcons}>
                 <FaEnvelope />
               </IconContext.Provider>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                &nbsp; gfs@gemsedu.com
+                {parseInt(data?.is_email_anonymous, 10) === 1
+                  ? "????"
+                  : data?.email ?? "N/A"}
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
               <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                 Qualification: &nbsp;
               </h5>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                BSc Electrical Engineering
+              <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                {data?.qualification ?? "N/A"}
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
@@ -100,15 +109,19 @@ function JobsTemplate({ mounted, data }) {
                 Working Hours: &nbsp;
               </h5>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                40hrs/Week
+                {data?.working_hours ?? "N/A"}
               </p>
             </div>
-            <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
-              <IconContext.Provider value={addressIcons}>
-                <MdOutlineWeb />
-              </IconContext.Provider>
+            <div className="flex items-start gap-2 w-full md:w-1/2 lg:w-4/12">
+              <div>
+                <IconContext.Provider value={addressIcons}>
+                  <MdOutlineWeb />
+                </IconContext.Provider>
+              </div>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                &nbsp; www.gemsfounderschool-dubai.com
+                {parseInt(data?.is_web_address_anonymous, 10) === 1
+                  ? "????"
+                  : data?.web_address ?? "N/A"}
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
@@ -116,7 +129,7 @@ function JobsTemplate({ mounted, data }) {
                 Job Type: &nbsp;
               </h5>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                {startCase(data?.job_type)}
+                {startCase(data?.job_type) ?? "N/A"}
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
@@ -124,23 +137,25 @@ function JobsTemplate({ mounted, data }) {
                 Salary: &nbsp;
               </h5>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                50,000/month
+                {parseInt(data?.is_salary_anonymous, 10) === 1
+                  ? "????"
+                  : data?.salary ?? "N/A"}
               </p>
             </div>
-            <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
+            <div className="flex items-center gap-2 w-full md:w-1/2 lg:w-4/12">
               <IconContext.Provider value={addressIcons}>
-                <BsInstagram />
+                <BsLinkedin />
               </IconContext.Provider>
               <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                &nbsp; @gfsfounderdubai
+                @gfsfounderdubai
               </p>
             </div>
             <div className="flex items-center w-full md:w-1/2 lg:w-4/12">
               <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                 Language: &nbsp;
               </h5>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                English
+              <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                {data?.language ?? "N/A"}
               </p>
             </div>
           </div>
@@ -159,56 +174,55 @@ function JobsTemplate({ mounted, data }) {
           <h2 className="font-bold md:text-xl lg:text-2xl xl:text-3xl 2xl:text-4xl">
             Additional Information
           </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 mt-12">
+          <div className="grid grid-cols-1 md:grid-cols-2 mt-12 md:items-start">
             <div>
               <div className="flex items-center mb-3">
                 <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                   Visa: &nbsp;
                 </h5>
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                  Yes
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                  {data?.visa ?? "N/A"}
                 </p>
               </div>
               <div className="flex items-center mb-3">
                 <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                   Gratuity: &nbsp;
                 </h5>
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                  as per labour law
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                  {data?.gratuity ?? "N/A"}
                 </p>
               </div>
               <div className="flex items-center mb-3">
                 <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                   Housing: &nbsp;
                 </h5>
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                  $550
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                  {data?.housing ?? "N/A"}
                 </p>
               </div>
               <div className="flex items-center mb-3">
                 <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                   Medical Insurance: &nbsp;
                 </h5>
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                  No
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                  {data?.medical_insurance ?? "N/A"}
                 </p>
               </div>
               <div className="flex items-center mb-3">
                 <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                   Flight: &nbsp;
                 </h5>
-                <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                  Yes
+                <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                  {data?.flight ?? "N/A"}
                 </p>
               </div>
             </div>
-            <div>
+            <div className="flex items-center mb-3">
               <h5 className="font-bold text-sm md:text-base lg:text-lg xl:text-xl 2xl:text-2xl">
                 Catering for accessibility needs:
               </h5>
-              <p className="text-sm md:text-base lg:text-lg xl:text-xl ">
-                Yes (Medical, Sensory, Physical, Social Emotional and Mental
-                Health)
+              <p className="text-sm md:text-base lg:text-lg xl:text-xl capitalize">
+                &nbsp; {data?.catering_accessibility_needs ?? "N/A"}
               </p>
             </div>
           </div>

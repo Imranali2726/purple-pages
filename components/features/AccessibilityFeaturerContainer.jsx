@@ -5,7 +5,11 @@ import SingleFeature from "./SingleFeature";
 
 const tooltipIcon = { className: "fill-[#DFDFDF] w-5 h-5" };
 
-export default function AccessibilityFeaturerContainer({ name, features }) {
+export default function AccessibilityFeaturerContainer({
+  name,
+  features,
+  subAccessibilityFeatures,
+}) {
   return (
     <div>
       <div>
@@ -19,12 +23,15 @@ export default function AccessibilityFeaturerContainer({ name, features }) {
             className="flex items-center gap-2 mb-4 lg:mb-6 xl:mb-8"
             key={item.id}
           >
-            <SingleFeature data={item} />
+            <SingleFeature
+              data={item}
+              subAccessibilityFeatures={subAccessibilityFeatures}
+            />
             <div className="relative group">
               <IconContext.Provider value={tooltipIcon}>
                 <RiInformationFill />
               </IconContext.Provider>
-              <div className="hidden group-hover:block absolute bg-[#F1ECF7] p-3 w-52 lg:w-64 -right-4 z-20 rounded-lg">
+              <div className="hidden group-hover:block absolute bg-[#F1ECF7] p-3 w-52 lg:w-64 -right-16 z-20 rounded-lg">
                 <p className="text-sm lg:text-base">{item.sub_title}</p>
                 <div className="text-end">
                   <Link href="#">

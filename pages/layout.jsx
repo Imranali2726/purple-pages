@@ -14,7 +14,7 @@ export default function layout({ children }) {
       </Head>
       <Navbar />
       <main>{children}</main>
-      <div className="fixed right-8 bottom-8 z-50">
+      <div className="fixed left-8 bottom-8 z-50">
         <button
           type="button"
           className="bg-primary p-4 rounded-full pp-shadow"

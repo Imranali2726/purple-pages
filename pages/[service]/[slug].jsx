@@ -3,6 +3,7 @@ import { useRouter } from "next/router";
 import { IconContext } from "react-icons";
 import { MdLocationPin } from "react-icons/md";
 import Head from "next/head";
+
 import {
   detailPageData,
   getAccessibilityFeature,
@@ -32,20 +33,29 @@ export default function Slug({ data }) {
   return (
     <>
       <Head>
-        <title>{data?.name}</title>
+        <title>
+          {" "}
+          {parseInt(data?.is_name_anonymous, 10) === 1
+            ? "Anonymous"
+            : data?.name}
+        </title>
       </Head>
       <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex items-center h-full pp-container">
           <div className="grid grid-cols-[60px_1fr] md:grid-cols-[100px_1fr] gap-4 lg:gap-9 -mx-4 md:mx-0">
             <div>
               <img
-                src={data?.logo || "/images/filter-logo-whitebg.jpg"}
+                src={
+                  data?.logo ?? data?.image ?? "/images/filter-logo-whitebg.jpg"
+                }
                 alt=""
               />
             </div>
             <div>
               <h1 className="capitalize text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
-                {data?.name}
+                {parseInt(data?.is_name_anonymous, 10) === 1
+                  ? "Anonymous"
+                  : data?.name}
               </h1>
               <div className="flex items-start mt-1 md:mt-4">
                 <div>
@@ -55,8 +65,10 @@ export default function Slug({ data }) {
                   </IconContext.Provider>
                 </div>
                 <p className="text-sm lg:text-base xl:text-lg text-white capitalize">
-                  {data?.address ??
-                    "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
+                  {parseInt(data?.is_address_anonymous, 10) === 1
+                    ? "Anonymous"
+                    : data?.address ??
+                      "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
                 </p>
               </div>
             </div>

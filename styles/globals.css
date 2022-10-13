@@ -116,3 +116,11 @@ body {
 .job-content ul {
   list-style: disc;
 }
+
+.react-select__control {
+  @apply p-2 md:p-[14px] border-0 rounded-[1rem] !important;
+}
+
+.state-select__control {
+  @apply p-2 md:p-[16px] border rounded-[1rem] !important;
+}

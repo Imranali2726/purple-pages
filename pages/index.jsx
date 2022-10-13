@@ -19,7 +19,7 @@ export default function Home() {
             Enter the information in the search and get your personalized
             experience throughout the site.
           </p>
-          <div className="mt-[45px] md:mt-[70px]">
+          <div className="mt-[45px] md:mt-[70px] lg:-mx-0 xl:-mx-8">
             <SearchFilter />
           </div>
         </div>
