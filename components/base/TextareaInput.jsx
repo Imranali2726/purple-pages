@@ -6,6 +6,7 @@ export default function TextareaInput({
   error,
   onChange,
   border,
+  value,
 }) {
   return (
     <div className={className}>
@@ -19,6 +20,7 @@ export default function TextareaInput({
           name={name}
           rows={6}
           id={name}
+          value={value ?? ""}
           placeholder={placeholder}
           className={`form-input resize-none ${border ? "border" : ""} ${
             error ? "border-red-600" : "border-[#B9B9B9]"

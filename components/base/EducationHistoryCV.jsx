@@ -1,5 +1,6 @@
 import { FiEdit } from "react-icons/fi";
 import { MdDelete } from "react-icons/md";
+import { startCase } from "lodash";
 import { IconContext } from "react-icons";
 import TextInput from "./TextInput";
 import SelectInput from "./SelectInput";
@@ -18,7 +19,7 @@ function EducationHistoryCV({
     return (
       <div className="bg-[#F5F4F4] rounded-xl px-4 lg:px-12 py-8 mt-8 flex items-center justify-between">
         <p className="font-bold text-lg">
-          {index + 1}. {item.school_name}
+          {index + 1}. {item.name}
         </p>
         <div>
           <button type="button" onClick={openForm}>
@@ -46,13 +47,13 @@ function EducationHistoryCV({
         <TextInput
           label="School Name"
           className="w-full lg:w-[calc(50%_-_16px)]"
-          name="school_name"
-          value={item.school_name}
+          name="name"
+          value={item.name}
           type="text"
-          error={errors.school_name}
+          error={errors.name}
           onChange={handleInput}
         />
-        <SelectInput
+        <TextInput
           className="w-full lg:w-[calc(50%_-_16px)]"
           label="Location"
           name="location"
@@ -60,20 +61,15 @@ function EducationHistoryCV({
           id="location"
           error={errors.location}
           onChange={handleInput}
-        >
-          <option>Select</option>
-          <option value="1">Ajman</option>
-          <option value="2">Dubai</option>
-          <option value="3">Abu Dhabi</option>
-        </SelectInput>
+        />
 
         <TextInput
           label="Degree"
           className="w-full lg:w-[calc(50%_-_16px)]"
-          name="degree_name"
-          value={item.degree_name}
+          name="degree"
+          value={item.degree}
           type="text"
-          error={errors.degree_name}
+          error={errors.degree}
           onChange={handleInput}
         />
         <SelectInput
@@ -92,26 +88,28 @@ function EducationHistoryCV({
         </SelectInput>
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
-            htmlFor="start_month"
+            htmlFor="start_date"
             className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
           >
             Start Date
             <input
               type="month"
-              name="start_month"
-              value={item.start_month}
-              id="start_month"
+              name="start_date"
+              value={item.start_date}
+              id="start_date"
               className="form-input "
               onChange={handleInput}
             />
           </label>
           {errors && (
-            <p className="text-red-600 text-xs mt-2">{errors.start_month}</p>
+            <p className="text-red-600 text-xs mt-2">
+              {startCase(errors.start_date)}
+            </p>
           )}
         </div>
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
-            htmlFor="end_month"
+            htmlFor="end_date"
             className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
           >
             <div className="flex items-center justify-between">
@@ -124,7 +122,7 @@ function EducationHistoryCV({
                   Currently Enrolled
                   <input
                     type="checkbox"
-                    name="enrolled"
+                    name="is_current"
                     id="enrolled"
                     defaultChecked={item.enrolled}
                     className="ml-1"
@@ -135,16 +133,18 @@ function EducationHistoryCV({
             </div>
             <input
               type="month"
-              name="end_month"
-              id="end_month"
-              disabled={item.enrolled}
-              value={item.end_month}
+              name="end_date"
+              id="end_date"
+              disabled={item.is_current === 1}
+              value={item.end_date}
               className="form-input "
               onChange={handleInput}
             />
           </label>
           {errors && (
-            <p className="text-red-600 text-xs mt-2">{errors.end_month}</p>
+            <p className="text-red-600 text-xs mt-2">
+              {startCase(errors.end_date)}
+            </p>
           )}
         </div>
       </div>

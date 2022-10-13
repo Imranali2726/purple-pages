@@ -1,9 +1,11 @@
-export default function SingleFeature({ data }) {
+export default function SingleFeature({ data, subAccessibilityFeatures = [] }) {
   return (
-    <li className="flex items-center gap-3">
+    <li className="flex items-start gap-3">
       <img
         src={
-          data.status ? "/images/feature-green.svg" : "/images/feature-gray.svg"
+          subAccessibilityFeatures.includes(data?.id)
+            ? "/images/feature-green.svg"
+            : "/images/feature-gray.svg"
         }
         alt=""
       />

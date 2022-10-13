@@ -80,10 +80,18 @@ export default function SearchFilterLogic() {
     }
     if (router.query.service && searchParams.services === undefined) {
       dispatch(
-        setSearchData({ name: "services", value: router.query.service }),
+        setSearchData({
+          name: "services",
+          value:
+            router.query.service === "candidates"
+              ? "jobs"
+              : router.query.service,
+        }),
       );
       dispatch(setIsEdited("services"));
-      getTypes(router.query.service);
+      getTypes(
+        router.query.service === "candidates" ? "jobs" : router.query.service,
+      );
     }
     if (router.query.listing && searchParams.type === undefined) {
       dispatch(setSearchData({ name: "type", value: router.query.listing }));
@@ -217,9 +225,15 @@ export default function SearchFilterLogic() {
 
   function handleSearch(e) {
     e.preventDefault();
-    router.push(
-      `/state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`,
-    );
+    if (searchParams?.type === "find-a-candidate") {
+      router.push(
+        `/state/${searchParams.location}/candidates/categories/${searchParams.type}`,
+      );
+    } else {
+      router.push(
+        `/state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`,
+      );
+    }
   }
   return {
     location,

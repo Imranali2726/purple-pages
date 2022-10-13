@@ -3,18 +3,26 @@ import { useRouter } from "next/router";
 import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
 import { IconContext } from "react-icons";
+import Head from "next/head";
+import { startCase } from "lodash";
 import { HiLocationMarker } from "react-icons/hi";
 import Link from "next/link";
+import { useSession } from "next-auth/react";
+import axios from "axios";
 import ListingSideFilter from "../../../../../components/filter/ListingSideFilter";
 import SearchFilter from "../../../../../components/filter/SearchFilter";
 import SearchList from "../../../../../components/SearchList";
 import { getEducations, getFilters } from "../../../../../services/apiCalls";
 import { loadOnPageReload } from "../../../../../reducers/filterSearch";
+import SignInPopup from "../../../../../components/include/SignInPopup";
+import AuthenticationPopup from "../../../../../components/include/AuthenticationPopup";
 
 const mapIcon = { className: "fill-primary" };
 export default function Listing() {
   const [listing, setListing] = useState([]);
   const [filters, setFilters] = useState([]);
+  const [popupActive, setPopupActive] = useState(false);
+  const [signInPopupActive, setSignInPopupActive] = useState(false);
   const [error, setError] = useState({
     data: "",
     filters: "",
@@ -27,9 +35,11 @@ export default function Listing() {
   const dispatch = useDispatch();
   const searchParams = useSelector((state) => state.search.value);
   const filterSearch = useSelector((state) => state.filterSearch.value);
+  const session = useSession();
 
   async function getEducationListing(p) {
     // const url = `jobs${p ? `?${p}` : ""}`;
+    setError("");
     const url = `${`state/${router.query.location}/${router.query.service}/categories/${router.query.listing}`}${
       p ? `?${p}` : ""
     }`;
@@ -39,16 +49,26 @@ export default function Listing() {
       setListing(res.data.data);
       setLoading((p) => ({ ...p, data: false }));
     } catch (error) {
+      if (axios.isCancel(error)) {
+        setError("");
+        return;
+      }
       setError({ ...error, data: error.message });
       setLoading((p) => ({ ...p, data: false }));
     }
   }
 
   async function getServiceFilters() {
+    setError("");
     setLoading((p) => ({ ...p, filters: false }));
     try {
       const res = await getFilters(
-        `${searchParams.services ?? router.query.service}-filters`,
+        `${
+          searchParams.services ??
+          (router.query.service === "candidates"
+            ? "jobs"
+            : router.query.service)
+        }-filters`,
       );
       setFilters(res.data.data);
       setLoading((p) => ({ ...p, filters: false }));
@@ -60,13 +80,24 @@ export default function Listing() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    router.push(
-      {
-        pathname: `/state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`,
-      },
-      undefined,
-      { scroll: false },
-    );
+    if (searchParams?.type === "find-a-candidate") {
+      router.push(
+        {
+          pathname: `/state/${searchParams.location}/candidates/categories/${searchParams.type}`,
+        },
+        undefined,
+        { scroll: false },
+      );
+    } else {
+      router.push(
+        {
+          pathname: `/state/${searchParams.location}/${searchParams.services}/categories/${searchParams.type}`,
+        },
+        undefined,
+        { scroll: false },
+      );
+    }
+
     getServiceFilters();
   };
 
@@ -115,6 +146,10 @@ export default function Listing() {
 
     return () => {
       setListing([]);
+      setError({
+        data: "",
+        filters: "",
+      });
     };
   }, [router.query, filterSearch]);
 
@@ -132,15 +167,34 @@ export default function Listing() {
     }
   }, [filterSearch]);
 
+  function getTitle() {
+    if (router.query.service === "educations") return "Institute";
+    if (router.query.service === "jobs") {
+      return "Job";
+    }
+
+    return "Candidate";
+  }
+
   return (
     <>
-      <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[550px] xl:max-h-[600px] 2xl:max-h-[690px] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
+      <Head>
+        <title>{startCase(router.query?.service)} Listing</title>
+      </Head>
+      {popupActive && <AuthenticationPopup setPopupActive={setPopupActive} />}
+      {signInPopupActive && (
+        <SignInPopup
+          setSignInPopupActive={setSignInPopupActive}
+          setPopupActive={setPopupActive}
+        />
+      )}
+      <section className="internal-header-bg h-screen  max-h-[500px] lg:max-h-[355px] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="internal-header-overlay h-full">
-          <div className="pp-container pt-10 lg:pt-[100px] xl:pt-[120px] 2xl:pt-[163px]">
-            <h1 className="text-[36px] md:text-[48px] lg:text-[56px] xl:text-[72px] 2xl:text-[84px] font-bold text-white ">
-              Find the Right Institute
+          <div className="pp-container relative pt-10 lg:top-[50%] lg:-translate-y-[75%]">
+            <h1 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-white ">
+              Find the Right {getTitle()}
             </h1>
-            <p className="text-lg md:text-xl xl:text-2xl 2xl:text-3xl text-white -mt-1">
+            <p className="text-lg md:text-xl xl:text-2xl text-white -mt-1">
               What are you looking for ?
             </p>
           </div>
@@ -150,16 +204,27 @@ export default function Listing() {
         <div className="absolute top-[-230px] lg:-top-[45px] inset-x-0">
           <div className="px-8 md:px-0 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1200px] 2xl:max-w-[1320px] mx-auto ">
             <SearchFilter handleSubmit={handleSubmit} listPage />
-            {router.query.service === "jobs" && (
+            {(router.query.service === "jobs" ||
+              router.query.service === "candidates") && (
               <div className="text-center mt-4">
                 <p>
                   If you looking for a job,{" "}
-                  <Link href="#">
-                    <a className="text-lg text-[#642CA9] font-semibold underline">
-                      {" "}
-                      post your CV on Purple Pages{" "}
-                    </a>
-                  </Link>
+                  {session.status === "authenticated" ? (
+                    <Link href="/post-cv">
+                      <a className="text-lg text-[#642CA9] font-semibold underline">
+                        {" "}
+                        post your CV on Purple Pages{" "}
+                      </a>
+                    </Link>
+                  ) : (
+                    <button
+                      className="text-lg text-[#642CA9] font-semibold underline"
+                      type="button"
+                      onClick={() => setSignInPopupActive(true)}
+                    >
+                      post your CV on Purple Pages
+                    </button>
+                  )}
                 </p>
               </div>
             )}

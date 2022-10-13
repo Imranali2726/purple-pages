@@ -32,18 +32,18 @@ export default function SingleSideFilter({ singleFilterData }) {
         </span>
       </button>
       <div
-        className={`overflow-hidden bg-[#F1ECF7] transition-[height_500ms_ease-in-out] ${
+        className={`overflow-autos bg-[#F1ECF7] max-h-[500px] transition-[height_500ms_ease-in-out] ${
           isActive ? "border border-t-0" : ""
         }`}
         ref={ref}
-        style={{ height: isActive ? ref.current.scrollHeight : "0px" }}
+        style={{ height: isActive ? ref.current.scrollHeight + 10 : "0px" }}
       >
         <div className="flex flex-wrap gap-x-1 gap-y-3 p-4">
           {singleFilterData?.filters?.map((item) => (
             <BaseSideFilter
               name={singleFilterData?.key}
               item={item}
-              key={item.id}
+              key={item.id + item.name}
             />
           ))}
         </div>
@@ -71,9 +71,9 @@ export function BaseSideFilter({ name, item }) {
         type="checkbox"
         name={name.toLowerCase()}
         id={item?.name}
-        value={item.id}
+        value={item.value}
         defaultChecked={filterSearch[name.toLowerCase()]?.includes(
-          item?.id?.toString(),
+          item?.value?.toString(),
         )}
         className="hidden filter-checkbox"
         onChange={handleFilterChange}

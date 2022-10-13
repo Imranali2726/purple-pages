@@ -1,12 +1,20 @@
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
 import { IconContext } from "react-icons";
+import { signOut, useSession } from "next-auth/react";
 import { useMemo, useState, useRef, useEffect } from "react";
+import AuthenticationPopup from "./AuthenticationPopup";
+import SignInPopup from "./SignInPopup";
+import BusinessSignup from "./BusinessSignup";
 
 export default function Navbar() {
   const [isActive, setIsActive] = useState(false);
+  const [popupActive, setPopupActive] = useState(false);
+  const [signInPopupActive, setSignInPopupActive] = useState(false);
+  const [businessPopup, setBusinessPopup] = useState(false);
   const headerRef = useRef();
   const navRef = useRef();
+  const session = useSession();
   const links = [
     { label: "Home", link: "/" },
     // { label: "Listing", link: "/listing" },
@@ -93,13 +101,26 @@ export default function Navbar() {
                 </ul>
               </nav>
               <div>
-                <button
-                  type="button"
-                  className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
+                {session.status !== "authenticated" && (
+                  <button
+                    type="button"
+                    onClick={() => setSignInPopupActive(true)}
+                    className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
+                rounded-lg pp-shadow"
+                  >
+                    Sign In/Register
+                  </button>
+                )}
+                {session.status === "authenticated" && (
+                  <button
+                    type="button"
+                    onClick={() => signOut()}
+                    className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
                   rounded-lg pp-shadow"
-                >
-                  Sign In/Register
-                </button>
+                  >
+                    Logout
+                  </button>
+                )}
               </div>
             </div>
             <div className="lg:hidden">
@@ -116,6 +137,15 @@ export default function Navbar() {
           </div>
         </div>
       </div>
+      {popupActive && <AuthenticationPopup setPopupActive={setPopupActive} />}
+      {signInPopupActive && (
+        <SignInPopup
+          setSignInPopupActive={setSignInPopupActive}
+          setPopupActive={setPopupActive}
+          setBusinessPopup={setBusinessPopup}
+        />
+      )}
+      {businessPopup && <BusinessSignup setPopupActive={setBusinessPopup} />}
     </header>
   );
 }

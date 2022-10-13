@@ -1,4 +1,7 @@
+import axios from "axios";
 import calls from "./calls";
+
+let listingCancelToken;
 
 export async function getLocation() {
   const res = await calls("get", "states");
@@ -15,13 +18,20 @@ export async function getType(id) {
   return res;
 }
 
-// export async function getSearchResults(params) {
-//   const res = await calls("get", "search", null, null, params);
-//   return res;
-// }
-
 export async function getEducations(url) {
-  const res = await calls("get", url, null, null, null);
+  if (typeof listingCancelToken !== typeof undefined) {
+    listingCancelToken.cancel();
+  }
+  listingCancelToken = axios.CancelToken.source();
+
+  const res = await calls(
+    "get",
+    url,
+    null,
+    null,
+    null,
+    listingCancelToken.token,
+  );
   return res;
 }
 export async function getFilters(url) {
@@ -37,6 +47,47 @@ export async function getAccessibilityFeature(url) {
   return res;
 }
 export async function getServiceFeatures(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
+
+export async function login(url, data) {
+  const res = await calls("post", url, data, null, null);
+  return res;
+}
+export async function register(url, data) {
+  const res = await calls(
+    "post",
+    url,
+    data,
+    {
+      Accept: "application/json",
+      "Content-Type": "application/json",
+    },
+    null,
+  );
+  return res;
+}
+
+export async function postCV(url, data, header) {
+  const res = await calls(
+    "PUT",
+    url,
+    data,
+    {
+      "Content-Type": "multipart/form-data",
+      ...header,
+    },
+    null,
+  );
+  return res;
+}
+
+export async function getSkills(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
+export async function getSectors(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }

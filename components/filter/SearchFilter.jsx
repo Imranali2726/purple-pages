@@ -22,12 +22,12 @@ export default function SearchFilter({ handleSubmit, listPage = false }) {
           </div>
         ))}
 
-        <div className="mt-4 md:pl-4 lg:mt-0">
+        <div className="mt-4 lg:pl-4 lg:mt-0 lg:h-[calc(100%_+_34px)] lg:w-[calc(100%_+_17px)]">
           <button
             disabled={disabled}
             type="submit"
             className={`
-           bg-primary rounded-lg py-4 px-6 w-full text-white transition  ${
+           bg-primary rounded-[11px] lg:text-xl lg:h-full lg:rounded-l-none py-4 px-6 w-full text-white transition  ${
              disabled ? "opacity-60" : "hover:bg-[#2CB579]"
            }`}
           >

@@ -13,7 +13,11 @@ export default function SearchList({ data, error, loading }) {
             <SingleListingResult singleListData={item} key={item.id} />
           ))
         ) : (
-          <p className="text-sm text-red-500"> No data found. </p>
+          <img
+            src="/images/data-not-found.jpg"
+            alt=""
+            className="mx-auto w-full object-contain"
+          />
         )}
       </div>
     );
