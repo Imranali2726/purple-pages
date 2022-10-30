@@ -712,12 +712,12 @@ export default function PostCV() {
               </div>
             )}
             <div className="max-w-[1350px] mx-auto py-10 text-end px-4">
-              <button
-                type="button"
-                className="bg-[#B9B9B9] px-8 py-4 text-white rounded-md"
-              >
-                Preview
-              </button>
+              {/* <button
+                  type="button"
+                  className="bg-[#B9B9B9] px-8 py-4 text-white rounded-md"
+                >
+                  Preview
+                </button> */}
               {session.status === "authenticated" ? (
                 <button
                   type="submit"

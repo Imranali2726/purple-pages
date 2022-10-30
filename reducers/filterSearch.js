@@ -24,6 +24,9 @@ const filterSearch = createSlice({
       }
       state.value[name] = state.value[name]?.filter((item) => item !== value);
     },
+    resetFilterData: (state) => {
+      state.value = {};
+    },
     loadOnPageReload: (state, { payload }) => {
       const a = payload && Object.keys(payload);
       const b = payload;
@@ -38,5 +41,9 @@ const filterSearch = createSlice({
 });
 
 export default filterSearch.reducer;
-export const { setFilterData, removeFilterData, loadOnPageReload } =
-  filterSearch.actions;
+export const {
+  setFilterData,
+  removeFilterData,
+  loadOnPageReload,
+  resetFilterData,
+} = filterSearch.actions;

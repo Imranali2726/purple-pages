@@ -274,7 +274,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                 <SingleFeature
                   data={item}
                   key={item.id}
-                  subAccessibilityFeatures={service?.sub_accessibility_features}
+                  subAccessibilityFeatures={data?.education_services}
                 />
               ))}
             </ul>
@@ -334,7 +334,12 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
           <div className="mt-4 md:mt-8">
             <Slider>
               {slider4.map((item) => (
-                <SliderSlide text={item.text} img={item.img} key={item.text} />
+                <SliderSlide
+                  text={item.text}
+                  img={item.img}
+                  key={item.text}
+                  slug="#"
+                />
               ))}
             </Slider>
           </div>

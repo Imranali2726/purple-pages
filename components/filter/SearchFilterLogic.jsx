@@ -88,6 +88,7 @@ export default function SearchFilterLogic() {
               : router.query.service,
         }),
       );
+
       dispatch(setIsEdited("services"));
       getTypes(
         router.query.service === "candidates" ? "jobs" : router.query.service,
@@ -134,9 +135,12 @@ export default function SearchFilterLogic() {
           <option value="0" disabled hidden>
             Who I am?
           </option>
-          <option>Option 1</option>
-          <option>Option 2</option>
-          <option>Option 3</option>
+          <option value="person-of-determination">
+            Person of Determination
+          </option>
+          <option value="carer-parent">Carer-Parent</option>
+          <option value="professional">Professional</option>
+          <option value="others">Others</option>
         </select>
       ),
     },

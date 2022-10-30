@@ -91,3 +91,16 @@ export async function getSectors(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }
+
+export async function featuredEducations(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
+export async function featuredJobs(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
+export async function getCandidate(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}

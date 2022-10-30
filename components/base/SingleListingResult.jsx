@@ -29,7 +29,7 @@ export default function SingleListingResult({ singleListData }) {
         {router.query.listing === "find-a-candidate" ? (
           <img
             src="/images/image-placeholder.png"
-            alt=""
+            alt="Placeholder for Candidate"
             className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
               router.query.service === "jobs"
                 ? "object-contain p-4"
@@ -43,7 +43,11 @@ export default function SingleListingResult({ singleListData }) {
                 ? singleListData?.image
                 : "/images/image-placeholder.png"
             }
-            alt=""
+            alt={
+              singleListData?.image || singleListData?.image !== ""
+                ? singleListData?.name
+                : "Placeholder"
+            }
             className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
               router.query.service === "jobs"
                 ? "object-contain p-4"
@@ -156,7 +160,9 @@ export default function SingleListingResult({ singleListData }) {
             )}
             {(router.query.service === "jobs" ||
               router.query.service === "candidates") && (
-              <p className="text-[#737373] text-sm ">4 days ago</p>
+              <p className="text-[#737373] text-sm ">
+                {singleListData?.created_at}
+              </p>
             )}
             <div>
               {router.query.listing !== "find-a-candidate" ? (

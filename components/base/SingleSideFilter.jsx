@@ -32,7 +32,7 @@ export default function SingleSideFilter({ singleFilterData }) {
         </span>
       </button>
       <div
-        className={`overflow-autos bg-[#F1ECF7] max-h-[500px] transition-[height_500ms_ease-in-out] ${
+        className={`overflow-auto bg-[#F1ECF7] max-h-[500px] transition-[height_500ms_ease-in-out] ${
           isActive ? "border border-t-0" : ""
         }`}
         ref={ref}
@@ -42,6 +42,13 @@ export default function SingleSideFilter({ singleFilterData }) {
           {singleFilterData?.filters?.map((item) => (
             <BaseSideFilter
               name={singleFilterData?.key}
+              item={item}
+              key={item.id + item.name}
+            />
+          ))}
+          {singleFilterData?.sub_accessibility_features?.map((item) => (
+            <BaseSideFilter
+              name="sub_accessibility_features"
               item={item}
               key={item.id + item.name}
             />
@@ -69,11 +76,11 @@ export function BaseSideFilter({ name, item }) {
     <>
       <input
         type="checkbox"
-        name={name.toLowerCase()}
+        name={name?.toLowerCase()}
         id={item?.name}
-        value={item.value}
-        defaultChecked={filterSearch[name.toLowerCase()]?.includes(
-          item?.value?.toString(),
+        value={item?.value ?? item?.id}
+        defaultChecked={filterSearch[name?.toLowerCase()]?.includes(
+          item?.value?.toString() ?? item?.id?.toString(),
         )}
         className="hidden filter-checkbox"
         onChange={handleFilterChange}

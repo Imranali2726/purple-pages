@@ -4,7 +4,6 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/router";
 import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
-import Script from "next/script";
 import Layout from "./layout";
 import store from "../services/store";
 
@@ -22,7 +21,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
 
   return (
     <>
-      <Script id="accessbi" strategy="afterInteractive">
+      {/* <Script id="accessbi" strategy="lazyOnload">
         {` (function(){
         var s    = document.createElement('script');
         var h    = document.querySelector('head') || document.body;
@@ -58,7 +57,7 @@ function MyApp({ Component, pageProps: { session, ...pageProps } }) {
         };
         h.appendChild(s);
     })();`}
-      </Script>
+      </Script> */}
       <Provider store={store}>
         <SessionProvider session={session}>
           <Layout>

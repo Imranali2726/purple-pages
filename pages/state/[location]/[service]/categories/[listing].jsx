@@ -38,7 +38,6 @@ export default function Listing() {
   const session = useSession();
 
   async function getEducationListing(p) {
-    // const url = `jobs${p ? `?${p}` : ""}`;
     setError("");
     const url = `${`state/${router.query.location}/${router.query.service}/categories/${router.query.listing}`}${
       p ? `?${p}` : ""
@@ -68,7 +67,7 @@ export default function Listing() {
           (router.query.service === "candidates"
             ? "jobs"
             : router.query.service)
-        }-filters`,
+        }/categories/${searchParams.type ?? router.query.listing}/filters`,
       );
       setFilters(res.data.data);
       setLoading((p) => ({ ...p, filters: false }));
@@ -97,7 +96,7 @@ export default function Listing() {
         { scroll: false },
       );
     }
-
+    // dispatch(resetFilterData());
     getServiceFilters();
   };
 
@@ -168,12 +167,37 @@ export default function Listing() {
   }, [filterSearch]);
 
   function getTitle() {
-    if (router.query.service === "educations") return "Institute";
+    if (
+      router.query.service === "educations" &&
+      router.query.listing === "professional-training"
+    ) {
+      return "Find the Right Trainer";
+    }
+    if (router.query.service === "educations")
+      return "Find the Right Organization";
+
     if (router.query.service === "jobs") {
-      return "Job";
+      return "Find your Perfect Job";
     }
 
-    return "Candidate";
+    return "Find the Right Candidate";
+  }
+
+  function getSubTitle() {
+    if (
+      router.query.service === "educations" &&
+      router.query.listing === "professional-training"
+    ) {
+      return "Which Trainer are you looking for?";
+    }
+    if (router.query.service === "educations")
+      return "What facility are you looking for?";
+
+    if (router.query.service === "jobs") {
+      return "What exciting new positions are you looking for?";
+    }
+
+    return "Which candidate are you looking for?";
   }
 
   return (
@@ -192,10 +216,10 @@ export default function Listing() {
         <div className="internal-header-overlay h-full">
           <div className="pp-container relative pt-10 lg:top-[50%] lg:-translate-y-[75%]">
             <h1 className="text-[36px] md:text-[48px] lg:text-[56px] font-bold text-white ">
-              Find the Right {getTitle()}
+              {getTitle()}
             </h1>
             <p className="text-lg md:text-xl xl:text-2xl text-white -mt-1">
-              What are you looking for ?
+              {getSubTitle()}
             </p>
           </div>
         </div>

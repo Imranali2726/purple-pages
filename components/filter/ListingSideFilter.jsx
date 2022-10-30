@@ -14,9 +14,15 @@ function ListingSideFilter({ loading, error, filters }) {
 
   return (
     <div>
-      {filters?.map((item) => (
-        <SingleSideFilter singleFilterData={item} key={item.key} />
-      ))}
+      {filters?.map((item) =>
+        item?.key === "accessibility_needs" ? (
+          item?.filters?.map((c) => (
+            <SingleSideFilter singleFilterData={c} key={c.id} />
+          ))
+        ) : (
+          <SingleSideFilter singleFilterData={item} key={item.key} />
+        ),
+      )}
     </div>
   );
 }

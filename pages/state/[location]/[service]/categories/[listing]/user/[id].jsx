@@ -1,20 +1,22 @@
 import { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
-import { MdLocationPin, MdOutlineLocationOn } from "react-icons/md";
+import { MdOutlineLocationOn } from "react-icons/md";
 import { BsFillTelephoneFill } from "react-icons/bs";
 import { HiMail } from "react-icons/hi";
 import Link from "next/link";
 import ReactHtmlParser from "react-html-parser";
 import Head from "next/head";
-
-const locationIcon = { className: "fill-white w-6 h-6" };
+import { getCandidate } from "../../../../../../../services/apiCalls";
 
 const contactIcon = {
   className: "fill-primary text-primary pt-1 w-6 h-6",
 };
 
-function Id({ data }) {
+export default function Id({ data }) {
+  console.log(data);
+
   const [mounted, setMounted] = useState(false);
+
   const links = [
     { label: "About", link: "#about" },
     { label: "Contact Information", link: "#contact-information" },
@@ -29,22 +31,16 @@ function Id({ data }) {
   return (
     <>
       <Head>
-        <title>John Doe</title>
+        <title>{data?.name}</title>
       </Head>
       <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex flex-col pp-container relative top-[50%] translate-y-[-50%]">
-          <h1 className="capitalize text-lg lg:text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
-            {data?.name ?? "John Doe"}
+          <h1 className="capitalize text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
+            {data?.name}
           </h1>
           <div className="flex items-start mt-1 md:mt-4">
-            <div>
-              {" "}
-              <IconContext.Provider value={locationIcon}>
-                <MdLocationPin />
-              </IconContext.Provider>
-            </div>
-            <p className="text-sm lg:text-base xl:text-lg text-white capitalize">
-              {data?.address ?? "Professional Photographer"}
+            <p className="text-base xl:text-lg text-white capitalize">
+              {data?.title}
             </p>
           </div>
         </div>
@@ -75,9 +71,9 @@ function Id({ data }) {
         </h2>
 
         <div className="flex flex-col md:flex-row md:items-start gap-8 mt-2 md:mt-6 xl:mt-11">
-          {data?.content && mounted ? (
+          {data?.about_yourself && mounted ? (
             <div className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9">
-              {ReactHtmlParser(data?.content)}
+              {ReactHtmlParser(data?.about_yourself)}
             </div>
           ) : (
             <p className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9">
@@ -116,7 +112,7 @@ function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <BsFillTelephoneFill />
               </IconContext.Provider>
-              +880 1234 567890{" "}
+              {data?.phone ?? "+000000000"}{" "}
             </span>
             <span className="hidden md:inline">|</span>
             <span className="flex items-center gap-2 ">
@@ -124,7 +120,7 @@ function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <HiMail />
               </IconContext.Provider>
-              contact@yourmail.com{" "}
+              {data?.email ?? "abcdef@email.com"}{" "}
             </span>
             <span className="hidden md:inline">|</span>
             <span className="flex items-center gap-2 ">
@@ -132,7 +128,8 @@ function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <MdOutlineLocationOn />
               </IconContext.Provider>
-              Streop Rd, Peosur, Inphodux, USA.
+              {data?.address ??
+                "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
             </span>
           </div>
         </div>
@@ -144,44 +141,28 @@ function Id({ data }) {
               Educational Experience
             </h3>
             <div className="shadow-[0_0_6px_#00000029] mt-6 md:mt-10">
-              <div className="mx-6 md:mx-10 border-b py-6 md:py-10">
-                <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-8">
-                  Master Degree
-                </p>
-                <p>
-                  <span className="text-sm text-[#B9B9B9]">
-                    University of Oxford
-                  </span>
-                  <span> / </span>
-                  <span className="text-sm text-[#642CA9]">
-                    Jan 2015 - Dec 2017
-                  </span>
-                </p>
-                <p className="text-[#737373] lg:text-lg mt-3">
-                  Uniquely incentivize process-centric systems for reliable
-                  market. Authoritatively scale next generation collaboration.
-                  Globally morph 24/365 e-commerce.
-                </p>
-              </div>
-              <div className="mx-6 md:mx-10 border-b py-6 md:py-10">
-                <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-8">
-                  Bachelor Degree
-                </p>
-                <p>
-                  <span className="text-sm text-[#B9B9B9]">
-                    University of California
-                  </span>
-                  <span> / </span>
-                  <span className="text-sm text-[#642CA9]">
-                    Jan 2015 - Dec 2017
-                  </span>
-                </p>
-                <p className="text-[#737373] lg:text-lg mt-3">
-                  Uniquely incentivize process-centric systems for reliable
-                  market. Authoritatively scale next generation collaboration.
-                  Globally morph 24/365 e-commerce.
-                </p>
-              </div>
+              {data?.user_education_history?.map((item) => (
+                <div
+                  className="mx-6 md:mx-10 first:border-0 border-b py-6 md:py-10"
+                  key={`${item?.id} ${item?.name}`}
+                >
+                  <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
+                    {item?.degree}
+                  </p>
+                  <p>
+                    <span className="text-sm text-[#B9B9B9]">{item?.name}</span>
+                    <span> / </span>
+                    <span className="text-sm text-[#642CA9]">
+                      {item?.start_date} - {item?.end_date}
+                    </span>
+                  </p>
+                  <p className="text-[#737373] lg:text-lg mt-3">
+                    Uniquely incentivize process-centric systems for reliable
+                    market. Authoritatively scale next generation collaboration.
+                    Globally morph 24/365 e-commerce.
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
           <div>
@@ -189,40 +170,30 @@ function Id({ data }) {
               Working Experience
             </h2>
             <div className="shadow-[0_0_6px_#00000029] mt-6 md:mt-10">
-              <div className="mx-6 md:mx-10 border-b py-6 md:py-10">
-                <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-8">
-                  Lead UI/UX Designer
-                </p>
-                <p>
-                  <span className="text-sm text-[#B9B9B9]">Codex Coder</span>
-                  <span> / </span>
-                  <span className="text-sm text-[#642CA9]">
-                    Jan 2015 - Dec 2017
-                  </span>
-                </p>
-                <p className="text-[#737373] lg:text-lg mt-3">
-                  Uniquely incentivize process-centric systems for reliable
-                  market. Authoritatively scale next generation collaboration.
-                  Globally morph 24/365 e-commerce.
-                </p>
-              </div>
-              <div className="mx-6 md:mx-10 border-b py-6 md:py-10">
-                <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-8">
-                  UI/UX Designer
-                </p>
-                <p>
-                  <span className="text-sm text-[#B9B9B9]">Webcode Ltd.</span>
-                  <span> / </span>
-                  <span className="text-sm text-[#642CA9]">
-                    Jan 2015 - Dec 2017
-                  </span>
-                </p>
-                <p className="text-[#737373] lg:text-lg mt-3">
-                  Uniquely incentivize process-centric systems for reliable
-                  market. Authoritatively scale next generation collaboration.
-                  Globally morph 24/365 e-commerce.
-                </p>
-              </div>
+              {data?.user_experience?.map((item) => (
+                <div
+                  className="mx-6 md:mx-10 first:border-0 border-b py-6 md:py-10"
+                  key={`${item?.id} ${item?.name}`}
+                >
+                  <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
+                    {item?.name}
+                  </p>
+                  <p>
+                    <span className="text-sm text-[#B9B9B9]">
+                      {item?.company_name}
+                    </span>
+                    <span> / </span>
+                    <span className="text-sm text-[#642CA9]">
+                      {item?.start_date} - {item?.end_date}
+                    </span>
+                  </p>
+                  <p className="text-[#737373] lg:text-lg mt-3">
+                    Uniquely incentivize process-centric systems for reliable
+                    market. Authoritatively scale next generation collaboration.
+                    Globally morph 24/365 e-commerce.
+                  </p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -309,4 +280,17 @@ function Id({ data }) {
   );
 }
 
-export default Id;
+export async function getServerSideProps(context) {
+  try {
+    const res = await getCandidate(`candidates/${context.query.id}`);
+    return {
+      props: {
+        data: res.data.data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: { error: error.message },
+    };
+  }
+}
