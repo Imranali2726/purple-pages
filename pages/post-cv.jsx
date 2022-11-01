@@ -276,7 +276,7 @@ export default function PostCV() {
 
     axios
       .get(
-        "http://localhost:8000/sanctum/csrf-cookie",
+        `${process.env.BASE_UAT_SERVER}sanctum/csrf-cookie`,
         { Accept: "*/*" },
         {
           withCredentials: true,
@@ -285,7 +285,7 @@ export default function PostCV() {
       .then(() => {
         axios({
           method: "PUT",
-          url: `${process.env.BASE_URL_LOCAL}user/cv/update/${session?.data?.user.user_id}`,
+          url: `${process.env.BASE_URL_UAT}user/cv/update/${session?.data?.user.user_id}`,
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",
