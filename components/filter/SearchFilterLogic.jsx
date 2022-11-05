@@ -182,7 +182,7 @@ export default function SearchFilterLogic() {
           id="services"
           style={{ color: edit?.services ? "black" : "#9e9e9e" }}
           name="services"
-          disabled={loading?.services}
+          disabled={services.length > 0 ?? loading?.services}
           onChange={handleServicesChange}
         >
           <option value="0" disabled hidden>
