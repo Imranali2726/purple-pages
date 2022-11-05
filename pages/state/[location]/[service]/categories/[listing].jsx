@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from "react-redux";
 import queryString from "query-string";
 import { IconContext } from "react-icons";
 import Head from "next/head";
-import { startCase } from "lodash";
 import { HiLocationMarker } from "react-icons/hi";
 import Link from "next/link";
 import { useSession } from "next-auth/react";
@@ -65,13 +64,14 @@ export default function Listing() {
         `${
           searchParams.services ??
           (router.query.service === "candidates"
-            ? "jobs"
+            ? "employments"
             : router.query.service)
         }/categories/${searchParams.type ?? router.query.listing}/filters`,
       );
       setFilters(res.data.data);
       setLoading((p) => ({ ...p, filters: false }));
     } catch (error) {
+      setFilters([]);
       setError({ ...error, filters: error.message });
       setLoading((p) => ({ ...p, filters: false }));
     }
@@ -176,7 +176,7 @@ export default function Listing() {
     if (router.query.service === "educations")
       return "Find the Right Organization";
 
-    if (router.query.service === "jobs") {
+    if (router.query.service === "employments") {
       return "Find your Perfect Job";
     }
 
@@ -193,7 +193,7 @@ export default function Listing() {
     if (router.query.service === "educations")
       return "What facility are you looking for?";
 
-    if (router.query.service === "jobs") {
+    if (router.query.service === "employments") {
       return "What exciting new positions are you looking for?";
     }
 
@@ -203,7 +203,12 @@ export default function Listing() {
   return (
     <>
       <Head>
-        <title>{startCase(router.query?.service)} Listing</title>
+        <title>Purple Pages | Listing</title>
+        <style>
+          {`.signInBtn{
+              background-color: #c999ef !important;
+            }`}
+        </style>
       </Head>
       {popupActive && <AuthenticationPopup setPopupActive={setPopupActive} />}
       {signInPopupActive && (
@@ -228,7 +233,7 @@ export default function Listing() {
         <div className="absolute top-[-230px] lg:-top-[45px] inset-x-0">
           <div className="px-8 md:px-0 md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1200px] 2xl:max-w-[1320px] mx-auto ">
             <SearchFilter handleSubmit={handleSubmit} listPage />
-            {(router.query.service === "jobs" ||
+            {(router.query.service === "employments" ||
               router.query.service === "candidates") && (
               <div className="text-center mt-4">
                 <p>
@@ -256,7 +261,7 @@ export default function Listing() {
         </div>
       </section>
       <section className="mt-8 lg:mt-[75px] pp-container">
-        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[340px_1fr] gap-8 xl:gap-16">
+        <div className="grid grid-cols-1 lg:grid-cols-[280px_1fr] xl:grid-cols-[365px_1fr] gap-8 xl:gap-16">
           <ListingSideFilter
             loading={loading.filters}
             error={error.filters}

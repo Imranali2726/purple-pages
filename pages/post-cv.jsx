@@ -75,6 +75,7 @@ export default function PostCV() {
   const [selectedJobType, setSelectedJobType] = useState([]);
   const [jobType, setJobType] = useState([]);
   const session = useSession();
+  const env = process.env.NODE_ENV;
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -285,7 +286,11 @@ export default function PostCV() {
       .then(() => {
         axios({
           method: "PUT",
-          url: `${process.env.BASE_URL_UAT}user/cv/update/${session?.data?.user.user_id}`,
+          url: `${
+            env === "development"
+              ? process.env.BASE_URL_LOCAL
+              : process.env.BASE_URL_UAT
+          }user/cv/update/${session?.data?.user.user_id}`,
           headers: {
             Accept: "application/json",
             "Content-Type": "application/json",

@@ -7,22 +7,27 @@ import { FaEnvelope } from "react-icons/fa";
 import { MdOutlineWeb } from "react-icons/md";
 import { IconContext } from "react-icons";
 import Slider from "../base/Slider";
+import { FeaturedSlider } from "../../pages";
 import AccessibilityFeaturerContainer from "../features/AccessibilityFeaturerContainer";
 // import {
 //   schoolService,
 //   inclusion,
 //   therapy,
 // } from "../../fakeData/accessibilityFeatures";
-import { getServiceFeatures } from "../../services/apiCalls";
+import {
+  getServiceFeatures,
+  featuredEducations,
+} from "../../services/apiCalls";
 import SingleFeature from "../features/SingleFeature";
-import { slider4 } from "../../fakeData/homepage";
-import SliderSlide from "../base/SliderSlide";
-import ReviewSlide from "../base/ReviewSlide";
+// import ReviewSlide from "../base/ReviewSlide";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
 
 function EducationTemplate({ mounted, data, accessbilityFeatures }) {
   const [servicesFeatures, setServicesFeatures] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [educations, setEducations] = useState([]);
+  const [educationError, setEducationError] = useState("");
   const images = [
     {
       id: 0,
@@ -56,8 +61,21 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
     setServicesFeatures(res.data.data);
   }
 
+  async function getFeaturedEducations() {
+    setIsLoading(true);
+    try {
+      const res = await featuredEducations("educations?feature=1");
+      setEducations(res.data.data.data);
+      setIsLoading(false);
+    } catch (error) {
+      setEducationError(error.message);
+      setIsLoading(false);
+    }
+  }
+
   useEffect(() => {
     if (servicesFeatures.length <= 0) getServices();
+    if (educations.length <= 0) getFeaturedEducations();
   }, []);
 
   return (
@@ -281,7 +299,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
           </div>
         </section>
       ))}
-      <section className="pp-container my-10">
+      {/* <section className="pp-container my-10">
         <h3 className="font-bold text-lg md:text-xl lg:text-2xl">Review</h3>
         <div className="mt-10">
           <Slider
@@ -325,26 +343,24 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
             </button>
           </div>
         </div>
-      </section>
-      <section className="pp-container ">
-        <div className="mt-12 md:mt-[65px] xl:mt-[128px]">
-          <h3 className="font-bold text-lg md:text-xl lg:text-2xl">
-            Similar Schools
-          </h3>
-          <div className="mt-4 md:mt-8">
-            <Slider>
-              {slider4.map((item) => (
-                <SliderSlide
-                  text={item.text}
-                  img={item.img}
-                  key={item.text}
-                  slug="#"
-                />
-              ))}
-            </Slider>
+      </section> */}
+      {educations?.length > 0 && (
+        <section className="pp-container ">
+          <div className="mt-12 md:mt-[65px] xl:mt-[128px]">
+            <h3 className="font-bold text-lg md:text-xl lg:text-2xl">
+              Similar Schools
+            </h3>
+            <div className="mt-4 md:mt-8">
+              <FeaturedSlider
+                educationError={educationError}
+                educations={educations}
+                isLoading={isLoading}
+                name="educations"
+              />
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </>
   );
 }

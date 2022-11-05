@@ -31,7 +31,7 @@ export default function SingleListingResult({ singleListData }) {
             src="/images/image-placeholder.png"
             alt="Placeholder for Candidate"
             className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
-              router.query.service === "jobs"
+              router.query.service === "employments"
                 ? "object-contain p-4"
                 : "object-cover"
             } object-center`}
@@ -49,7 +49,7 @@ export default function SingleListingResult({ singleListData }) {
                 : "Placeholder"
             }
             className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
-              router.query.service === "jobs"
+              router.query.service === "employments"
                 ? "object-contain p-4"
                 : "object-cover"
             } object-center`}
@@ -89,7 +89,7 @@ export default function SingleListingResult({ singleListData }) {
                 </div>
               )}
 
-              {mounted && router.query.service === "jobs" && (
+              {mounted && router.query.service === "employments" && (
                 <div className="mt-4 text-[#737373] text-sm leading-4">
                   {ReactHtmlParser(singleListData?.sub_title)}
                 </div>
@@ -106,7 +106,7 @@ export default function SingleListingResult({ singleListData }) {
                   <SingleFeaturesResult />
                 </>
               )}
-              {router.query.service === "jobs" &&
+              {router.query.service === "employments" &&
                 router.query.listing === "find-a-job" && (
                   <ul className="mt-4">
                     <li className="mb-2 text-[#737373] text-sm capitalize flex items-center gap-2">
@@ -158,7 +158,7 @@ export default function SingleListingResult({ singleListData }) {
                 <p className="text-[#737373] text-sm">Louise Dawson</p>
               </div>
             )}
-            {(router.query.service === "jobs" ||
+            {(router.query.service === "employments" ||
               router.query.service === "candidates") && (
               <p className="text-[#737373] text-sm ">
                 {singleListData?.created_at}

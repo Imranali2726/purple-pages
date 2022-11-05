@@ -12,6 +12,7 @@ export default function Navbar() {
   const [popupActive, setPopupActive] = useState(false);
   const [signInPopupActive, setSignInPopupActive] = useState(false);
   const [businessPopup, setBusinessPopup] = useState(false);
+  const [dropdown, setDropdown] = useState(false);
   const headerRef = useRef();
   const navRef = useRef();
   const session = useSession();
@@ -100,26 +101,50 @@ export default function Navbar() {
                   ))}
                 </ul>
               </nav>
-              <div>
+              <div className="relative">
                 {session.status !== "authenticated" && (
                   <button
                     type="button"
                     onClick={() => setSignInPopupActive(true)}
                     className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
-                rounded-lg pp-shadow"
+                  rounded-lg pp-shadow signInBtn"
                   >
                     Sign In/Register
                   </button>
                 )}
                 {session.status === "authenticated" && (
-                  <button
-                    type="button"
-                    onClick={() => signOut()}
-                    className="bg-primary text-white font-medium xl:text-lg xl:font-semibold p-4 
-                  rounded-lg pp-shadow"
-                  >
-                    Logout
-                  </button>
+                  <>
+                    <button
+                      type="button"
+                      className="flex items-center gap-1"
+                      onClick={() => setDropdown(!dropdown)}
+                    >
+                      <img
+                        src="/images/image-placeholder.png"
+                        alt=""
+                        className=" w-14 h-14 rounded-full"
+                      />
+                    </button>
+                    {dropdown && (
+                      <div className="absolute right-0 top-16 px-4 py-2 bg-white shadow-lg w-[200px] rounded-md">
+                        <ul className="flex flex-col items-center">
+                          <li className="font-semibold">
+                            {session?.data?.user?.name}
+                          </li>
+                          <li className="mt-2 w-full">
+                            <button
+                              type="button"
+                              onClick={() => signOut()}
+                              className="px-3 py-1 bg-[#642CA9] rounded text-white font-semibold w-full "
+                            >
+                              {" "}
+                              Logout
+                            </button>
+                          </li>
+                        </ul>
+                      </div>
+                    )}
+                  </>
                 )}
               </div>
             </div>

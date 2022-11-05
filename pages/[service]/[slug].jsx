@@ -39,6 +39,11 @@ export default function Slug({ data }) {
             ? "Anonymous"
             : data?.name}
         </title>
+        <style>
+          {`.signInBtn{
+              background-color: #c999ef !important;
+            }`}
+        </style>
       </Head>
       <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex items-center h-full pp-container">

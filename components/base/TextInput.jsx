@@ -18,7 +18,7 @@ export default function TextInput({
     <div className={className}>
       <label htmlFor={id} className="flex flex-col gap-y-3 w-full">
         {label && (
-          <span className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex items-center justify-between">
+          <span className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373] flex items-center justify-between">
             {label}
             {anonymous && (
               <label htmlFor={`is_${name}_anonymous`} className="flex">

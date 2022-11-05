@@ -16,7 +16,7 @@ export default function SelectInput({
     <div className={className}>
       <label htmlFor={name} className="flex flex-col gap-y-3 w-full">
         {label && (
-          <span className="font-semibold block text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373]">
+          <span className="font-semibold block text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373]">
             {label}
           </span>
         )}

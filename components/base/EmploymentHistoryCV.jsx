@@ -89,7 +89,7 @@ function EmploymentHistoryCV({
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
             htmlFor="job_start_month"
-            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
+            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373] flex flex-col gap-y-3"
           >
             Start Date
             <input
@@ -110,7 +110,7 @@ function EmploymentHistoryCV({
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
             htmlFor="job_end_month"
-            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
+            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373] flex flex-col gap-y-3"
           >
             <div className="flex items-center justify-between">
               End Date

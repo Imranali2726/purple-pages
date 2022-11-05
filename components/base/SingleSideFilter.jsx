@@ -36,7 +36,9 @@ export default function SingleSideFilter({ singleFilterData }) {
           isActive ? "border border-t-0" : ""
         }`}
         ref={ref}
-        style={{ height: isActive ? ref.current.scrollHeight + 10 : "0px" }}
+        style={{
+          height: isActive ? `${ref.current.scrollHeight}px` : "0px",
+        }}
       >
         <div className="flex flex-wrap gap-x-1 gap-y-3 p-4">
           {singleFilterData?.filters?.map((item) => (

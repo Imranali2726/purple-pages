@@ -3,7 +3,6 @@ import { MdDelete } from "react-icons/md";
 import { startCase } from "lodash";
 import { IconContext } from "react-icons";
 import TextInput from "./TextInput";
-import SelectInput from "./SelectInput";
 
 const editIcon = { className: "w-6 h-6" };
 function EducationHistoryCV({
@@ -72,7 +71,7 @@ function EducationHistoryCV({
           error={errors.degree}
           onChange={handleInput}
         />
-        <SelectInput
+        <TextInput
           className="w-full lg:w-[calc(50%_-_16px)]"
           label="Others"
           name="others"
@@ -80,16 +79,11 @@ function EducationHistoryCV({
           value={item.others}
           error={errors.others}
           onChange={handleInput}
-        >
-          <option>Select</option>
-          <option value="1">Ajman</option>
-          <option value="2">Dubai</option>
-          <option value="3">Abu Dhabi</option>
-        </SelectInput>
+        />
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
             htmlFor="start_date"
-            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
+            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373] flex flex-col gap-y-3"
           >
             Start Date
             <input
@@ -110,7 +104,7 @@ function EducationHistoryCV({
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
             htmlFor="end_date"
-            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[25px] text-[#737373] flex flex-col gap-y-3"
+            className="font-semibold text-base lg:text-lg xl:text-xl 2xl:text-[22px] text-[#737373] flex flex-col gap-y-3"
           >
             <div className="flex items-center justify-between">
               End Date

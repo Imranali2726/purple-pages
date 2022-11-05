@@ -8,7 +8,7 @@ export default async function calls(
   params,
   cancelToken,
 ) {
-  const env = "uat";
+  const env = process.env.NODE_ENV;
   const url =
     env === "development"
       ? process.env.BASE_URL_LOCAL
