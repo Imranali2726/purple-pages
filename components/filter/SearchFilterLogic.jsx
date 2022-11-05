@@ -84,14 +84,16 @@ export default function SearchFilterLogic() {
           name: "services",
           value:
             router.query.service === "candidates"
-              ? "jobs"
+              ? "employments"
               : router.query.service,
         }),
       );
 
       dispatch(setIsEdited("services"));
       getTypes(
-        router.query.service === "candidates" ? "jobs" : router.query.service,
+        router.query.service === "candidates"
+          ? "employments"
+          : router.query.service,
       );
     }
     if (router.query.listing && searchParams.type === undefined) {
