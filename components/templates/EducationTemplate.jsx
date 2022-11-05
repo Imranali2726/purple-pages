@@ -355,7 +355,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                 educationError={educationError}
                 educations={educations}
                 isLoading={isLoading}
-                name="educations"
+                name="/educations"
               />
             </div>
           </div>
