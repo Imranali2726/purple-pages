@@ -37,8 +37,8 @@ export default function SearchFilterLogic() {
     setLoading({ ...loading, services: true });
     try {
       const res = await getService();
-      setServices(res.data.data);
       setLoading({ ...loading, services: false });
+      setServices(res.data.data);
     } catch (error) {
       setLoading({ ...loading, services: false });
     }
