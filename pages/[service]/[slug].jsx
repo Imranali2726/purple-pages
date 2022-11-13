@@ -96,6 +96,10 @@ export default function Slug({ data }) {
 
 export async function getServerSideProps(context) {
   console.log(context.query);
+  const res = await detailPageData(
+    `${context.query.service}/${context.query.slug}`,
+  );
+  console.log(res.data.data);
   try {
     const res = await detailPageData(
       `${context.query.service}/${context.query.slug}`,
@@ -107,7 +111,6 @@ export async function getServerSideProps(context) {
     };
   } catch (error) {
     return {
-      props: {},
       redirect: {
         permanent: false,
         destination: "/404",
