@@ -87,7 +87,7 @@ export default function SingleListingResult({ singleListData }) {
               )}
               {mounted && router.query.service === "educations" && (
                 <>
-                  <div className="mt-1 text-lg font-semibold text-[#642CA9]">
+                  <div className="mt-1 font-semibold text-[#642CA9]">
                     Purple Highlights
                   </div>
                   <div className="mt-2 text-[#737373] text-sm leading-4 pl-4 inclusion">

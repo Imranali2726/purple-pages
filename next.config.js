@@ -2,7 +2,6 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-  trailingSlash: true,
   env: {
     BASE_URL_UAT: "https://purplepages.io/api/",
     BASE_URL_LOCAL: "http://localhost:8000/api/",
