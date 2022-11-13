@@ -13,6 +13,7 @@ export default function TextInput({
   border = false,
   anonymous = false,
   anonyFunc,
+  anonyChecked,
 }) {
   return (
     <div className={className}>
@@ -29,6 +30,7 @@ export default function TextInput({
                   id={`is_${name}_anonymous`}
                   className="ml-1"
                   onChange={anonyFunc}
+                  defaultChecked={anonyChecked}
                 />{" "}
               </label>
             )}

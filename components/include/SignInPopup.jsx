@@ -26,6 +26,8 @@ export default function SignInPopup({
   };
 
   async function handleSignInForm(e) {
+    e.preventDefault();
+    setErrors({});
     const res = validateLogin(data);
     if (res.error) {
       const a = res?.error?.details?.map((item) => ({
@@ -37,6 +39,7 @@ export default function SignInPopup({
         r = { ...r, [item.name]: item.message };
       });
       setErrors(r);
+      return;
     }
     signIn("credentials", {
       redirect: false,
@@ -49,9 +52,10 @@ export default function SignInPopup({
           setSignInPopupActive(false);
         }, 1000);
       }
-      if (res.error) console.log(res.error);
+      if (res.error) {
+        setErrors((p) => ({ ...p, email: res.error }));
+      }
     });
-    e.preventDefault();
   }
 
   function handleInputData(e) {
@@ -109,7 +113,7 @@ export default function SignInPopup({
                 onChange={(e) => handleInputData(e)}
               />
               {errors && (
-                <p className="text-xs text-red-500 mb-4">
+                <p className="text-xs text-red-500 mb-4 mt-1">
                   {startCase(errors?.email)}
                 </p>
               )}
@@ -118,11 +122,11 @@ export default function SignInPopup({
                 name="password"
                 id="password"
                 placeholder="Password"
-                className="bg-[#F5F5F5] px-3 py-3 rounded text-sm    "
+                className="bg-[#F5F5F5] px-3 py-3 rounded text-sm"
                 onChange={(e) => handleInputData(e)}
               />
               {errors && (
-                <p className="text-xs text-red-500 mb-4">
+                <p className="text-xs text-red-500 mb-4 mt-1">
                   {startCase(errors?.password)}
                 </p>
               )}

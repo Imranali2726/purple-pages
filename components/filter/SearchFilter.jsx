@@ -27,7 +27,7 @@ export default function SearchFilter({ handleSubmit, listPage = false }) {
             disabled={disabled}
             type="submit"
             className={`
-           bg-primary rounded-[11px] lg:text-xl lg:h-full lg:rounded-l-none py-4 px-6 w-full text-white transition  ${
+           bg-primary rounded-[11px] lg:text-xl lg:h-full lg:rounded-l-none py-4 px-6 w-full text-white transition font-semibold ${
              disabled ? "opacity-60" : "hover:bg-[#2CB579]"
            }`}
           >

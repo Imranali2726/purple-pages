@@ -1,7 +1,6 @@
 import { useState, useEffect } from "react";
 import { IconContext } from "react-icons";
 import { MdOutlineLocationOn, MdMonetizationOn } from "react-icons/md";
-import Rate from "rc-rate";
 import Link from "next/link";
 import ReactHtmlParser from "react-html-parser";
 import { startCase } from "lodash";
@@ -28,7 +27,10 @@ export default function SingleListingResult({ singleListData }) {
       <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-1 xl:grid-cols-[240px_1fr] 2xl:grid-cols-[290px_1fr]  border">
         {router.query.listing === "find-a-candidate" ? (
           <img
-            src="/images/image-placeholder.png"
+            src={
+              singleListData?.image?.original_url ??
+              "/images/image-placeholder.png"
+            }
             alt="Placeholder for Candidate"
             className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
               router.query.service === "employments"
@@ -84,7 +86,7 @@ export default function SingleListingResult({ singleListData }) {
                 </div>
               )}
               {mounted && router.query.service === "educations" && (
-                <div className="mt-4 text-[#737373] text-sm leading-4">
+                <div className="mt-4 text-[#737373] text-sm leading-4 pl-4 inclusion">
                   {ReactHtmlParser(singleListData?.inclusion_heighs)}
                 </div>
               )}
@@ -152,10 +154,10 @@ export default function SingleListingResult({ singleListData }) {
           <div className="mt-4 xl:mt-4 grid items-center grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-4 px-6 py-4 border-t">
             {router.query.service === "educations" && (
               <div className="flex items-center gap-5">
-                <div className="flex">
+                {/* <div className="flex">
                   <Rate value={5} />
                 </div>
-                <p className="text-[#737373] text-sm">Louise Dawson</p>
+                <p className="text-[#737373] text-sm">Louise Dawson</p> */}
               </div>
             )}
             {(router.query.service === "employments" ||

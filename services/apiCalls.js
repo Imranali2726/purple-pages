@@ -50,6 +50,10 @@ export async function getServiceFeatures(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }
+export async function getCountries(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
 
 export async function login(url, data) {
   const res = await calls("post", url, data, null, null);
@@ -87,6 +91,10 @@ export async function getSkills(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }
+export async function getAllSalaryScale(url) {
+  const res = await calls("get", url, null, null, null);
+  return res;
+}
 export async function getSectors(url) {
   const res = await calls("get", url, null, null, null);
   return res;
@@ -102,5 +110,31 @@ export async function featuredJobs(url) {
 }
 export async function getCandidate(url) {
   const res = await calls("get", url, null, null, null);
+  return res;
+}
+
+export async function uploadImage(url, data, token) {
+  const res = await calls(
+    "post",
+    url,
+    data,
+    {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "multipart/form-data",
+    },
+    null,
+  );
+  return res;
+}
+export async function getUserDetail(url, token) {
+  const res = await calls(
+    "get",
+    url,
+    null,
+    {
+      Authorization: `Bearer ${token}`,
+    },
+    null,
+  );
   return res;
 }

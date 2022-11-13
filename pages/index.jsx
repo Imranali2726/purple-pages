@@ -19,8 +19,8 @@ export default function Home() {
   async function getFeaturedEducations() {
     setIsLoading((p) => ({ ...p, educations: true }));
     try {
-      const res = await featuredEducations("educations?feature=1");
-      setEducations(res.data.data.data);
+      const res = await featuredEducations("educations?features=1");
+      setEducations(res.data.data);
       setIsLoading((p) => ({ ...p, educations: false }));
     } catch (error) {
       setEducationError(error.message);
@@ -30,8 +30,8 @@ export default function Home() {
   async function getFeaturedJobs() {
     setIsLoading((p) => ({ ...p, jobs: true }));
     try {
-      const res = await featuredJobs("jobs?feature=1");
-      setJobs(res.data.data.data);
+      const res = await featuredJobs("jobs?features=1");
+      setJobs(res.data.data);
       setIsLoading((p) => ({ ...p, jobs: false }));
     } catch (error) {
       setJobsError(error.message);
@@ -181,7 +181,9 @@ export function FeaturedSlider({
         educations?.map((item) => (
           <SliderSlide
             text={item.name}
-            img={item.image ?? "/images/image-placeholder.png"}
+            img={
+              item.images[0]?.original_url ?? "/images/image-placeholder.png"
+            }
             key={item.id}
             slug={`${name}/${item?.slug}`}
           />

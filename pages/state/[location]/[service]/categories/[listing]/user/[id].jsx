@@ -13,8 +13,6 @@ const contactIcon = {
 };
 
 export default function Id({ data }) {
-  console.log(data);
-
   const [mounted, setMounted] = useState(false);
 
   const links = [
@@ -28,6 +26,16 @@ export default function Id({ data }) {
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  function getImageSrc(src, anonymous) {
+    if (src) {
+      if (anonymous) {
+        return "/images/image-placeholder.png";
+      }
+      return src;
+    }
+    return "/images/image-placeholder.png";
+  }
   return (
     <>
       <Head>
@@ -41,7 +49,12 @@ export default function Id({ data }) {
       <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="flex flex-col pp-container relative top-[50%] translate-y-[-50%]">
           <h1 className="capitalize text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
-            {data?.name}
+            {Number(data?.is_first_name_anonymous) === 1
+              ? "*******"
+              : data?.first_name}{" "}
+            {Number(data?.is_last_name_anonymous) === 1
+              ? "******"
+              : data?.last_name}
           </h1>
           <div className="flex items-start mt-1 md:mt-4">
             <p className="text-base xl:text-lg text-white capitalize">
@@ -77,11 +90,11 @@ export default function Id({ data }) {
 
         <div className="flex flex-col md:flex-row md:items-start gap-8 mt-2 md:mt-6 xl:mt-11">
           {data?.about_yourself && mounted ? (
-            <div className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9">
+            <div className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9 flex-1">
               {ReactHtmlParser(data?.about_yourself)}
             </div>
           ) : (
-            <p className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9">
+            <p className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9  flex-1">
               Lorem Ipsum is simply dummy text of the printing and typesetting
               industry. Lorem Ipsum has been the industry&apos;s standard dummy
               text ever since the 1500s, when an unknown printer took a gall
@@ -98,9 +111,12 @@ export default function Id({ data }) {
           <div>
             <div className="w-full md:w-[284px]">
               <img
-                src="/images/image-placeholder.png"
+                src={getImageSrc(
+                  data?.image?.original_url,
+                  data?.is_photo_anonymous,
+                )}
                 alt=""
-                className="w-full md:w-[284px]"
+                className="w-full md:w-[284px] rounded-xl"
               />
             </div>
           </div>
@@ -117,7 +133,7 @@ export default function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <BsFillTelephoneFill />
               </IconContext.Provider>
-              {data?.phone ?? "+000000000"}{" "}
+              {data?.is_phone_anonymous ? "********" : data?.phone}
             </span>
             <span className="hidden md:inline">|</span>
             <span className="flex items-center gap-2 ">
@@ -125,7 +141,7 @@ export default function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <HiMail />
               </IconContext.Provider>
-              {data?.email ?? "abcdef@email.com"}{" "}
+              {data?.is_email_anonymous ? "*******@****.com" : data?.email}
             </span>
             <span className="hidden md:inline">|</span>
             <span className="flex items-center gap-2 ">
@@ -133,8 +149,7 @@ export default function Id({ data }) {
               <IconContext.Provider value={contactIcon}>
                 <MdOutlineLocationOn />
               </IconContext.Provider>
-              {data?.address ??
-                "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
+              {data?.is_address_anonymous ? "Hidden" : data?.address}
             </span>
           </div>
         </div>
@@ -148,7 +163,7 @@ export default function Id({ data }) {
             <div className="shadow-[0_0_6px_#00000029] mt-6 md:mt-10">
               {data?.user_education_history?.map((item) => (
                 <div
-                  className="mx-6 md:mx-10 first:border-0 border-b py-6 md:py-10"
+                  className="mx-6 md:mx-10 border-b py-6 md:py-10"
                   key={`${item?.id} ${item?.name}`}
                 >
                   <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
@@ -158,13 +173,12 @@ export default function Id({ data }) {
                     <span className="text-sm text-[#B9B9B9]">{item?.name}</span>
                     <span> / </span>
                     <span className="text-sm text-[#642CA9]">
-                      {item?.start_date} - {item?.end_date}
+                      {item?.start_date} -{" "}
+                      {item?.is_current ? "Currently Enrolled" : item?.end_date}
                     </span>
                   </p>
                   <p className="text-[#737373] lg:text-lg mt-3">
-                    Uniquely incentivize process-centric systems for reliable
-                    market. Authoritatively scale next generation collaboration.
-                    Globally morph 24/365 e-commerce.
+                    {item?.others}
                   </p>
                 </div>
               ))}
@@ -177,7 +191,7 @@ export default function Id({ data }) {
             <div className="shadow-[0_0_6px_#00000029] mt-6 md:mt-10">
               {data?.user_experience?.map((item) => (
                 <div
-                  className="mx-6 md:mx-10 first:border-0 border-b py-6 md:py-10"
+                  className="mx-6 md:mx-10 border-b py-6 md:py-10"
                   key={`${item?.id} ${item?.name}`}
                 >
                   <p className="md:text-lg xl:text-xl 2xl:text-2xl font-semibold mb-4">
@@ -189,7 +203,8 @@ export default function Id({ data }) {
                     </span>
                     <span> / </span>
                     <span className="text-sm text-[#642CA9]">
-                      {item?.start_date} - {item?.end_date}
+                      {item?.start_date} -{" "}
+                      {item?.is_current ? "Currently Employed" : item?.end_date}
                     </span>
                   </p>
                   <p className="text-[#737373] lg:text-lg mt-3">
@@ -210,36 +225,18 @@ export default function Id({ data }) {
               Skills
             </h2>
             <ul className="mt-10">
-              <li className="flex items-center gap-3 mb-4">
-                <img src="/images/feature-green.svg" alt="" />
-                <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
-                  School Funded Leader of Students
-                </p>
-              </li>
-              <li className="flex items-center gap-3 mb-4">
-                <img src="/images/feature-green.svg" alt="" />
-                <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
-                  School Funded Leader of Students
-                </p>
-              </li>
-              <li className="flex items-center gap-3 mb-4">
-                <img src="/images/feature-green.svg" alt="" />
-                <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
-                  School Funded Leader of Students
-                </p>
-              </li>
-              <li className="flex items-center gap-3 mb-4">
-                <img src="/images/feature-green.svg" alt="" />
-                <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
-                  School Funded Leader of Students
-                </p>
-              </li>
-              <li className="flex items-center gap-3 mb-4">
-                <img src="/images/feature-green.svg" alt="" />
-                <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
-                  School Funded Leader of Students
-                </p>
-              </li>
+              {data?.user_skills?.length > 0 &&
+                data?.user_skills?.map((skill) => (
+                  <li
+                    className="flex items-center gap-3 mb-4"
+                    key={skill.id + skill.name}
+                  >
+                    <img src="/images/feature-green.svg" alt="" />
+                    <p className="text-[#737373] text-sm lg:text-base xl:text-lg -mt-1">
+                      {skill?.name}
+                    </p>
+                  </li>
+                ))}
             </ul>
           </div>
           <div>

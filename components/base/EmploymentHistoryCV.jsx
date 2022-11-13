@@ -3,7 +3,6 @@ import { MdDelete } from "react-icons/md";
 import { IconContext } from "react-icons";
 import { startCase } from "lodash";
 import TextInput from "./TextInput";
-import SelectInput from "./SelectInput";
 
 const editIcon = { className: "w-6 h-6" };
 function EmploymentHistoryCV({
@@ -72,20 +71,17 @@ function EmploymentHistoryCV({
           type="text"
           onChange={handleInput}
         />
-        <SelectInput
+        <TextInput
+          label="Description"
           className="w-full lg:w-[calc(50%_-_16px)]"
-          label="Country"
-          name="country"
-          id="job_country"
-          error={errors.country}
-          value={item.country}
+          name="content"
+          id="content"
+          error={errors.content}
+          value={item.content}
+          type="text"
           onChange={handleInput}
-        >
-          <option>Select</option>
-          <option value="1">Ajman</option>
-          <option value="2">Dubai</option>
-          <option value="3">Abu Dhabi</option>
-        </SelectInput>
+        />
+
         <div className="w-full lg:w-[calc(50%_-_16px)] ">
           <label
             htmlFor="job_start_month"
@@ -126,7 +122,7 @@ function EmploymentHistoryCV({
                     id="employed"
                     className="ml-1"
                     onChange={handleInput}
-                    defaultChecked={item.is_current}
+                    checked={Number(item.is_current) === 1}
                   />
                 </label>
               </div>

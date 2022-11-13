@@ -53,13 +53,17 @@ export default function BusinessSignup({ setPopupActive }) {
       password,
       firstName,
       lastName,
-      phone: "+1-00000000",
-      dob: "2022-09-22",
+      type: "business",
+    }).then((res) => {
+      if (res.status === 200) {
+        setTimeout(() => {
+          setPopupActive(false);
+        }, 1000);
+      }
+      if (res.error) {
+        setErrors((p) => ({ ...p, email: res.error }));
+      }
     });
-
-    setTimeout(() => {
-      setPopupActive(false);
-    }, 1000);
   }
 
   return (

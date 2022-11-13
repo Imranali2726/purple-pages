@@ -1,5 +1,7 @@
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
+import { FiLogOut } from "react-icons/fi";
+import { VscAccount } from "react-icons/vsc";
 import { IconContext } from "react-icons";
 import { signOut, useSession } from "next-auth/react";
 import { useMemo, useState, useRef, useEffect } from "react";
@@ -15,6 +17,7 @@ export default function Navbar() {
   const [dropdown, setDropdown] = useState(false);
   const headerRef = useRef();
   const navRef = useRef();
+  const dropdownAcc = useRef();
   const session = useSession();
   const links = [
     { label: "Home", link: "/" },
@@ -23,7 +26,6 @@ export default function Navbar() {
     { label: "FAQ's", link: "#" },
     { label: "Policies", link: "#" },
     { label: "Contact", link: "#" },
-    { label: "Shop", link: "#" },
   ];
   const iconStyles = useMemo(
     () => ({
@@ -35,19 +37,26 @@ export default function Navbar() {
 
   function getScroll() {
     if (window.scrollY > 90) {
-      headerRef.current.classList.add("bg-purple-500");
-      headerRef.current.classList.remove("bg-transparent");
+      headerRef.current?.classList?.add("bg-purple-500");
+      headerRef.current?.classList?.remove("bg-transparent");
     } else {
-      headerRef.current.classList.remove("bg-purple-500");
-      headerRef.current.classList.add("bg-transparent");
+      headerRef.current?.classList?.remove("bg-purple-500");
+      headerRef.current?.classList?.add("bg-transparent");
+    }
+  }
+
+  function closeDropdown(e) {
+    if (dropdownAcc.current && !dropdownAcc.current.contains(e.target)) {
+      setDropdown(false);
     }
   }
 
   useEffect(() => {
     window.addEventListener("scroll", getScroll);
-
+    window.addEventListener("click", closeDropdown);
     return () => {
       window.removeEventListener("scroll", getScroll);
+      window.removeEventListener("click", closeDropdown);
     };
   }, []);
 
@@ -101,7 +110,7 @@ export default function Navbar() {
                   ))}
                 </ul>
               </nav>
-              <div className="relative">
+              <div className="relative" ref={dropdownAcc}>
                 {session.status !== "authenticated" && (
                   <button
                     type="button"
@@ -120,24 +129,34 @@ export default function Navbar() {
                       onClick={() => setDropdown(!dropdown)}
                     >
                       <img
-                        src="/images/image-placeholder.png"
+                        src={
+                          session?.data?.image?.[0]?.original_url ??
+                          "/images/image-placeholder.png"
+                        }
                         alt=""
                         className=" w-14 h-14 rounded-full"
                       />
                     </button>
                     {dropdown && (
-                      <div className="absolute right-0 top-16 px-4 py-2 bg-white shadow-lg w-[200px] rounded-md">
+                      <div className="absolute right-0 top-16 bg-white shadow-lg w-[200px] rounded-md">
                         <ul className="flex flex-col items-center">
-                          <li className="font-semibold">
+                          <li className="font-semibold py-4">
                             {session?.data?.user?.name}
                           </li>
-                          <li className="mt-2 w-full">
+                          <li className="w-full border-t">
+                            <Link href="/my-account">
+                              <a className="py-3 flex items-center justify-center gap-2 hover:bg-[#642CA9] hover:text-white w-full text-center hover:opacity-70">
+                                <VscAccount /> My Account
+                              </a>
+                            </Link>
+                          </li>
+                          <li className="w-full border-t">
                             <button
                               type="button"
                               onClick={() => signOut()}
-                              className="px-3 py-1 bg-[#642CA9] rounded text-white font-semibold w-full "
+                              className="py-3 font-semibold w-full flex items-center gap-2 justify-center hover:bg-[#642CA9] hover:text-white hover:opacity-70"
                             >
-                              {" "}
+                              <FiLogOut />
                               Logout
                             </button>
                           </li>

@@ -1,7 +1,7 @@
 /* eslint-disable no-param-reassign */
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { login, register } from "../../../services/apiCalls";
+import { getUserDetail, login, register } from "../../../services/apiCalls";
 
 // eslint-disable-next-line no-undef
 export const authOptions = {
@@ -13,22 +13,18 @@ export const authOptions = {
         password: { name: "password", type: "password" },
         first_name: { name: "first_name", type: "text" },
         last_name: { name: "last_name", type: "text" },
-        phone: { name: "phone", type: "text" },
-        dob: { name: "dob", type: "text" },
-        state: { name: "state", type: "text" },
+        type: { name: "type", type: "text" },
       },
       async authorize(credentials) {
-        const { email, password, dob, phone, lastName, firstName } =
-          credentials;
+        const { email, password, lastName, firstName, type } = credentials;
 
         if (credentials.state !== "login") {
           try {
             const res = await register("register", {
               first_name: firstName,
               last_name: lastName,
-              phone,
+              user_type: type,
               email,
-              dob,
               password,
             });
             if (res.data) {
@@ -36,7 +32,7 @@ export const authOptions = {
             }
             return false;
           } catch (error) {
-            throw new Error(error.message);
+            throw new Error(error.response.data.message ?? error.message);
           }
         }
         try {
@@ -47,7 +43,7 @@ export const authOptions = {
           }
           return false;
         } catch (error) {
-          throw new Error(error.message);
+          throw new Error(error.response.data.message);
         }
       },
     }),
@@ -58,7 +54,7 @@ export const authOptions = {
   callbacks: {
     signIn: async (user) => {
       const { account } = user;
-      // console.log(user);
+
       if (user.credentials?.state === "register") {
         account.state = user.credentials.state;
         account.firstName = user.user.first_name;
@@ -75,23 +71,27 @@ export const authOptions = {
     },
     jwt: async ({ token, account }) => {
       if (account) {
-        // console.log(account);
         if (account.state === "register") {
           token.name = `${account.firstName} ${account.lastName}`;
           token.status = account.status;
         }
         token.token = account.token;
         token.user_id = account.id;
-        // console.log(account);
       }
       return token;
     },
     session: async ({ token, session }) => {
+      if (session) {
+        const res = await getUserDetail("user/get", token.token.user_token);
+        session.image = res.data.data.media;
+        session.user_type = res.data.data.user_type;
+      }
       if (token.status === "register") {
         session.user.name = token.name;
       }
       session.user.token = token.token;
       session.user.user_id = token.user_id;
+
       return session;
     },
   },

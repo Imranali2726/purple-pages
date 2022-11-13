@@ -65,7 +65,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
     setIsLoading(true);
     try {
       const res = await featuredEducations("educations?feature=1");
-      setEducations(res.data.data.data);
+      setEducations(res.data.data);
       setIsLoading(false);
     } catch (error) {
       setEducationError(error.message);
@@ -75,7 +75,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
 
   useEffect(() => {
     if (servicesFeatures.length <= 0) getServices();
-    if (educations.length <= 0) getFeaturedEducations();
+    if (educations?.length <= 0) getFeaturedEducations();
   }, []);
 
   return (

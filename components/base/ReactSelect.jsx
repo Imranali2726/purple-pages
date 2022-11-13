@@ -11,6 +11,7 @@ export default function SelectInput({
   options,
   isMulti = false,
   classNamePrefix = "react-select",
+  defaultValue,
 }) {
   return (
     <div className={className}>
@@ -27,6 +28,7 @@ export default function SelectInput({
           onChange={onChange}
           classNamePrefix={classNamePrefix}
           instanceId={useId()}
+          value={defaultValue}
         />
       </label>
       {error && <p className="text-red-600 text-xs mt-2">{startCase(error)}</p>}

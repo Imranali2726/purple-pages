@@ -118,7 +118,7 @@ function EducationHistoryCV({
                     type="checkbox"
                     name="is_current"
                     id="enrolled"
-                    defaultChecked={item.enrolled}
+                    checked={Number(item.is_current) === 1}
                     className="ml-1"
                     onChange={handleInput}
                   />

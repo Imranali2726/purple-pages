@@ -17,6 +17,9 @@ import {
   getAccessibilityFeature,
   getSectors,
   getLocation,
+  getCandidate,
+  getAllSalaryScale,
+  getCountries,
 } from "../services/apiCalls";
 import AuthenticationPopup from "../components/include/AuthenticationPopup";
 import SignInPopup from "../components/include/SignInPopup";
@@ -40,7 +43,7 @@ let tempEmp = {
   name: "",
   company_name: "",
   sector: "",
-  country: "",
+  content: "",
   start_date: "",
   end_date: "",
   is_current: 0,
@@ -51,11 +54,56 @@ const jobTypeValues = [
   { label: "Part Time", value: "part_time" },
   { label: "Contract", value: "contract" },
 ];
-export default function PostCV() {
+
+const gender = [
+  {
+    label: "Male",
+    value: "male",
+  },
+  {
+    label: "Female",
+    value: "female",
+  },
+  {
+    label: "Others",
+    value: "others",
+  },
+];
+
+export default function PostCV({ data }) {
   const [selectedImage, setSelectedImage] = useState("");
-  const [formData, setFormData] = useState({});
-  const [educationData, setEducationData] = useState([temp]);
-  const [employmentData, setEmploymentData] = useState([tempEmp]);
+  const [formData, setFormData] = useState(
+    data
+      ? {
+          first_name: data?.first_name,
+          last_name: data?.last_name,
+          email: data?.email,
+          is_address_anonymous: data?.is_address_anonymous,
+          is_email_anonymous: data?.is_email_anonymous,
+          is_first_name_anonymous: data?.is_first_name_anonymous,
+          is_last_name_anonymous: data?.is_last_name_anonymous,
+          is_phone_anonymous: data?.is_phone_anonymous,
+          is_photo_anonymous: data?.is_photo_anonymous,
+          phone: data?.phone,
+          address: data?.address,
+          title: data?.title,
+          about_yourself: data?.about_yourself,
+          gender: data?.gender,
+          country_id: data?.country_id,
+          dob: data?.dob,
+          state_id: data?.state_id,
+          salary_scale_id: data?.salary_scale_id,
+        }
+      : {},
+  );
+  const [educationData, setEducationData] = useState(
+    data?.user_education_history.length > 0
+      ? data?.user_education_history
+      : [temp],
+  );
+  const [employmentData, setEmploymentData] = useState(
+    data?.user_experience.length > 0 ? data?.user_experience : [tempEmp],
+  );
   const [dataErrors, setDataErrors] = useState({});
   const [errors, setErrors] = useState({});
   const [skills, setSkills] = useState([]);
@@ -69,12 +117,16 @@ export default function PostCV() {
   const [selectedFeatures, setSelectedFeatures] = useState([]);
   const [successMessage, setSuccessMesssage] = useState("");
   const [states, setStates] = useState([]);
-  const [selectedStates, setSelectedStates] = useState([]);
   const [sectors, setSectors] = useState([]);
-  const [selectedSector, setSelectedSectors] = useState([]);
-  const [selectedJobType, setSelectedJobType] = useState([]);
+  const [selectedSector, setSelectedSector] = useState([]);
+  const [selectedJobType, setSelectedJobType] = useState({});
   const [jobType, setJobType] = useState([]);
+  const [salaryScale, setSalaryScale] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const session = useSession();
+
   const env = process.env.NODE_ENV;
 
   const handleInput = (e) => {
@@ -126,6 +178,7 @@ export default function PostCV() {
       is_last_name_anonymous: Joi.number().allow(null),
       is_email_anonymous: Joi.number().allow(null),
       is_image_anonymous: Joi.number().allow(null),
+      is_photo_anonymous: Joi.number().allow(null),
       is_address_anonymous: Joi.number().allow(null),
       is_phone_anonymous: Joi.number().allow(null),
       first_name: Joi.string().required(),
@@ -136,9 +189,12 @@ export default function PostCV() {
       phone: Joi.number().required(),
       title: Joi.string().allow(null, ""),
       address: Joi.string().required(),
-      state: Joi.string().allow(null, ""),
-      country: Joi.string().allow(null, ""),
+      state_id: Joi.number().allow(null, ""),
+      country_id: Joi.number().allow(null, ""),
       about_yourself: Joi.string().allow(null, ""),
+      gender: Joi.string().required(),
+      dob: Joi.date().required(),
+      salary_scale_id: Joi.number().allow("", null),
     });
 
     return schema.validate(data, { abortEarly: false });
@@ -154,6 +210,14 @@ export default function PostCV() {
       others: Joi.string().allow(null, ""),
       grade: Joi.string().allow(null, ""),
       end_date: Joi.date().allow("", null),
+      content: Joi.string().allow("", null),
+      created_at: Joi.string().allow("", null),
+      created_by: Joi.number().allow("", null),
+      slug: Joi.string().allow("", null),
+      status: Joi.number().allow("", null),
+      sub_title: Joi.string().allow("", null),
+      updated_at: Joi.string().allow("", null),
+      user_id: Joi.number().allow("", null),
     });
 
     return schema.validate(data, { abortEarly: false });
@@ -165,10 +229,18 @@ export default function PostCV() {
       name: Joi.string().max(120).required(),
       company_name: Joi.string().required(),
       sector: Joi.string().required(),
-      country: Joi.string().required(),
+      content: Joi.string().required(),
       start_date: Joi.date().required(),
       end_date: Joi.date().allow("", null),
       is_current: Joi.number(),
+      created_at: Joi.string().allow("", null),
+      created_by: Joi.number().allow("", null),
+      slug: Joi.string().allow("", null),
+      status: Joi.number().allow("", null),
+      sub_title: Joi.string().allow("", null),
+      updated_at: Joi.string().allow("", null),
+      user_id: Joi.number().allow("", null),
+      country: Joi.allow("", null),
     });
 
     return schema.validate(data, { abortEarly: false });
@@ -223,6 +295,7 @@ export default function PostCV() {
 
   function anonyFunc(e) {
     const { checked, name } = e.target;
+    console.log(checked, name);
     if (checked) setFormData((p) => ({ ...p, [name]: 1 }));
     else setFormData((p) => ({ ...p, [name]: 0 }));
   }
@@ -233,9 +306,11 @@ export default function PostCV() {
     setDataErrors("");
     setEmpErrors("");
     setSuccessMesssage("");
+    setIsLoading(true);
     const cv = validateCVData(formData);
     const empd = validateEmployment(employmentData[employmentData.length - 1]);
     const edud = validateEducation(educationData[educationData.length - 1]);
+    const fd = new FormData();
 
     if (cv.error || empd.error || edud.error) {
       if (empd.error) {
@@ -248,6 +323,7 @@ export default function PostCV() {
           r = { ...r, [item.name]: item.message };
         });
         setEmpErrors(r);
+        setIsLoading(false);
       }
       if (edud.error) {
         const a = edud?.error?.details?.map((item) => ({
@@ -259,6 +335,7 @@ export default function PostCV() {
           r = { ...r, [item.name]: item.message };
         });
         setErrors(r);
+        setIsLoading(false);
       }
       if (cv.error) {
         const a = cv?.error?.details?.map((item) => ({
@@ -270,18 +347,19 @@ export default function PostCV() {
           r = { ...r, [item.name]: item.message };
         });
         setDataErrors(r);
+        setIsLoading(false);
       }
-
+      setIsLoading(false);
       return;
     }
 
     axios
       .get(
-        `${process.env.BASE_UAT_SERVER}sanctum/csrf-cookie`,
-        { Accept: "*/*" },
-        {
-          withCredentials: true,
-        },
+        `${
+          env === "development"
+            ? process.env.BASE_LOCAL_SERVER
+            : process.env.BASE_UAT_SERVER
+        }sanctum/csrf-cookie`,
       )
       .then(() => {
         axios({
@@ -305,6 +383,7 @@ export default function PostCV() {
             is_last_name_anonymous: formData?.is_last_name_anonymous,
             is_phone_anonymous: formData?.is_phone_anonymous,
             is_photo_anonymous: formData?.is_photo_anonymous,
+            country_id: 1,
             phone: formData?.phone,
             address: formData?.address,
             title: formData?.title,
@@ -313,12 +392,13 @@ export default function PostCV() {
             sectors: selectedSector,
             education_history: JSON.stringify(educationData),
             user_experience: JSON.stringify(employmentData),
-            gender: "male",
-            dob: "2022-09-22",
+            gender: formData?.gender,
+            dob: formData?.dob,
             user_type: "user",
-            user_skills: JSON.stringify(selectedSkills),
+            skills: JSON.stringify(selectedSkills),
             accessibilityFeatures: JSON.stringify(selectedFeatures),
-            state_id: selectedStates.id,
+            state_id: formData?.state_id,
+            salar_scale_id: formData?.salary_scale_id,
           },
           withCredentials: true,
         }).then((res) => {
@@ -329,14 +409,40 @@ export default function PostCV() {
             setSuccessMesssage("");
           }, 5000);
         });
+
+        if (selectedImage) {
+          fd.append("image", selectedImage);
+          axios({
+            url: `${
+              process.env.NODE_ENV === "development"
+                ? process.env.BASE_URL_LOCAL
+                : process.env.BASE_URL_UAT
+            }user/avatar`,
+            method: "post",
+            data: fd,
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: `Bearer ${session?.data?.user?.token?.user_token}`,
+            },
+            withCredentials: true,
+          })
+            .then(() => {
+              setIsLoading(false);
+            })
+            .catch((error) => {
+              console.log(error);
+              setIsLoading(false);
+            });
+        }
+        setIsLoading(false);
       });
   }
 
   async function getSkillsCall() {
     try {
       if (skills?.length <= 0) {
-        const res = await getSkills("skills");
-        setSkills(res.data.data);
+        const res = await getSkills("candidates/skills");
+        setSkills(res.data.data.map((item) => ({ ...item, id: item.value })));
       }
     } catch (error) {
       console.log(error);
@@ -372,6 +478,27 @@ export default function PostCV() {
       console.log(error);
     }
   }
+  async function getSalaryScales() {
+    try {
+      if (salaryScale?.length <= 0) {
+        const res = await getAllSalaryScale("candidates/salary-scale");
+        setSalaryScale(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+
+  async function getAllCountries() {
+    try {
+      if (countries?.length <= 0) {
+        const res = await getCountries("countries");
+        setCountries(res.data.data);
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
 
   useEffect(() => {
     setJobType(jobTypeValues);
@@ -379,6 +506,26 @@ export default function PostCV() {
     getAccessibilityFeatures();
     getSector();
     getStates();
+    getSalaryScales();
+    getAllCountries();
+
+    if (data) {
+      setSelectedJobType(JSON.parse(data?.job_type));
+      setSelectedSkills(
+        data?.user_skills?.map((item) => ({
+          ...item,
+          label: item.name,
+          value: item.id,
+        })),
+      );
+      setSelectedSector(
+        data?.sectors?.map((item) => ({
+          ...item,
+          label: item?.name,
+          value: item.id,
+        })),
+      );
+    }
   }, []);
 
   const handleAccessibilityChange = (e, name) => {
@@ -426,12 +573,15 @@ export default function PostCV() {
                     <label htmlFor="dp" className="cursor-pointer">
                       <img
                         src={
-                          (selectedImage &&
-                            URL.createObjectURL(selectedImage)) ||
-                          "/images/image-placeholder.png"
+                          // eslint-disable-next-line no-nested-ternary
+                          selectedImage
+                            ? URL.createObjectURL(selectedImage)
+                            : data?.media?.[0]?.original_url
+                            ? data?.media?.[0]?.original_url
+                            : "/images/image-placeholder.png"
                         }
                         alt=""
-                        className="max-w-[100%] w-auto h-auto max-h-[250px] m-auto"
+                        className="max-w-[100%] w-auto h-auto min-h-[150px] max-h-[250px] m-auto"
                       />
                       <input
                         type="file"
@@ -458,6 +608,7 @@ export default function PostCV() {
                         name="is_photo_anonymous"
                         id="is_photo_anonymous"
                         className="ml-2"
+                        defaultChecked={formData?.is_photo_anonymous}
                         onChange={(e) => anonyFunc(e)}
                       />
                     </label>
@@ -481,6 +632,7 @@ export default function PostCV() {
                       error={dataErrors?.first_name}
                       anonymous
                       anonyFunc={(e) => anonyFunc(e)}
+                      anonyChecked={formData?.is_first_name_anonymous}
                       border
                       placeholder="Enter your first name..."
                       onChange={handleInput}
@@ -493,6 +645,7 @@ export default function PostCV() {
                       name="last_name"
                       value={formData?.last_name}
                       error={dataErrors?.last_name}
+                      anonyChecked={formData?.is_last_name_anonymous}
                       type="text"
                       placeholder="Enter your last name..."
                       onChange={handleInput}
@@ -506,6 +659,7 @@ export default function PostCV() {
                       type="email"
                       value={formData?.email}
                       error={dataErrors?.email}
+                      anonyChecked={formData?.is_email_anonymous}
                       border
                       placeholder="Enter your email name..."
                       onChange={handleInput}
@@ -526,6 +680,24 @@ export default function PostCV() {
                     placeholder="Enter your job title name..."
                     onChange={handleInput}
                   />
+                  <div className="w-full lg:w-[calc(50%_-_16px)] ">
+                    <ReactSelect
+                      options={gender}
+                      label="Gender"
+                      defaultValue={gender?.filter(
+                        (i) => i.value === formData?.gender,
+                      )}
+                      classNamePrefix="state-select"
+                      onChange={(e) =>
+                        setFormData((p) => ({ ...p, gender: e.value }))
+                      }
+                    />
+                    {dataErrors && (
+                      <p className="text-xs text-red-500 mt-1">
+                        {dataErrors?.gender}
+                      </p>
+                    )}
+                  </div>
                   <TextInput
                     label="Contact Number"
                     type="tel"
@@ -533,6 +705,7 @@ export default function PostCV() {
                     border
                     value={formData?.phone}
                     error={dataErrors?.phone}
+                    anonyChecked={formData?.is_phone_anonymous}
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     name="phone"
                     placeholder="Enter your phone..."
@@ -548,40 +721,51 @@ export default function PostCV() {
                     value={formData?.address}
                     error={dataErrors?.address}
                     type="text"
+                    anonyChecked={formData?.is_address_anonymous}
                     placeholder="Enter your address..."
                     onChange={handleInput}
                     anonymous
                     anonyFunc={(e) => anonyFunc(e)}
                   />
-                  {/* <TextInput
-                    label="State"
-                    border
-                    className="w-full lg:w-[calc(50%_-_16px)]"
-                    name="state"
-                    type="text"
-                    value={formData?.state}
-                    error={dataErrors?.state}
-                    placeholder="Enter your city..."
-                    onChange={handleInput}
-                  /> */}
+
                   <ReactSelect
                     options={states}
                     label="State"
+                    defaultValue={
+                      states?.length > 0 &&
+                      states.filter((i) => i.id === formData?.state_id)[0]
+                    }
                     classNamePrefix="state-select"
                     className="w-full lg:w-[calc(50%_-_16px)] "
-                    onChange={(e) => setSelectedStates(e)}
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, state_id: e.id }))
+                    }
                   />
                   <TextInput
-                    label="Country"
+                    label="Date of Birth"
                     border
                     className="w-full lg:w-[calc(50%_-_16px)]"
-                    name="country"
-                    value={formData?.country}
-                    error={dataErrors?.country}
-                    type="text"
-                    placeholder="Enter your country..."
+                    name="dob"
+                    value={formData?.dob}
+                    error={dataErrors?.dob}
+                    type="date"
                     onChange={handleInput}
                   />
+
+                  <ReactSelect
+                    options={countries}
+                    label="Country"
+                    defaultValue={
+                      countries?.length > 0 &&
+                      countries.filter((i) => i.id === data?.country_id)[0]
+                    }
+                    classNamePrefix="state-select"
+                    className="w-full lg:w-[calc(50%_-_16px)] "
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, country_id: e.id }))
+                    }
+                  />
+
                   <TextareaInput
                     label="About yourself"
                     border
@@ -655,27 +839,38 @@ export default function PostCV() {
                   <ReactSelect
                     options={skills}
                     isMulti
+                    defaultValue={selectedSkills}
                     label="Skills"
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     onChange={(e) => setSelectedSkills(e)}
                   />
 
                   <ReactSelect
-                    options={skills}
+                    options={salaryScale}
                     label="Salary"
                     className="w-full lg:w-[calc(50%_-_16px)]"
-                    onChange={(e) => console.log(e)}
+                    defaultValue={
+                      salaryScale.length > 0 &&
+                      salaryScale.filter(
+                        (i) => i.id === formData?.salary_scale_id,
+                      )
+                    }
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, salary_scale_id: e.id }))
+                    }
                   />
                   <ReactSelect
                     options={sectors}
+                    defaultValue={selectedSector}
                     label="Sector"
                     isMulti
                     className="w-full lg:w-[calc(50%_-_16px)]"
-                    onChange={(e) => setSelectedSectors(e)}
+                    onChange={(e) => setSelectedSector(e)}
                   />
                   <ReactSelect
                     options={jobType}
                     label="Job Type"
+                    defaultValue={selectedJobType}
                     className="w-full lg:w-[calc(50%_-_16px)]"
                     onChange={(e) => setSelectedJobType(e)}
                   />
@@ -726,9 +921,12 @@ export default function PostCV() {
               {session.status === "authenticated" ? (
                 <button
                   type="submit"
-                  className="bg-[#2CB579] ml-3 text-white px-8 py-4 rounded-md"
+                  className={`bg-[#2CB579] ml-3 text-white px-8 py-4 rounded-md ${
+                    isLoading ? "opacity-70" : ""
+                  }`}
+                  disabled={isLoading}
                 >
-                  Submit
+                  {isLoading ? "Loading..." : "Submit"}
                 </button>
               ) : (
                 <button
@@ -759,7 +957,10 @@ export async function getServerSideProps({ req, res }) {
     };
   }
 
+  const { data } = await getCandidate(`candidates/${session?.user?.user_id}`);
   return {
-    props: {},
+    props: {
+      data: data.data,
+    },
   };
 }
