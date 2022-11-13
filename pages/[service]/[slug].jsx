@@ -95,6 +95,7 @@ export default function Slug({ data }) {
 }
 
 export async function getServerSideProps(context) {
+  console.log(context.query);
   try {
     const res = await detailPageData(
       `${context.query.service}/${context.query.slug}`,
