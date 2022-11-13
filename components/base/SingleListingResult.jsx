@@ -86,9 +86,14 @@ export default function SingleListingResult({ singleListData }) {
                 </div>
               )}
               {mounted && router.query.service === "educations" && (
-                <div className="mt-4 text-[#737373] text-sm leading-4 pl-4 inclusion">
-                  {ReactHtmlParser(singleListData?.inclusion_heighs)}
-                </div>
+                <>
+                  <div className="mt-1 text-lg font-semibold text-[#642CA9]">
+                    Purple Highlights
+                  </div>
+                  <div className="mt-2 text-[#737373] text-sm leading-4 pl-4 inclusion">
+                    {ReactHtmlParser(singleListData?.inclusion_heighs)}
+                  </div>
+                </>
               )}
 
               {mounted && router.query.service === "employments" && (
