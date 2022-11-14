@@ -105,13 +105,7 @@ export async function getServerSideProps(context) {
   const { service, slug } = context.query;
 
   try {
-    const res = await fetch(
-      `${
-        process.env.NODE_ENV !== "development"
-          ? process.env.BASE_URL_LOCAL
-          : process.env.BASE_URL_UAT
-      }${service && service}/${slug && slug}`,
-    );
+    const res = await fetch(`http://purplepages.io/api/${service}/${slug}`);
     const data = await res.json();
     return {
       props: {
