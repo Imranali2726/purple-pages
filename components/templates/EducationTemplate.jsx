@@ -105,23 +105,10 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
           Overview
         </h2>
 
-        {data?.content && mounted ? (
+        {data?.content && mounted && (
           <div className="content text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
             {ReactHtmlParser(data?.content)}
           </div>
-        ) : (
-          <p className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
-            `Lorem Ipsum is simply dummy text of the printing and typesetting
-            industry. Lorem Ipsum has been the industry&apos;s standard dummy
-            text ever since the 1500s, when an unknown printer took a gall Lorem
-            Ipsum is simply dummy text of the printing and typesetting industry.
-            Lorem Ipsum has been the industry&apos;s standard dummy text ever
-            since the 1500s, when an unknown printer took a gall. Lorem Ipsum is
-            simply dummy text of the printing and typesetting industry. Lorem
-            Ipsum has been the industry&apos;s standard dummy text ever since
-            the 1500s, when an unknown printer took a gall Lorem Ipsum is simply
-            dummy text of the printing and typesetting industry.`
-          </p>
         )}
       </section>
 
