@@ -45,12 +45,7 @@ export default function Slug({ data }) {
   return (
     <>
       <Head>
-        <title>
-          {" "}
-          {parseInt(data?.is_name_anonymous, 10) === 1
-            ? "Anonymous"
-            : data?.name}
-        </title>
+        <title>{data?.name} | Purple Pages</title>
         <style>
           {`.signInBtn{
               background-color: #c999ef !important;
@@ -109,11 +104,16 @@ export default function Slug({ data }) {
 export async function getServerSideProps(context) {
   const { service, slug } = context.query;
   try {
-    const res = await detailPageData(`${service && service}/${slug && slug}`);
+    if (service && slug) {
+      const res = await detailPageData(`${service && service}/${slug && slug}`);
+      return {
+        props: {
+          data: res.data.data,
+        },
+      };
+    }
     return {
-      props: {
-        data: res.data.data,
-      },
+      props: {},
     };
   } catch (error) {
     return {
