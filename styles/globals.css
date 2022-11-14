@@ -129,3 +129,12 @@ body {
 .state-select__control {
   @apply p-2 md:p-[16px] border rounded-[1rem] !important;
 }
+
+.content h1,
+.content h2,
+.content h3,
+.content h4,
+.content h5,
+.content h6 {
+  @apply font-semibold mt-4;
+}

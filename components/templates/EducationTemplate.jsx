@@ -106,7 +106,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
         </h2>
 
         {data?.content && mounted ? (
-          <div className="text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
+          <div className="content text-sm md:text-base xl:text-lg text-[#737373] mt-2 md:mt-6 xl:mt-11 md:leading-8 xl:leading-9">
             {ReactHtmlParser(data?.content)}
           </div>
         ) : (
