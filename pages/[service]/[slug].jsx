@@ -104,22 +104,23 @@ export default function Slug({ data }) {
 export async function getServerSideProps(context) {
   const { service, slug } = context.query;
 
-  try {
-    const res = await fetch(`http://purplepages.io/api/${service}/${slug}`);
-    const data = await res.json();
-    return {
-      props: {
-        data: data.data,
-      },
-    };
-  } catch (error) {
-    console.log(error);
-    return {
-      props: {},
-      redirect: {
-        permanent: false,
-        destination: "/404",
-      },
-    };
-  }
+  // try {
+  const res = await fetch(`http://purplepages.io/api/${service}/${slug}`);
+  console.log(res);
+  const data = await res.json();
+  return {
+    props: {
+      data: data.data,
+    },
+  };
+  // } catch (error) {
+  //   console.log(error);
+  //   return {
+  //     props: {},
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/404",
+  //     },
+  //   };
+  // }
 }
