@@ -10,10 +10,10 @@ export default function SliderSlide({ text, img, slug }) {
           <img
             src={img}
             alt={text}
-            className="w-full max-h-[220px] object-cover object-center"
+            className="w-full min-h-[220px] max-h-[220px] object-cover object-center"
           />
           <div className="border border-t-none pt-8 px-5 pb-3">
-            <h3 className="font-bold text-sm md:text-base lg:text-lg">
+            <h3 className="font-bold text-sm md:text-base lg:text-lg h-[56px]">
               {text}
             </h3>
           </div>

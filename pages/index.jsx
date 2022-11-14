@@ -66,7 +66,7 @@ export default function Home() {
         <section className="pp-container ">
           <div className="mt-8 md:mt-[80px] xl:mt-[152px]">
             <h2 className="font-bold text-lg md:text-xl lg:text-2xl">
-              Featured Educations
+              Featured Education Centers
             </h2>
             <div className="mt-4 md:mt-8">
               <FeaturedSlider
