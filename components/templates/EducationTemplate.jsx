@@ -203,7 +203,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                       src={item.original_url}
                       // src={item.responsive_images.preview.base64svg}
                       alt=""
-                      className="w-full h-auto max-h-[280px] object-cover object-center"
+                      className="w-full h-full max-h-[280px] object-cover object-center"
                     />
                   </SplideSlide>
                 ))
