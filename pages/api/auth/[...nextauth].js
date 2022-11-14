@@ -32,7 +32,7 @@ export const authOptions = {
             }
             return false;
           } catch (error) {
-            console.log(error.response.data.message ?? error.message);
+            console.log(error);
             throw new Error(error.response.data.message ?? error.message);
           }
         }
@@ -44,7 +44,7 @@ export const authOptions = {
           }
           return false;
         } catch (error) {
-          console.log(error.response.data.message ?? error.message);
+          console.log(error);
           throw new Error(error.response.data.message);
         }
       },
