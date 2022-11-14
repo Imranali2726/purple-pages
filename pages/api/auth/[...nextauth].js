@@ -32,6 +32,7 @@ export const authOptions = {
             }
             return false;
           } catch (error) {
+            console.log(error.response.data.message ?? error.message);
             throw new Error(error.response.data.message ?? error.message);
           }
         }
@@ -43,6 +44,7 @@ export const authOptions = {
           }
           return false;
         } catch (error) {
+          console.log(error.response.data.message ?? error.message);
           throw new Error(error.response.data.message);
         }
       },
@@ -54,7 +56,7 @@ export const authOptions = {
   callbacks: {
     signIn: async (user) => {
       const { account } = user;
-
+      console.log(user);
       if (user.credentials?.state === "register") {
         account.state = user.credentials.state;
         account.firstName = user.user.first_name;
