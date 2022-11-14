@@ -104,7 +104,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
               <input
                 type="text"
                 name="firstName"
-                id="name"
+                id="firstName"
                 value={firstName}
                 className="bg-[#F5F5F5] px-3 py-3 rounded text-sm"
                 placeholder="First Name"
@@ -118,7 +118,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
               <input
                 type="text"
                 name="lastName"
-                id="name"
+                id="lastName"
                 value={lastName}
                 className="bg-[#F5F5F5] px-3 py-3 rounded text-sm"
                 placeholder="Last Name"

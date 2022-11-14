@@ -14,15 +14,17 @@ function ListingSideFilter({ loading, error, filters }) {
 
   return (
     <div>
-      {filters?.map((item) =>
-        item?.key === "accessibility_needs" ? (
-          item?.filters?.map((c) => (
-            <SingleSideFilter singleFilterData={c} key={c.id} />
-          ))
-        ) : (
-          <SingleSideFilter singleFilterData={item} key={item.key} />
-        ),
-      )}
+      <div className="sticky top-4">
+        {filters?.map((item) =>
+          item?.key === "accessibility_needs" ? (
+            item?.filters?.map((c) => (
+              <SingleSideFilter singleFilterData={c} key={c.id} />
+            ))
+          ) : (
+            <SingleSideFilter singleFilterData={item} key={item.key} />
+          ),
+        )}
+      </div>
     </div>
   );
 }

@@ -138,3 +138,8 @@ body {
 .content h6 {
   @apply font-semibold mt-4;
 }
+
+.inclusion {
+  max-height: 100px;
+  overflow: hidden;
+}
