@@ -103,24 +103,36 @@ export default function Slug({ data }) {
 
 export async function getServerSideProps(context) {
   const { service, slug } = context.query;
-  try {
-    if (service && slug) {
-      const res = await detailPageData(`${service && service}/${slug && slug}`);
-      return {
-        props: {
-          data: res.data.data,
-        },
-      };
-    }
+  // try {
+  //   if (service && slug) {
+  //     const res = await detailPageData(`${service && service}/${slug && slug}`);
+  //     return {
+  //       props: {
+  //         data: res.data.data,
+  //       },
+  //     };
+  //   }
+  //   return {
+  //     props: {},
+  //   };
+  // } catch (error) {
+  //   return {
+  //     redirect: {
+  //       permanent: false,
+  //       destination: "/404",
+  //     },
+  //   };
+  // }
+  const res = await detailPageData(`${service && service}/${slug && slug}`);
+  console.log(res);
+  if (res.data.data) {
     return {
-      props: {},
-    };
-  } catch (error) {
-    return {
-      redirect: {
-        permanent: false,
-        destination: "/404",
+      props: {
+        data: res.data.data,
       },
     };
   }
+  return {
+    props: {},
+  };
 }
