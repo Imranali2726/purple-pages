@@ -1,6 +1,7 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  reactStrictMode: true,
+  reactStrictMode: false,
+  trailingSlash: true,
   swcMinify: true,
   env: {
     BASE_URL_UAT: "https://purplepages.io/api/",
