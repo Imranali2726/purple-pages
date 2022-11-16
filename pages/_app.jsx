@@ -7,6 +7,14 @@ import { Provider } from "react-redux";
 import { SessionProvider } from "next-auth/react";
 import Layout from "./layout";
 import store from "../services/store";
+import "mapbox-gl/dist/mapbox-gl.css";
+// eslint-disable-next-line import/no-webpack-loader-syntax, import/no-unresolved
+import mapboxgl from "!mapbox-gl";
+
+if (mapboxgl) {
+  mapboxgl.accessToken =
+    "pk.eyJ1IjoibmFiZWVsYWhtZWQxOTk0IiwiYSI6ImNsOXdsanhuZjAyM2EzeG5vdTE2eDQ0a2EifQ.9tSGCDVZST6KbToULKrk7w";
+}
 
 function MyApp({ Component, pageProps: { session, ...pageProps } }) {
   const [progress, setProgress] = useState(0);

@@ -13,9 +13,9 @@ import JobsTemplate from "../../components/templates/JobsTemplate";
 
 const locationIcon = { className: "fill-white w-6 h-6" };
 
-export default function Slug() {
+export default function Slug({ data }) {
   const [mounted, setMounted] = useState(false);
-  const [data, setData] = useState(null);
+  // const [data, setData] = useState(null);
   const router = useRouter();
   const [accessbilityFeatures, setAccessibilityFeatures] = useState([]);
 
@@ -24,21 +24,21 @@ export default function Slug() {
     setAccessibilityFeatures(res.data.data);
   }
 
-  async function getData() {
-    try {
-      const res = await detailPageData(
-        `${router.query.service}/${router.query.slug}`,
-      );
-      setData(res.data.data);
-    } catch (error) {
-      router.push("/404");
-    }
-  }
+  // async function getData() {
+  //   try {
+  //     const res = await detailPageData(
+  //       `${router.query.service}/${router.query.slug}`,
+  //     );
+  //     setData(res.data.data);
+  //   } catch (error) {
+  //     router.push("/404");
+  //   }
+  // }
 
   useEffect(() => {
     setMounted(true);
     if (accessbilityFeatures.length <= 0) getAccessibilityFeatures();
-    if (!data && router.query.service && router.query.slug) getData();
+    // if (!data && router.query.service && router.query.slug) getData();
   }, [router.query.slug]);
 
   return (
@@ -93,30 +93,30 @@ export default function Slug() {
           accessbilityFeatures={accessbilityFeatures}
         />
       )}
-      {router.query.service === "jobs" && (
+      {router.query.service === "employments" && (
         <JobsTemplate mounted={mounted} data={data} />
       )}
     </>
   );
 }
 
-// export async function getServerSideProps(context) {
-//   const { service, slug } = context.query;
-//   try {
-//     const res = await detailPageData(`${service && service}/${slug && slug}`);
-//     return {
-//       props: {
-//         data: res.data.data,
-//       },
-//     };
-//   } catch (error) {
-//     console.log(error);
-//     return {
-//       props: {},
-//       redirect: {
-//         permanent: false,
-//         destination: "/404",
-//       },
-//     };
-//   }
-// }
+export async function getServerSideProps(context) {
+  const { service, slug } = context.query;
+  try {
+    const res = await detailPageData(`${service}/${slug}`);
+
+    return {
+      props: {
+        data: res.data.data,
+      },
+    };
+  } catch (error) {
+    return {
+      props: {},
+      redirect: {
+        permanent: false,
+        destination: "/404",
+      },
+    };
+  }
+}

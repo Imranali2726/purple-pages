@@ -19,6 +19,7 @@ import {
   featuredEducations,
 } from "../../services/apiCalls";
 import SingleFeature from "../features/SingleFeature";
+// import Map from "../features/Map";
 // import ReviewSlide from "../base/ReviewSlide";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
@@ -80,7 +81,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
 
   return (
     <>
-      <nav className="bg-[#F7F4FB]">
+      <nav className="bg-[#F7F4FB] lg:sticky lg:top-0 z-20">
         <ul className="py-2 md:py-0 flex flex-col md:flex-row flex-wrap items-center pp-container gap-x-4 gap-y-0 md:gap-y-2 ">
           {links.map((item) => (
             <li key={item.label}>
@@ -114,7 +115,7 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
 
       <section className="bg-[#F6F6F6]" id="school-information">
         <div className="pp-container">
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 md:gap-8 md:max-h-[430px]">
             <div className="py-11">
               <h3 className="text-lg md:text-xl lg:text-2xl xl:text-3xl font-bold">
                 School Information
@@ -162,7 +163,15 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                 </li>
               </ul>
             </div>
-            {/* <div className="overflow-hidden"></div> */}
+            {/* <div className="overflow-hidden max-h-[430px]">
+              <Map
+                lng="55.1820445"
+                lat="25.121076"
+                className="h-full"
+                name={data?.name}
+                address={data?.address}
+              />
+            </div> */}
           </div>
         </div>
       </section>

@@ -16,7 +16,7 @@ function JobsTemplate({ mounted, data }) {
   ];
   return (
     <div className="-mb-12 md:-mb-[80px] lg:-mb-[143px]">
-      <nav className="bg-[#F7F4FB]">
+      <nav className="bg-[#F7F4FB] lg:sticky lg:top-0">
         <ul className="py-2 md:py-0 flex flex-col md:flex-row flex-wrap items-center pp-container gap-x-4 gap-y-0 md:gap-y-2 ">
           {links.map((item) => (
             <li key={item.label}>
