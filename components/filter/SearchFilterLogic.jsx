@@ -126,7 +126,7 @@ export default function SearchFilterLogic() {
       component: (
         <select
           required
-          className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
+          className="w-full text-sm relative bg-white px-2 -mx-2"
           style={{ color: edit?.identity ? "black" : "#9e9e9e" }}
           value={searchParams?.identity || 0}
           id="identity"
@@ -138,7 +138,7 @@ export default function SearchFilterLogic() {
             Who I am?
           </option>
           <option value="person-of-determination">
-            Person of Determination
+            Person of determination
           </option>
           <option value="carer-parent">Carer-Parent</option>
           <option value="professional">Professional</option>
@@ -152,7 +152,7 @@ export default function SearchFilterLogic() {
       component: (
         <select
           required
-          className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
+          className="w-full text-sm relative bg-white px-2 -mx-2"
           value={searchParams?.location || 0}
           style={{ color: edit?.location ? "black" : "#9e9e9e" }}
           id="location"
@@ -177,7 +177,7 @@ export default function SearchFilterLogic() {
       component: (
         <select
           required
-          className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
+          className="w-full text-sm relative bg-white px-2 -mx-2"
           value={searchParams?.services || 0}
           id="services"
           style={{ color: edit?.services ? "black" : "#9e9e9e" }}
@@ -202,7 +202,7 @@ export default function SearchFilterLogic() {
       component: (
         <select
           required
-          className="w-full text-sm relative bg-white capitalize px-2 -mx-2"
+          className="w-full text-sm relative bg-white px-2 -mx-2"
           value={searchParams?.type || 0}
           style={{ color: edit?.type ? "black" : "#9e9e9e" }}
           id="type"

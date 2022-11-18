@@ -10,7 +10,7 @@ export default function layout({ children }) {
   return (
     <>
       <Head>
-        <link rel="icon" type="image/x-icon" href="/images/logo.png" />
+        <link rel="icon" type="image/png" href="/favicon.png" />
       </Head>
       <Navbar />
       <main>{children}</main>

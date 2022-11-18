@@ -79,9 +79,8 @@ export default function SingleListingResult({ singleListData }) {
                       <MdOutlineLocationOn />
                     </IconContext.Provider>
                   </div>
-                  <p className="text-sm ml-2 max-w-[381px] text-[#737373]">
-                    {singleListData?.address ??
-                      "Al Barsha - Al Barsha South - Dubai - United Arab Emirates"}
+                  <p className="text-sm max-w-[381px] text-[#737373]">
+                    {singleListData?.address}
                   </p>
                 </div>
               )}
