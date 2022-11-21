@@ -24,14 +24,7 @@ export default function SingleFeaturesResult() {
           </div>
           <span className="text-xs">Elevator</span>
         </li>
-        <li className="flex items-center gap-3 mb-2">
-          <div>
-            <IconContext.Provider value={purpleIcon}>
-              <FaRestroom />
-            </IconContext.Provider>
-          </div>
-          <span className="text-xs">Toilets</span>
-        </li>
+
         <li className="flex items-center gap-3 mb-2">
           <div>
             <IconContext.Provider value={purpleIcon}>
