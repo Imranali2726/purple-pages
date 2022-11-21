@@ -128,11 +128,11 @@ export default function SearchFilterLogic() {
           required
           className="w-full text-sm relative bg-white px-2 -mx-2"
           style={{ color: edit?.identity ? "black" : "#9e9e9e" }}
-          value={searchParams?.identity || 0}
+          // value={searchParams?.identity || 0}
           id="identity"
           name="identity"
           disabled={loading?.identity}
-          onChange={handleChange}
+          // onChange={handleChange}
         >
           <option value="0" disabled hidden>
             Who I am?

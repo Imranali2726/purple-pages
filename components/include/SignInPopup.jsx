@@ -10,6 +10,7 @@ export default function SignInPopup({
   setSignInPopupActive,
   setPopupActive,
   setBusinessPopup,
+  setForgotPassword,
 }) {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
@@ -149,6 +150,16 @@ export default function SignInPopup({
                 className="text-center w-full py-3 bg-[#642CA9] mt-8 rounded-md text-white font-bold"
               >
                 Login
+              </button>
+              <button
+                type="button"
+                className="text-sm text-blue-500 text-left mt-1"
+                onClick={() => {
+                  setForgotPassword(true);
+                  setSignInPopupActive(false);
+                }}
+              >
+                Forgot Password?
               </button>
             </form>
             <div className="mt-16">

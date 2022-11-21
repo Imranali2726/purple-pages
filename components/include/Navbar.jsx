@@ -1,19 +1,20 @@
 import Link from "next/link";
 import { GiHamburgerMenu } from "react-icons/gi";
-import { FiLogOut } from "react-icons/fi";
-import { VscAccount } from "react-icons/vsc";
 import { IconContext } from "react-icons";
+import { BsFillCaretDownFill } from "react-icons/bs";
 import { signOut, useSession } from "next-auth/react";
 import { useMemo, useState, useRef, useEffect } from "react";
 import AuthenticationPopup from "./AuthenticationPopup";
 import SignInPopup from "./SignInPopup";
 import BusinessSignup from "./BusinessSignup";
+import ForgotPasswordPopup from "./ForgotPasswordPopup";
 
 export default function Navbar() {
   const [isActive, setIsActive] = useState(false);
   const [popupActive, setPopupActive] = useState(false);
   const [signInPopupActive, setSignInPopupActive] = useState(false);
   const [businessPopup, setBusinessPopup] = useState(false);
+  const [forgotPassword, setForgotPassword] = useState(false);
   const [dropdown, setDropdown] = useState(false);
   const headerRef = useRef();
   const navRef = useRef();
@@ -136,17 +137,38 @@ export default function Navbar() {
                         alt=""
                         className=" w-14 h-14 rounded-full"
                       />
+                      <BsFillCaretDownFill className="fill-white" />
                     </button>
                     {dropdown && (
-                      <div className="absolute right-0 top-16 bg-white shadow-lg w-[200px] rounded-md">
-                        <ul className="flex flex-col items-center">
-                          <li className="font-semibold py-4">
+                      <div className="absolute right-0 top-[4.5rem] bg-[#c999ef] text-white shadow-lg w-[240px] rounded-md">
+                        <ul className="flex flex-col items-center justify-start px-4">
+                          <li className="w-full font-semibold pb-2 pt-4">
                             {session?.data?.user?.name}
                           </li>
                           <li className="w-full border-t">
+                            <div className="text-lg font-semibold my-2">
+                              Account
+                            </div>
                             <Link href="/my-account">
-                              <a className="py-3 flex items-center justify-center gap-2 hover:bg-[#642CA9] hover:text-white w-full text-center hover:opacity-70">
-                                <VscAccount /> My Account
+                              <a
+                                onClick={() => setDropdown(false)}
+                                role="button"
+                                onKeyDown={() => setDropdown(false)}
+                                tabIndex="0"
+                                className="my-2 flex items-center justify-start gap-2  hover:text-white w-full text-center hover:opacity-70"
+                              >
+                                My Account
+                              </a>
+                            </Link>
+                            <Link href="#">
+                              <a
+                                onClick={() => setDropdown(false)}
+                                role="button"
+                                onKeyDown={() => setDropdown(false)}
+                                tabIndex="0"
+                                className="my-2 flex items-center justify-start gap-2  hover:text-white w-full text-center hover:opacity-70"
+                              >
+                                Terms and Conditions
                               </a>
                             </Link>
                           </li>
@@ -154,10 +176,9 @@ export default function Navbar() {
                             <button
                               type="button"
                               onClick={() => signOut()}
-                              className="py-3 font-semibold w-full flex items-center gap-2 justify-center hover:bg-[#642CA9] hover:text-white hover:opacity-70"
+                              className="py-3 font-semibold w-full flex items-center gap-2 justify-start  hover:text-white hover:opacity-70"
                             >
-                              <FiLogOut />
-                              Logout
+                              Sign Out
                             </button>
                           </li>
                         </ul>
@@ -187,9 +208,13 @@ export default function Navbar() {
           setSignInPopupActive={setSignInPopupActive}
           setPopupActive={setPopupActive}
           setBusinessPopup={setBusinessPopup}
+          setForgotPassword={setForgotPassword}
         />
       )}
       {businessPopup && <BusinessSignup setPopupActive={setBusinessPopup} />}
+      {forgotPassword && (
+        <ForgotPasswordPopup setForgotPassword={setForgotPassword} />
+      )}
     </header>
   );
 }

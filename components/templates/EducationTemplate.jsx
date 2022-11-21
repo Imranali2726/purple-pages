@@ -19,7 +19,7 @@ import {
   featuredEducations,
 } from "../../services/apiCalls";
 import SingleFeature from "../features/SingleFeature";
-// import Map from "../features/Map";
+import Map from "../features/Map";
 // import ReviewSlide from "../base/ReviewSlide";
 
 const addressIcons = { className: "fill-primary h-6 w-6" };
@@ -163,15 +163,17 @@ function EducationTemplate({ mounted, data, accessbilityFeatures }) {
                 </li>
               </ul>
             </div>
-            {/* <div className="overflow-hidden max-h-[430px]">
-              <Map
-                lng="55.1820445"
-                lat="25.121076"
-                className="h-full"
-                name={data?.name}
-                address={data?.address}
-              />
-            </div> */}
+            <div className="overflow-hidden max-h-[430px]">
+              {data?.longitude && data?.latitude && (
+                <Map
+                  lng={data?.longitude}
+                  lat={data?.latitude}
+                  className="h-full"
+                  name={data?.name}
+                  address={data?.address}
+                />
+              )}
+            </div>
           </div>
         </div>
       </section>

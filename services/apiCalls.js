@@ -112,6 +112,18 @@ export async function getCandidate(url) {
   const res = await calls("get", url, null, null, null);
   return res;
 }
+export async function forgetPassword(url, data) {
+  const res = await calls(
+    "post",
+    url,
+    data,
+    {
+      "Content-Type": "application/x-www-form-urlencoded",
+    },
+    null,
+  );
+  return res;
+}
 
 export async function uploadImage(url, data, token) {
   const res = await calls(

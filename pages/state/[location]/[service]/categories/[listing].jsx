@@ -34,6 +34,7 @@ export default function Listing() {
   const dispatch = useDispatch();
   const searchParams = useSelector((state) => state.search.value);
   const filterSearch = useSelector((state) => state.filterSearch.value);
+  const [mapTheme, setMapTheme] = useState(false);
   const session = useSession();
 
   async function getEducationListing(p) {
@@ -280,7 +281,15 @@ export default function Listing() {
                   <IconContext.Provider value={mapIcon}>
                     <HiLocationMarker />
                   </IconContext.Provider>
-                  <button type="button">View on map</button>
+                  {!mapTheme ? (
+                    <button type="button" onClick={() => setMapTheme(true)}>
+                      View on map
+                    </button>
+                  ) : (
+                    <button type="button" onClick={() => setMapTheme(false)}>
+                      View as listing
+                    </button>
+                  )}
                 </span>
               </div>
               <div>
@@ -300,6 +309,8 @@ export default function Listing() {
               data={listing}
               error={error.data}
               loading={loading.data}
+              mapTheme={mapTheme}
+              setMapTheme={setMapTheme}
             />
           </div>
         </div>
