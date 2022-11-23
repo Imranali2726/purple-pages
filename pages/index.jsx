@@ -109,16 +109,18 @@ export default function Home() {
                 Events & Updates
               </h3>
               <p className="text-sm max-w-[690px] mx-auto mt-4 lg:mt-8 text-white">
-                Lorem Ipsum is simply dummy text of the printing and typesetting
-                industry. Lorem Ipsum has been the industry&apos;s standard
-                dummy text ever since the 1500s, when an unknown printe.
+                Don&apos;t miss out on any upcoming events!
               </p>
-              <button
+              <p className="text-sm max-w-[690px] mx-auto mt-4 text-white">
+                Keep following our website to keep yourself informed on events
+                and updates.
+              </p>
+              {/* <button
                 type="button"
                 className="text-base md:text-lg lg:text-xl bg-white text-primary py-3 px-4 lg:py-4 lg:px-5 rounded-[16px] font-semibold mt-6 lg:mt-8 hover:bg-transparent border border-transparent hover:border-white hover:text-white transition "
               >
                 Learn More
-              </button>
+              </button> */}
             </div>
           </div>
         </div>
