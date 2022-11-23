@@ -94,19 +94,9 @@ export default function Id({ data }) {
               {ReactHtmlParser(data?.about_yourself)}
             </div>
           ) : (
-            <p className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9  flex-1">
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s, when an unknown printer took a gall
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s, when an unknown printer took a gall.
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry. Lorem Ipsum has been the industry&apos;s standard dummy
-              text ever since the 1500s, when an unknown printer took a gall
-              Lorem Ipsum is simply dummy text of the printing and typesetting
-              industry.
-            </p>
+            <div className="text-sm md:text-base xl:text-lg text-[#737373] md:leading-8 xl:leading-9 flex-1">
+              {ReactHtmlParser(data?.about_yourself)}
+            </div>
           )}
           <div>
             <div className="w-full md:w-[284px]">

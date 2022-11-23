@@ -58,7 +58,7 @@ export default function SingleListingResult({ singleListData }) {
           />
         )}
         <div className="border-l flex-1 pt-6 flex flex-col justify-between">
-          <div className="grid grid-cols-1 md:grid-cols-[60%_40%] 2xl:grid-cols-[70%_30%] gap-8 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-[60%_40%]  gap-8 px-6">
             <div>
               <h3 className="font-bold text-lg">{singleListData?.name}</h3>
               {router.query.listing === "find-a-candidate" && (
@@ -139,10 +139,12 @@ export default function SingleListingResult({ singleListData }) {
                       {singleListData?.phone}
                     </li>
                     <li className="text-sm text-[#737373] mt-2 flex items-center gap-2">
-                      <IconContext.Provider value={locationIcon}>
-                        <HiMail />
-                      </IconContext.Provider>
-                      {singleListData?.email}
+                      <div>
+                        <IconContext.Provider value={locationIcon}>
+                          <HiMail />
+                        </IconContext.Provider>
+                      </div>
+                      <span className="break-all">{singleListData?.email}</span>
                     </li>
                     <li className="text-sm text-[#737373] mt-2 flex items-center gap-2">
                       <IconContext.Provider value={locationIcon}>
