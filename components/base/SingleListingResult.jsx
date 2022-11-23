@@ -63,13 +63,12 @@ export default function SingleListingResult({ singleListData }) {
               <h3 className="font-bold text-lg">{singleListData?.name}</h3>
               {router.query.listing === "find-a-candidate" && (
                 <p className="text-sm text-[#737373] my-1">
-                  {singleListData?.title ?? "Frontend Developer"}
+                  {singleListData?.title}
                 </p>
               )}
               {router.query.listing === "find-a-candidate" && (
                 <p className="text-sm text-[#737373] mt-2">
-                  {singleListData?.about_yourself ??
-                    "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."}
+                  {singleListData?.about_yourself}
                 </p>
               )}
               {router.query.listing !== "find-a-candidate" && (
