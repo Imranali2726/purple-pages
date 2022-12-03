@@ -68,7 +68,9 @@ export default function SingleListingResult({ singleListData }) {
               )}
               {router.query.listing === "find-a-candidate" && (
                 <p className="text-sm text-[#737373] mt-2">
-                  {singleListData?.about_yourself}
+                  {singleListData?.about_yourself?.length > 100
+                    ? `${singleListData?.about_yourself?.substring(0, 100)}... `
+                    : singleListData?.about_yourself}
                 </p>
               )}
               {router.query.listing !== "find-a-candidate" && (
