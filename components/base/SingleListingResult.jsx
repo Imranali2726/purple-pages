@@ -32,7 +32,7 @@ export default function SingleListingResult({ singleListData }) {
               "/images/image-placeholder.png"
             }
             alt="Placeholder for Candidate"
-            className={`w-full h-full lg:max-h-[300px] xl:max-h-full xl:h-full xl:max-w-[295px] ${
+            className={`w-full h-full lg:max-h-[295px] xl:h-full xl:max-w-[295px] ${
               router.query.service === "employments"
                 ? "object-contain p-4"
                 : "object-cover"
