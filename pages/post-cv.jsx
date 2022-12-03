@@ -405,9 +405,9 @@ export default function PostCV({ data }) {
           if (res.status === 200)
             setSuccessMesssage("Your CV has been successfully updated.");
 
-          setTimeout(() => {
-            setSuccessMesssage("");
-          }, 5000);
+          // setTimeout(() => {
+          //   setSuccessMesssage("");
+          // }, 5000);
         });
 
         if (selectedImage) {
@@ -909,7 +909,7 @@ export default function PostCV({ data }) {
             </div>
             {successMessage && (
               <div className="max-w-[1350px] mx-auto px-8 my-4">
-                <p className="text-xs text-green-500">{successMessage}</p>
+                <p className="text-sm text-green-500">{successMessage}</p>
               </div>
             )}
             <div className="max-w-[1350px] mx-auto py-10 text-end px-4">

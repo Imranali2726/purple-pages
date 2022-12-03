@@ -198,9 +198,7 @@ export default function Id({ data }) {
                     </span>
                   </p>
                   <p className="text-[#737373] lg:text-lg mt-3">
-                    Uniquely incentivize process-centric systems for reliable
-                    market. Authoritatively scale next generation collaboration.
-                    Globally morph 24/365 e-commerce.
+                    {item?.content}
                   </p>
                 </div>
               ))}
