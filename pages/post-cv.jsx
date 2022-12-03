@@ -189,7 +189,7 @@ export default function PostCV({ data }) {
       phone: Joi.number().required(),
       title: Joi.string().allow(null, ""),
       address: Joi.string().required(),
-      state_id: Joi.number().allow(null, ""),
+      state_id: Joi.number().required(),
       country_id: Joi.number().allow(null, ""),
       about_yourself: Joi.string().allow(null, ""),
       gender: Joi.string().required(),
@@ -730,6 +730,7 @@ export default function PostCV({ data }) {
 
                   <ReactSelect
                     options={states}
+                    error={dataErrors?.state_id}
                     label="State"
                     defaultValue={
                       states?.length > 0 &&
