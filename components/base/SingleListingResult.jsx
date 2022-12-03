@@ -96,7 +96,7 @@ export default function SingleListingResult({ singleListData }) {
 
               {mounted && router.query.service === "employments" && (
                 <div className="mt-4 text-[#737373] text-sm leading-4">
-                  {ReactHtmlParser(singleListData?.sub_title)}
+                  {ReactHtmlParser(singleListData?.about_yourself)}
                 </div>
               )}
             </div>
