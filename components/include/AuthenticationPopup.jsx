@@ -19,7 +19,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
       firstName: Joi.string().required(),
       lastName: Joi.string().required(),
       email: Joi.string()
-        .email({ tlds: { allow: ["com", "net"] } })
+        .email({ tlds: { allow: false } })
         .required(),
       password: Joi.string().required(),
     });

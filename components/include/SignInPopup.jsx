@@ -18,7 +18,7 @@ export default function SignInPopup({
   const validateLogin = (data) => {
     const schema = Joi.object({
       email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+        .email({ tlds: { allow: false } })
         .required(),
       password: Joi.string().min(6).max(120).required(),
     });
