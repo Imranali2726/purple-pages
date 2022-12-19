@@ -160,6 +160,20 @@ export default function Navbar() {
                                 My Account
                               </a>
                             </Link>
+                            {session?.data?.user_type === "user" && (
+                              <Link href="/post-cv">
+                                <a
+                                  className="my-2 flex items-center justify-start gap-2  hover:text-white w-full text-center hover:opacity-70"
+                                  onClick={() => setDropdown(false)}
+                                  role="button"
+                                  onKeyDown={() => setDropdown(false)}
+                                  tabIndex="0"
+                                >
+                                  {" "}
+                                  Post a CV{" "}
+                                </a>
+                              </Link>
+                            )}
                             <Link href="#">
                               <a
                                 onClick={() => setDropdown(false)}

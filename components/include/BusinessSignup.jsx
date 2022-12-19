@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import Joi from "joi";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { startCase } from "lodash";
 import { GrClose } from "react-icons/gr";
 import { signIn } from "next-auth/react";
@@ -14,6 +15,7 @@ export default function BusinessSignup({ setPopupActive }) {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(0);
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateRegister = (data) => {
     const schema = Joi.object({
@@ -144,15 +146,33 @@ export default function BusinessSignup({ setPopupActive }) {
                   {startCase(errors?.email)}
                 </p>
               )}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                className="bg-[#F5F5F5] px-3 py-3 rounded text-sm    "
-                onChange={(e) => setPassword(e.target.value)}
-              />
+              <div className="relative">
+                <input
+                  type={!showPassword ? "password" : "text"}
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  value={password}
+                  className="bg-[#F5F5F5] px-3 py-3 rounded text-sm w-full"
+                  onChange={(e) => setPassword(e.target.value)}
+                />
+                <div className="absolute right-4 top-[14px]">
+                  {showPassword && (
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(false)}
+                    >
+                      <BsEyeFill />
+                    </button>
+                  )}
+
+                  {!showPassword && (
+                    <button type="button" onClick={() => setShowPassword(true)}>
+                      <BsEyeSlashFill />
+                    </button>
+                  )}
+                </div>
+              </div>
               {errors && (
                 <p className="text-xs text-red-500 mb-4">
                   {startCase(errors?.password)}

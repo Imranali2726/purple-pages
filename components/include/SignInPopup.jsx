@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { IconContext } from "react-icons";
 import Joi from "joi";
+import { BsEyeFill, BsEyeSlashFill } from "react-icons/bs";
 import { GrClose } from "react-icons/gr";
 import { signIn } from "next-auth/react";
 import { startCase } from "lodash";
@@ -14,6 +15,7 @@ export default function SignInPopup({
 }) {
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
+  const [showPassword, setShowPassword] = useState(false);
 
   const validateLogin = (data) => {
     const schema = Joi.object({
@@ -118,14 +120,32 @@ export default function SignInPopup({
                   {startCase(errors?.email)}
                 </p>
               )}
-              <input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                className="bg-[#F5F5F5] px-3 py-3 rounded text-sm"
-                onChange={(e) => handleInputData(e)}
-              />
+              <div className="relative ">
+                <input
+                  type={!showPassword ? "password" : "text"}
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  className="bg-[#F5F5F5] px-3 py-3 rounded text-sm w-full"
+                  onChange={(e) => handleInputData(e)}
+                />
+                <div className="absolute right-4 top-[14px]">
+                  {showPassword && (
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword(false)}
+                    >
+                      <BsEyeFill />
+                    </button>
+                  )}
+
+                  {!showPassword && (
+                    <button type="button" onClick={() => setShowPassword(true)}>
+                      <BsEyeSlashFill />
+                    </button>
+                  )}
+                </div>
+              </div>
               {errors && (
                 <p className="text-xs text-red-500 mb-4 mt-1">
                   {startCase(errors?.password)}
@@ -171,7 +191,7 @@ export default function SignInPopup({
                   setSignInPopupActive(false);
                 }}
               >
-                <a className="text-[#642CA9] underline">Investor</a>
+                <a className="text-[#642CA9] underline">Bussiness / School</a>
               </button>{" "}
               or{" "}
               <button
@@ -182,7 +202,7 @@ export default function SignInPopup({
                   setSignInPopupActive(false);
                 }}
               >
-                User
+                Individual
               </button>
             </div>
           </div>

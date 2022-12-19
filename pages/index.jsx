@@ -51,10 +51,10 @@ export default function Home() {
       <section className="bg-image flex items-center justify-center h-screen max-h-[800px] lg:max-h-[100%] pt-[65px] lg:pt-[94px] mt-[-65px] lg:mt-[-94px]">
         <div className="max-w-[300px] md:max-w-[720px] lg:max-w-[991px] xl:max-w-[1200px] mx-auto  items-center justify-between">
           <h1 className="text-white text-center text-4xl md:text-5xl lg:text-6xl font-extrabold">
-            Access to Society
+            Improving Access to Society
           </h1>
           <p className="text-white mt-6 text-center max-w-[560px] mx-auto leading-7 md:leading-9">
-            Enter the information in the search and get your personalized
+            Enter the information in the search and get your personalised
             experience throughout the site.
           </p>
           <div className="mt-[45px] md:mt-[70px] lg:-mx-0 xl:-mx-8">

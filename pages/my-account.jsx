@@ -1,26 +1,27 @@
 import { useState, useRef, useEffect } from "react";
-import { useSession } from "next-auth/react";
 import Head from "next/head";
 import { GrClose } from "react-icons/gr";
 import Link from "next/link";
 import { FiUpload } from "react-icons/fi";
+import { useSession } from "next-auth/react";
 // eslint-disable-next-line camelcase
 import { unstable_getServerSession } from "next-auth";
 import { useRouter } from "next/router";
 import axios from "axios";
 import { authOptions } from "./api/auth/[...nextauth]";
+import { getUserDetail } from "../services/apiCalls";
 
-export default function MyAccount() {
+export default function MyAccount({ isEdited }) {
   const [selectedImage, setSelectedImage] = useState(null);
   const [name, setName] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const image = useRef();
-  const session = useSession();
   const router = useRouter();
-
+  const session = useSession();
   function handleImageUpload(e) {
     setSelectedImage(e.target.files[0]);
   }
+
   useEffect(() => {
     setName(session?.data?.user?.name);
   }, [session.status]);
@@ -124,7 +125,7 @@ export default function MyAccount() {
                 <div>
                   <input
                     type="text"
-                    value={name ?? ""}
+                    value={name}
                     // onChange={(e) => setName(e.target.value)}
                     readOnly
                     className="rounded border px-3 py-2 border-black cursor-not-allowed"
@@ -157,7 +158,7 @@ export default function MyAccount() {
                 {session?.data?.user_type === "user" && (
                   <Link href="/post-cv">
                     <a className="bg-[#642CA9] px-12 py-2 rounded-xl text-white text-lg font-semibold">
-                      Post CV
+                      {!isEdited ? "Post CV" : "Edit CV"}
                     </a>
                   </Link>
                 )}
@@ -185,7 +186,14 @@ export async function getServerSideProps(context) {
       },
     };
   }
+  const { data } = await getUserDetail(
+    "user/get",
+    session.user.token.user_token,
+  );
+  const { address, phone, dob } = data.data;
   return {
-    props: {},
+    props: {
+      isEdited: !!(address || phone || dob),
+    },
   };
 }
