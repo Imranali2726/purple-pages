@@ -21,7 +21,7 @@ export default function Navbar() {
   const dropdownAcc = useRef();
   const session = useSession();
   const links = [
-    { label: "Home", link: "/" },
+    { label: "Home", link: "/home" },
     // { label: "Listing", link: "/listing" },
     { label: "About", link: "#" },
     { label: "FAQ's", link: "#" },
@@ -71,7 +71,7 @@ export default function Navbar() {
       <div className="px-8">
         <div className="border-b-2 py-2 flex items-center justify-between max-w-[1644px] mx-auto">
           <div>
-            <Link href="/">
+            <Link href="/home">
               <a>
                 <img
                   src="/images/logo.png"
