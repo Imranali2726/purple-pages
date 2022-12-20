@@ -191,7 +191,7 @@ export default function SignInPopup({
                   setSignInPopupActive(false);
                 }}
               >
-                <a className="text-[#642CA9] underline">Bussiness / School</a>
+                <a className="text-[#642CA9] underline">Business / School</a>
               </button>{" "}
               or{" "}
               <button

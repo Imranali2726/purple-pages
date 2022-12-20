@@ -175,7 +175,7 @@ export default function Listing() {
       return "Find the Right Trainer";
     }
     if (router.query.service === "educations")
-      return "Find the Right Organization";
+      return "Find the Right Organisation";
 
     if (router.query.service === "employments") {
       return "Find your Perfect Job";
