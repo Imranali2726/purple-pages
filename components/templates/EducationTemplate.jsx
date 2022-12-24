@@ -7,7 +7,7 @@ import { FaEnvelope } from "react-icons/fa";
 import { MdOutlineWeb } from "react-icons/md";
 import { IconContext } from "react-icons";
 import Slider from "../base/Slider";
-import { FeaturedSlider } from "../../pages";
+import { FeaturedSlider } from "../../pages/home";
 import AccessibilityFeaturerContainer from "../features/AccessibilityFeaturerContainer";
 // import {
 //   schoolService,
