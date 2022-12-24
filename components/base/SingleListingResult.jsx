@@ -58,7 +58,7 @@ export default function SingleListingResult({ singleListData }) {
           />
         )}
         <div className="border-l flex-1 pt-6 flex flex-col justify-between">
-          <div className="grid grid-cols-1 md:grid-cols-[60%_40%]  gap-8 px-6">
+          <div className="grid grid-cols-1 md:grid-cols-[calc(60%_-_1rem)_calc(40%_-_1rem)]  gap-8 px-6">
             <div>
               <h3 className="font-bold text-lg">{singleListData?.name}</h3>
               {router.query.listing === "find-a-candidate" && (
