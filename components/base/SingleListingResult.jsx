@@ -12,7 +12,7 @@ import { useRouter } from "next/router";
 import SingleFeaturesResult from "./SingleFeaturesResult";
 
 const locationIcon = {
-  className: "fill-primary text-primary pt-1 w-6 h-6",
+  className: "fill-primary text-primary w-6 h-6",
 };
 
 export default function SingleListingResult({ singleListData }) {
@@ -134,13 +134,13 @@ export default function SingleListingResult({ singleListData }) {
               {router.query.service === "candidates" &&
                 router.query.listing === "find-a-candidate" && (
                   <ul>
-                    <li className="text-sm text-[#737373] mt-2 flex items-center gap-2">
+                    <li className="text-sm text-[#737373] mt-2 flex items-start gap-2">
                       <IconContext.Provider value={locationIcon}>
                         <AiFillPhone />
                       </IconContext.Provider>
                       {singleListData?.phone}
                     </li>
-                    <li className="text-sm text-[#737373] mt-2 flex items-center gap-2">
+                    <li className="text-sm text-[#737373] mt-2 flex items-start gap-2">
                       <div>
                         <IconContext.Provider value={locationIcon}>
                           <HiMail />
@@ -148,7 +148,7 @@ export default function SingleListingResult({ singleListData }) {
                       </div>
                       <span className="break-all">{singleListData?.email}</span>
                     </li>
-                    <li className="text-sm text-[#737373] mt-2 flex items-center gap-2">
+                    <li className="text-sm text-[#737373] mt-2 flex items-start gap-2">
                       <IconContext.Provider value={locationIcon}>
                         <MdOutlineLocationOn />
                       </IconContext.Provider>
