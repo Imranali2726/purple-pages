@@ -27,13 +27,13 @@ export const authOptions = {
               email,
               password,
             });
-            if (res.data) {
-              return res.data.data;
+            if (res?.data) {
+              return res?.data?.data;
             }
             return false;
           } catch (error) {
             console.log(error);
-            throw new Error(error.response.data.message ?? error.message);
+            throw new Error(error?.response?.data?.message ?? error?.message);
           }
         }
         try {

@@ -10,6 +10,7 @@ import { useRouter } from "next/router";
 import axios from "axios";
 import { authOptions } from "./api/auth/[...nextauth]";
 import { getUserDetail } from "../services/apiCalls";
+import { getAPIUrl, getCSRFCookieUrl } from "../services/utils";
 
 export default function MyAccount({ isEdited }) {
   const [selectedImage, setSelectedImage] = useState(null);
@@ -32,37 +33,25 @@ export default function MyAccount({ isEdited }) {
     if (selectedImage) {
       const fd = new FormData();
       fd.append("image", selectedImage);
-      axios
-        .get(
-          `${
-            process.env.NODE_ENV === "development"
-              ? process.env.BASE_LOCAL_SERVER
-              : process.env.BASE_UAT_SERVER
-          }sanctum/csrf-cookie`,
-        )
-        .then(() => {
-          axios({
-            url: `${
-              process.env.NODE_ENV === "development"
-                ? process.env.BASE_URL_LOCAL
-                : process.env.BASE_URL_UAT
-            }user/avatar`,
-            method: "post",
-            data: fd,
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${session?.data?.user?.token?.user_token}`,
-            },
+      axios.get(`${getCSRFCookieUrl()}sanctum/csrf-cookie`).then(() => {
+        axios({
+          url: `${getAPIUrl()}user/avatar`,
+          method: "post",
+          data: fd,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${session?.data?.user?.token?.user_token}`,
+          },
+        })
+          .then(() => {
+            setIsLoading(false);
+            router.reload();
           })
-            .then(() => {
-              setIsLoading(false);
-              router.reload();
-            })
-            .catch((error) => {
-              console.log(error);
-              setIsLoading(false);
-            });
-        });
+          .catch((error) => {
+            console.log(error);
+            setIsLoading(false);
+          });
+      });
     }
   }
   return (

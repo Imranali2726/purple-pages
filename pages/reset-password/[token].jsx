@@ -2,6 +2,7 @@ import { useRouter } from "next/router";
 import { useState } from "react";
 import axios from "axios";
 import TextInput from "../../components/base/TextInput";
+import { getAPIUrl, getCSRFCookieUrl } from "../../services/utils";
 
 export default function Token() {
   const [email, setEmail] = useState("");
@@ -42,39 +43,27 @@ export default function Token() {
       setIsLoading(false);
       return;
     }
-    axios
-      .get(
-        `${
-          process.env.NODE_ENV === "development"
-            ? process.env.BASE_LOCAL_SERVER
-            : process.env.BASE_UAT_SERVER
-        }sanctum/csrf-cookie`,
-      )
-      .then(() => {
-        axios({
-          method: "post",
-          url: `${
-            process.env.NODE_ENV === "development"
-              ? process.env.BASE_URL_LOCAL
-              : process.env.BASE_URL_UAT
-          }reset-password`,
-          data: {
-            email,
-            token: router.query.token,
-            password,
-            password_confirmation: cPassword,
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
+    axios.get(`${getCSRFCookieUrl()}sanctum/csrf-cookie`).then(() => {
+      axios({
+        method: "post",
+        url: `${getAPIUrl()}reset-password`,
+        data: {
+          email,
+          token: router.query.token,
+          password,
+          password_confirmation: cPassword,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+        .then(() => {
+          setMsg("Your password has been changed!");
+          setIsLoading(false);
         })
-          .then(() => {
-            setMsg("Your password has been changed!");
-            setIsLoading(false);
-          })
-          .catch(() => setIsLoading(false));
-      });
+        .catch(() => setIsLoading(false));
+    });
   }
   return (
     <div>

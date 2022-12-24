@@ -3,6 +3,7 @@ import Head from "next/head";
 import Joi from "joi";
 import { useSession } from "next-auth/react";
 import axios from "axios";
+import { AiOutlineClose } from "react-icons/ai";
 // eslint-disable-next-line camelcase
 import { unstable_getServerSession } from "next-auth";
 import slugify from "slugify";
@@ -23,6 +24,7 @@ import {
 } from "../services/apiCalls";
 import AuthenticationPopup from "../components/include/AuthenticationPopup";
 import SignInPopup from "../components/include/SignInPopup";
+import { getAPIUrl, getCSRFCookieUrl } from "../services/utils";
 
 // temp is education
 let temp = {
@@ -70,6 +72,29 @@ const gender = [
   },
 ];
 
+const visaStatus = [
+  {
+    label: "Emirati National",
+    value: "emirati_national",
+  },
+  {
+    label: "Residency Visa",
+    value: "residency",
+  },
+  {
+    label: "Employment Visa",
+    value: "employment",
+  },
+  {
+    label: "Tourist Visa",
+    value: "tourist",
+  },
+  {
+    label: "Spouse Visa",
+    value: "spouse",
+  },
+];
+
 export default function PostCV({ data }) {
   const [selectedImage, setSelectedImage] = useState("");
   const [formData, setFormData] = useState(
@@ -93,6 +118,7 @@ export default function PostCV({ data }) {
           dob: data?.dob,
           state_id: data?.state_id,
           salary_scale_id: data?.salary_scale_id,
+          visa_status: data?.visa_status,
         }
       : {},
   );
@@ -126,8 +152,6 @@ export default function PostCV({ data }) {
   const [isLoading, setIsLoading] = useState(false);
 
   const session = useSession();
-
-  const env = process.env.NODE_ENV;
 
   const handleInput = (e) => {
     const { name, value } = e.target;
@@ -184,7 +208,7 @@ export default function PostCV({ data }) {
       first_name: Joi.string().required(),
       last_name: Joi.string().required(),
       email: Joi.string()
-        .email({ minDomainSegments: 2, tlds: { allow: ["com", "net"] } })
+        .email({ minDomainSegments: 2, tlds: { allow: false } })
         .required(),
       phone: Joi.number().required(),
       title: Joi.string().allow(null, ""),
@@ -195,6 +219,7 @@ export default function PostCV({ data }) {
       gender: Joi.string().required(),
       dob: Joi.date().required(),
       salary_scale_id: Joi.number().allow("", null),
+      visa_status: Joi.object().required(),
     });
 
     return schema.validate(data, { abortEarly: false });
@@ -353,89 +378,79 @@ export default function PostCV({ data }) {
       return;
     }
 
-    axios
-      .get(
-        `${
-          env === "development"
-            ? process.env.BASE_LOCAL_SERVER
-            : process.env.BASE_UAT_SERVER
-        }sanctum/csrf-cookie`,
-      )
-      .then(() => {
-        axios({
-          method: "PUT",
-          url: `${
-            env === "development"
-              ? process.env.BASE_URL_LOCAL
-              : process.env.BASE_URL_UAT
-          }user/cv/update/${session?.data?.user.user_id}`,
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${session.data.user.token.user_token}`,
-          },
-          data: {
-            first_name: formData?.first_name,
-            last_name: formData?.last_name,
-            is_address_anonymous: formData?.is_address_anonymous,
-            is_email_anonymous: formData?.is_email_anonymous,
-            is_first_name_anonymous: formData?.is_first_name_anonymous,
-            is_last_name_anonymous: formData?.is_last_name_anonymous,
-            is_phone_anonymous: formData?.is_phone_anonymous,
-            is_photo_anonymous: formData?.is_photo_anonymous,
-            country_id: 1,
-            phone: formData?.phone,
-            address: formData?.address,
-            title: formData?.title,
-            about_yourself: formData?.about_yourself,
-            job_type: selectedJobType,
-            sectors: selectedSector,
-            education_history: JSON.stringify(educationData),
-            user_experience: JSON.stringify(employmentData),
-            gender: formData?.gender,
-            dob: formData?.dob,
-            user_type: "user",
-            skills: JSON.stringify(selectedSkills),
-            accessibilityFeatures: JSON.stringify(selectedFeatures),
-            state_id: formData?.state_id,
-            salar_scale_id: formData?.salary_scale_id,
-          },
-          withCredentials: true,
-        }).then((res) => {
+    axios.get(`${getCSRFCookieUrl()}sanctum/csrf-cookie`).then(() => {
+      axios({
+        method: "PUT",
+        url: `${getAPIUrl()}user/cv/update/${session?.data?.user.user_id}`,
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${session.data.user.token.user_token}`,
+        },
+        data: {
+          first_name: formData?.first_name,
+          last_name: formData?.last_name,
+          is_address_anonymous: formData?.is_address_anonymous,
+          is_email_anonymous: formData?.is_email_anonymous,
+          is_first_name_anonymous: formData?.is_first_name_anonymous,
+          is_last_name_anonymous: formData?.is_last_name_anonymous,
+          is_phone_anonymous: formData?.is_phone_anonymous,
+          is_photo_anonymous: formData?.is_photo_anonymous,
+          country_id: 1,
+          phone: formData?.phone,
+          address: formData?.address,
+          title: formData?.title,
+          about_yourself: formData?.about_yourself,
+          job_type: selectedJobType,
+          sectors: selectedSector,
+          education_history: JSON.stringify(educationData),
+          user_experience: JSON.stringify(employmentData),
+          gender: formData?.gender,
+          dob: formData?.dob,
+          user_type: "user",
+          skills: JSON.stringify(selectedSkills),
+          accessibilityFeatures: JSON.stringify(selectedFeatures),
+          state_id: formData?.state_id,
+          salar_scale_id: formData?.salary_scale_id,
+          visa_status: formData?.visa_status,
+        },
+        withCredentials: true,
+      })
+        .then((res) => {
           if (res.status === 200)
             setSuccessMesssage("Your CV has been successfully updated.");
 
           // setTimeout(() => {
           //   setSuccessMesssage("");
           // }, 5000);
+        })
+        .catch((err) => {
+          console.log(err?.response?.data?.message ?? data?.message);
+          setIsLoading(false);
         });
 
-        if (selectedImage) {
-          fd.append("image", selectedImage);
-          axios({
-            url: `${
-              process.env.NODE_ENV === "development"
-                ? process.env.BASE_URL_LOCAL
-                : process.env.BASE_URL_UAT
-            }user/avatar`,
-            method: "post",
-            data: fd,
-            headers: {
-              "Content-Type": "multipart/form-data",
-              Authorization: `Bearer ${session?.data?.user?.token?.user_token}`,
-            },
-            withCredentials: true,
+      if (selectedImage) {
+        fd.append("image", selectedImage);
+        axios({
+          url: `${getAPIUrl()}user/avatar`,
+          method: "post",
+          data: fd,
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Bearer ${session?.data?.user?.token?.user_token}`,
+          },
+          withCredentials: true,
+        })
+          .then(() => {
+            setIsLoading(false);
           })
-            .then(() => {
-              setIsLoading(false);
-            })
-            .catch((error) => {
-              console.log(error);
-              setIsLoading(false);
-            });
-        }
-        setIsLoading(false);
-      });
+          .catch((error) => {
+            console.log(error);
+            setIsLoading(false);
+          });
+      }
+      setIsLoading(false);
+    });
   }
 
   async function getSkillsCall() {
@@ -766,6 +781,17 @@ export default function PostCV({ data }) {
                       setFormData((p) => ({ ...p, country_id: e.id }))
                     }
                   />
+                  <ReactSelect
+                    options={visaStatus}
+                    label="Visa Status"
+                    defaultValue={formData?.visa_status}
+                    error={dataErrors?.visa_status}
+                    classNamePrefix="state-select"
+                    className="w-full lg:w-[calc(50%_-_16px)] "
+                    onChange={(e) =>
+                      setFormData((p) => ({ ...p, visa_status: e }))
+                    }
+                  />
 
                   <TextareaInput
                     label="About yourself"
@@ -908,8 +934,11 @@ export default function PostCV({ data }) {
               </div>
             </div>
             {successMessage && (
-              <div className="max-w-[1350px] mx-auto px-8 my-4">
-                <p className="text-sm text-green-500">{successMessage}</p>
+              <div className="max-w-[1350px] mx-auto px-8 py-4 rounded-xl my-4 bg-green-500 flex items-center justify-between gap-8">
+                <p className="text-white font-bold">{successMessage}</p>
+                <button type="button" onClick={() => setSuccessMesssage(null)}>
+                  <AiOutlineClose />
+                </button>
               </div>
             )}
             <div className="max-w-[1350px] mx-auto py-10 text-end px-4">

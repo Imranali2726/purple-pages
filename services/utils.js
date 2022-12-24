@@ -42,3 +42,13 @@ export const selectStyles = {
     borderRadius: "16px",
   }),
 };
+
+export const env = process.env.NODE_ENV;
+
+export const getAPIUrl = () =>
+  env === "development" ? process.env.BASE_URL_LOCAL : process.env.BASE_URL_UAT;
+
+export const getCSRFCookieUrl = () =>
+  env === "development"
+    ? process.env.BASE_LOCAL_SERVER
+    : process.env.BASE_UAT_SERVER;

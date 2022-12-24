@@ -3,6 +3,7 @@ import { IconContext } from "react-icons";
 import axios from "axios";
 import { GrClose } from "react-icons/gr";
 import { startCase } from "lodash";
+import { getAPIUrl, getCSRFCookieUrl } from "../../services/utils";
 
 const crossIcon = { className: "w-5 h-5" };
 export default function ForgotPasswordPopup({ setForgotPassword }) {
@@ -28,42 +29,30 @@ export default function ForgotPasswordPopup({ setForgotPassword }) {
       setIsLoading(false);
       return;
     }
-    axios
-      .get(
-        `${
-          process.env.NODE_ENV === "development"
-            ? process.env.BASE_LOCAL_SERVER
-            : process.env.BASE_UAT_SERVER
-        }sanctum/csrf-cookie`,
-      )
-      .then(() => {
-        axios({
-          method: "post",
-          url: `${
-            process.env.NODE_ENV === "development"
-              ? process.env.BASE_URL_LOCAL
-              : process.env.BASE_URL_UAT
-          }forget-password`,
-          data: {
-            email: data?.email,
-          },
-          headers: {
-            "Content-Type": "application/json",
-          },
-          withCredentials: true,
+    axios.get(`${getCSRFCookieUrl()}sanctum/csrf-cookie`).then(() => {
+      axios({
+        method: "post",
+        url: `${getAPIUrl()}forget-password`,
+        data: {
+          email: data?.email,
+        },
+        headers: {
+          "Content-Type": "application/json",
+        },
+        withCredentials: true,
+      })
+        .then((res) => {
+          setIsLoading(false);
+          setMsg(res?.data?.message);
+          setTimeout(() => {
+            setForgotPassword(false);
+          }, 5000);
         })
-          .then((res) => {
-            setIsLoading(false);
-            setMsg(res?.data?.message);
-            setTimeout(() => {
-              setForgotPassword(false);
-            }, 5000);
-          })
-          .catch((err) => {
-            setIsLoading(false);
-            setErrors((p) => ({ ...p, backend: err?.response?.data?.message }));
-          });
-      });
+        .catch((err) => {
+          setIsLoading(false);
+          setErrors((p) => ({ ...p, backend: err?.response?.data?.message }));
+        });
+    });
   }
 
   function handleInputData(e) {

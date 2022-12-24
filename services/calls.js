@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAPIUrl } from "./utils";
 
 export default async function calls(
   method,
@@ -8,11 +9,8 @@ export default async function calls(
   params,
   cancelToken,
 ) {
-  const env = process.env.NODE_ENV;
-  const url =
-    env === "development"
-      ? process.env.BASE_URL_LOCAL
-      : process.env.BASE_URL_UAT;
+  const url = getAPIUrl();
+
   const res = await axios({
     method,
     url: url + endpoint,
