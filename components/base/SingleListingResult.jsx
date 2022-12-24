@@ -24,7 +24,7 @@ export default function SingleListingResult({ singleListData }) {
   }, []);
   return (
     <div className="mb-6 md:mb-10">
-      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-1 xl:grid-cols-[240px_1fr] 2xl:grid-cols-[290px_1fr]  border">
+      <div className="grid grid-cols-1 md:grid-cols-[200px_1fr] lg:grid-cols-1 xl:grid-cols-[240px_1fr] 2xl:grid-cols-[250px_1fr]  border">
         {router.query.listing === "find-a-candidate" ? (
           <img
             src={
@@ -32,7 +32,7 @@ export default function SingleListingResult({ singleListData }) {
               "/images/image-placeholder.png"
             }
             alt="Placeholder for Candidate"
-            className={`w-full h-full lg:max-h-[295px] xl:h-full xl:max-w-[295px] ${
+            className={`w-full h-full lg:h-[250px] xl:max-w-[250px] ${
               router.query.service === "employments"
                 ? "object-contain p-4"
                 : "object-cover"
