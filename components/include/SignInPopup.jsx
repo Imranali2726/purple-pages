@@ -16,6 +16,7 @@ export default function SignInPopup({
   const [data, setData] = useState({});
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateLogin = (data) => {
     const schema = Joi.object({
@@ -31,6 +32,7 @@ export default function SignInPopup({
   async function handleSignInForm(e) {
     e.preventDefault();
     setErrors({});
+    setIsLoading(true);
     const res = validateLogin(data);
     if (res.error) {
       const a = res?.error?.details?.map((item) => ({
@@ -54,9 +56,11 @@ export default function SignInPopup({
         setTimeout(() => {
           setSignInPopupActive(false);
         }, 1000);
+        setIsLoading(false);
       }
       if (res.error) {
         setErrors((p) => ({ ...p, email: res.error }));
+        setIsLoading(false);
       }
     });
   }
@@ -167,9 +171,11 @@ export default function SignInPopup({
 
               <button
                 type="submit"
-                className="text-center w-full py-3 bg-[#642CA9] mt-8 rounded-md text-white font-bold"
+                className={`text-center w-full py-3 bg-[#642CA9] mt-8 rounded-md text-white font-bold ${
+                  isLoading ? "opacity-70" : ""
+                }`}
               >
-                Login
+                {isLoading ? "Loading..." : "Login"}
               </button>
               <button
                 type="button"

@@ -29,6 +29,7 @@ export default function ForgotPasswordPopup({ setForgotPassword }) {
       setIsLoading(false);
       return;
     }
+
     axios.get(`${getCSRFCookieUrl()}sanctum/csrf-cookie`).then(() => {
       axios({
         method: "post",

@@ -7,6 +7,7 @@ import Link from "next/link";
 import ReactHtmlParser from "react-html-parser";
 import Head from "next/head";
 import { getCandidate } from "../../../../../../../services/apiCalls";
+import Breadcrumbs from "../../../../../../../components/features/Breadcrumbs";
 
 const contactIcon = {
   className: "fill-primary text-primary pt-1 w-6 h-6",
@@ -14,7 +15,13 @@ const contactIcon = {
 
 export default function Id({ data }) {
   const [mounted, setMounted] = useState(false);
+  const [link, setLink] = useState("");
 
+  const breadCrumbs = [
+    { link: "/", label: "" },
+    { link: link.toString(), label: "Listing" },
+    { label: data?.name },
+  ];
   const links = [
     { label: "About", link: "#about" },
     { label: "Contact Information", link: "#contact-information" },
@@ -25,16 +32,21 @@ export default function Id({ data }) {
 
   useEffect(() => {
     setMounted(true);
+    if (typeof window !== "undefined") {
+      const arr = window.location.pathname.replace("/", "").split("/");
+      arr.splice(arr.length - 2, 2);
+      setLink(`/${arr.join("/")}`);
+    }
   }, []);
 
   function getImageSrc(src, anonymous) {
     if (src) {
       if (anonymous) {
-        return "/images/image-placeholder.png";
+        return "/images/user-avatar.jpg";
       }
       return src;
     }
-    return "/images/image-placeholder.png";
+    return "/images/user-avatar.jpg";
   }
   return (
     <>
@@ -46,8 +58,9 @@ export default function Id({ data }) {
             }`}
         </style>
       </Head>
-      <section className="internal-header-bg h-auto pb-8 md:h-[354px] pt-[120px] md:pt-[94px] mt-[-65px] lg:mt-[-94px]">
+      <section className="internal-header-bg h-auto pb-8 md:h-[260px] lg:h-[360px] pt-[150px] md:pt-[94px] mt-[-66px] lg:mt-[-94px]">
         <div className="flex flex-col pp-container relative top-[50%] translate-y-[-50%]">
+          <Breadcrumbs breadCrumbs={breadCrumbs} />
           <h1 className="capitalize text-xl xl:text-2xl 2xl:text-3xl text-white font-bold">
             {Number(data?.is_first_name_anonymous) === 1
               ? "*******"

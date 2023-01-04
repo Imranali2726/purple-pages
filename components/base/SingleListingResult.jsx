@@ -28,8 +28,7 @@ export default function SingleListingResult({ singleListData }) {
         {router.query.listing === "find-a-candidate" ? (
           <img
             src={
-              singleListData?.image?.original_url ??
-              "/images/image-placeholder.png"
+              singleListData?.image?.original_url ?? "/images/user-avatar.jpg"
             }
             alt="Placeholder for Candidate"
             className={`w-full h-full lg:h-[250px] xl:max-w-[250px] ${
@@ -176,7 +175,21 @@ export default function SingleListingResult({ singleListData }) {
             <div>
               {router.query.listing !== "find-a-candidate" ? (
                 <Link href={`/${router.query.service}/${singleListData?.slug}`}>
-                  <a className="bg-primary py-2 w-full rounded-md text-white font-bold text-sm max-w-[174px] inline-block text-center hover:bg-[#2CB579] transition-colors">
+                  <a
+                    role="button"
+                    tabIndex="0"
+                    className="bg-primary py-2 w-full rounded-md text-white font-bold text-sm max-w-[174px] inline-block text-center hover:bg-[#2CB579] transition-colors"
+                    onClick={() => {
+                      if (typeof window !== "undefined") {
+                        localStorage.setItem("link", window.location.pathname);
+                      }
+                    }}
+                    onKeyDown={() => {
+                      if (typeof window !== "undefined") {
+                        localStorage.setItem("link", window.location.pathname);
+                      }
+                    }}
+                  >
                     {" "}
                     Check Details{" "}
                   </a>

@@ -78,10 +78,10 @@ export default function MyAccount({ isEdited }) {
                       ? URL.createObjectURL(selectedImage)
                       : session?.data?.image?.[0]?.original_url
                       ? session?.data?.image?.[0]?.original_url
-                      : "/images/image-placeholder.png"
+                      : "/images/user-avatar.jpg"
                   }
                   alt=""
-                  className="mb-4 w-[200px] aspect-square rounded-full mx-auto"
+                  className="mb-4 w-[200px] aspect-square rounded-full mx-auto object-cover"
                 />
                 <input
                   type="file"

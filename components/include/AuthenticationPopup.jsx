@@ -90,7 +90,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
           </div>
           <div className="bg-white py-4 px-8 md:py-12 md:px-20 relative">
             <h1 className="text-[35px] font-bold text-[#737373] mb-10">
-              User Sign Up
+              Individual Sign Up
             </h1>
             <button
               type="button"

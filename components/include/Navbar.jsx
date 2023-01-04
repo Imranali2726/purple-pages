@@ -132,10 +132,10 @@ export default function Navbar() {
                       <img
                         src={
                           session?.data?.image?.[0]?.original_url ??
-                          "/images/image-placeholder.png"
+                          "/images/user-avatar.jpg"
                         }
                         alt=""
-                        className=" w-14 h-14 rounded-full"
+                        className=" w-14 h-14 rounded-full object-cover"
                       />
                       <BsFillCaretDownFill className="fill-white" />
                     </button>
