@@ -43,7 +43,7 @@ export const selectStyles = {
   }),
 };
 
-export const env = "process.env.NODE_ENV";
+export const env = process.env.NODE_ENV;
 
 export const getAPIUrl = () =>
   env === "development" ? process.env.BASE_URL_LOCAL : process.env.BASE_URL_UAT;
