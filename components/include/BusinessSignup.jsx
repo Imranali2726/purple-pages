@@ -16,6 +16,7 @@ export default function BusinessSignup({ setPopupActive }) {
   const [remember, setRemember] = useState(0);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateRegister = (data) => {
     const schema = Joi.object({
@@ -32,6 +33,7 @@ export default function BusinessSignup({ setPopupActive }) {
 
   async function handleSignUpForm(e) {
     e.preventDefault();
+    setIsLoading(true);
     const reg = validateRegister({ firstName, lastName, email, password });
     if (reg.error) {
       const a = reg?.error?.details?.map((item) => ({
@@ -43,6 +45,7 @@ export default function BusinessSignup({ setPopupActive }) {
         r = { ...r, [item.name]: item.message };
       });
       setErrors(r);
+      setIsLoading(false);
       return;
     }
 
@@ -61,9 +64,11 @@ export default function BusinessSignup({ setPopupActive }) {
         setTimeout(() => {
           setPopupActive(false);
         }, 1000);
+        setIsLoading(false);
       }
       if (res.error) {
-        setErrors((p) => ({ ...p, email: res.error }));
+        setErrors((p) => ({ ...p, others: res.error }));
+        setIsLoading(false);
       }
     });
   }
@@ -173,14 +178,19 @@ export default function BusinessSignup({ setPopupActive }) {
                   )}
                 </div>
               </div>
-              {errors && (
+              {errors?.password && (
                 <p className="text-xs text-red-500 mb-4">
                   {startCase(errors?.password)}
                 </p>
               )}
+              {errors?.others && (
+                <p className="text-xs text-red-500 mb-4">
+                  {startCase(errors?.others)}
+                </p>
+              )}
               <label
                 htmlFor="remember"
-                className="flex items-center gap-2 text-sm"
+                className="flex items-center gap-2 text-sm mt-2"
               >
                 <input
                   type="checkbox"
@@ -203,9 +213,11 @@ export default function BusinessSignup({ setPopupActive }) {
               </p>
               <button
                 type="submit"
-                className="text-center w-full py-3 bg-[#642CA9] mt-4 rounded-md text-white font-bold"
+                className={`text-center w-full py-3 bg-[#642CA9] mt-4 rounded-md text-white font-bold ${
+                  isLoading ? "opacity-70" : ""
+                }`}
               >
-                Sign Up
+                {isLoading ? "Loading" : "Sign Up"}
               </button>
             </form>
           </div>

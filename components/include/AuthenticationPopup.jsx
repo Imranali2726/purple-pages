@@ -15,6 +15,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
   const [remember, setRemember] = useState(0);
   const [errors, setErrors] = useState({});
   const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateRegister = (data) => {
     const schema = Joi.object({
@@ -31,6 +32,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
 
   async function handleSignUpForm(e) {
     e.preventDefault();
+    setIsLoading(true);
     const reg = validateRegister({ firstName, lastName, email, password });
     if (reg.error) {
       const a = reg?.error?.details?.map((item) => ({
@@ -42,6 +44,7 @@ export default function AuthenticationPopup({ setPopupActive }) {
         r = { ...r, [item.name]: item.message };
       });
       setErrors(r);
+      setIsLoading(false);
       return;
     }
 
@@ -60,9 +63,11 @@ export default function AuthenticationPopup({ setPopupActive }) {
         setTimeout(() => {
           setPopupActive(false);
         }, 1000);
+        setIsLoading(false);
       }
       if (res.error) {
         setErrors((p) => ({ ...p, email: res.error }));
+        setIsLoading(false);
       }
     });
   }
@@ -199,13 +204,15 @@ export default function AuthenticationPopup({ setPopupActive }) {
 
               <p className="mt-4 text-xs lg:text-sm">
                 By signing in, I agree to the Purple Pages Terms and Conditions,
-                Privacy Statement and Terms and Conditions.
+                Privacy Statement and Terms and Conditionss.
               </p>
               <button
                 type="submit"
-                className="text-center w-full py-3 bg-[#642CA9] mt-4 rounded-md text-white font-bold"
+                className={`text-center w-full py-3 bg-[#642CA9] mt-4 rounded-md text-white font-bold ${
+                  isLoading ? "opacity-70" : ""
+                }`}
               >
-                Sign Up
+                {isLoading ? " Loading..." : "Sign Up"}
               </button>
             </form>
           </div>
